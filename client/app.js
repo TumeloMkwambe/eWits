@@ -7,6 +7,11 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Listening");
 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 app.get('/', (req, res) => {
   res.send({message: "client"});
 });
