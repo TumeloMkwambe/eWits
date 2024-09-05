@@ -28,7 +28,7 @@ mongoose
 // REQUESTS
 
 app.get('/', (req, res) => {
-  res.send({message: "server"});
+  res.send({message: "OK"});
 });
 
 app.get('/events', async (req, res) => {
@@ -100,3 +100,5 @@ app.delete('/event/:id', async (req, res) => {
     res.status(500).send({error: error.message})
   }
 });
+
+module.exports = app;
