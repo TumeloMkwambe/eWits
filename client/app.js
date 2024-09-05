@@ -13,5 +13,10 @@ app.use((err, req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  res.send({message: "client"});
+  try{
+    res.send({message: "client"});
+  }
+  catch(error){
+    res.send({error: error.message})
+  }
 });
