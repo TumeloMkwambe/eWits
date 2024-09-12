@@ -28,6 +28,7 @@ const Dashboard = () => {
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/events/:id" element={<EventDetails />} />
+          
           {/* Add other routes as needed */}
         </Routes>
       </ContentArea>
