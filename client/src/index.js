@@ -1,6 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import { createRoot } from 'react-dom/client';
+import { Auth0Provider } from '@auth0/auth0-react';
 import App from './App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
+
+root.render(
+<Auth0Provider
+    domain="boogeraids.eu.auth0.com"
+    clientId="YMO4FTJK7KeCDRWlGFzDUiweeKamW6vI"
+    authorizationParams={{
+      redirect_uri: window.location.origin
+    }}
+  >
+    <App />
+  </Auth0Provider>,
+);
