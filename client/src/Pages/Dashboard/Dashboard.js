@@ -6,6 +6,7 @@ import UserProfile from '../../components/UserProfile';
 import { Routes, Route } from 'react-router-dom';
 import EventDetails from '../../components/EventDetails';
 import EditProfile from '../../components/EditProfile';
+import Logout from '../../components/Logout';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ const Dashboard = () => {
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/events/:id" element={<EventDetails />} />
-          
+          <Route path="/logout" element={<Logout/>} />
           {/* Add other routes as needed */}
         </Routes>
       </ContentArea>
