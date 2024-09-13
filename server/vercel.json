@@ -2,30 +2,30 @@
   "version": 2,
   "builds": [
     {
-      "src": "emapi/app.js",
+      "src": "/app.js",
       "use": "@vercel/node"
     }, 
     {
-      "src": "notapi/app.js",
+      "src": "/notapi.js",
       "use": "@vercel/node"
     },
     {
-      "src": "ratapi/app.js",
+      "src": "/ratapi.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/emapi/(.*)",
-      "dest": "/emapi/"
+      "dest": "/app.js"
     },
     {
       "src": "/notapi/(.*)",
-      "dest": "/notapi/app.js"
+      "dest": "/notapi.js"
     },
     {
-      "src": "ratapi/(.*)",
-      "dest": "/ratapi/app.js"
+      "src": "/ratapi/(.*)",
+      "dest": "/ratapi.js"
     }
   ]
 }
