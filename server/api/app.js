@@ -27,15 +27,15 @@ mongoose
 
 // REQUESTS
 
-app.get('/', (req, res) => {
-  res.send({message: "Which one is this one?"});
+app.get('/api', (req, res) => {
+  res.send({message: "API?"});
 });
 
-app.get('/emapi', (req, res) => {
+app.get('/api/emapi', (req, res) => {
   res.send({message: "Event Management API"});
 });
 
-app.get('/emapi/events', async (req, res) => {
+app.get('/api/emapi/events', async (req, res) => {
   try{
     const events = await Events.find();
     res.status(200).json(events);
@@ -45,7 +45,7 @@ app.get('/emapi/events', async (req, res) => {
   }
 });
 
-app.get('/emapi/events/:field/:value', async (req, res) => {
+app.get('/api/emapi/events/:field/:value', async (req, res) => {
   try {
     const field = req.params.field;
     const value = req.params.value;
@@ -61,7 +61,7 @@ app.get('/emapi/events/:field/:value', async (req, res) => {
   }
 })
 
-app.post('/emapi/event/create', async (req, res) => {
+app.post('/api/emapi/event/create', async (req, res) => {
   try {
     const event = await Events.create(req.body);
     res.status(200).json(event);
@@ -70,7 +70,7 @@ app.post('/emapi/event/create', async (req, res) => {
   }
 });
 
-app.get('/emapi/event/:id/:field', async (req, res) => {
+app.get('/api/emapi/event/:id/:field', async (req, res) => {
   try {
     const eventID = req.params.id;
     const field = req.params.field;
@@ -86,7 +86,7 @@ app.get('/emapi/event/:id/:field', async (req, res) => {
   }
 });
 
-app.put('/emapi/event/:id', async (req, res) => {
+app.put('/api/emapi/event/:id', async (req, res) => {
   try {
     await Events.findByIdAndUpdate({_id: req.params.id}, req.body);
     const event = await Events.find({_id: req.params.id});
@@ -96,7 +96,7 @@ app.put('/emapi/event/:id', async (req, res) => {
   }
 });
 
-app.delete('/emapi/event/:id', async (req, res) => {
+app.delete('/api/emapi/event/:id', async (req, res) => {
   try {
     await Events.findByIdAndDelete({_id: req.params.id});
     res.status(200).send({status: "Event successfully deleted"});
