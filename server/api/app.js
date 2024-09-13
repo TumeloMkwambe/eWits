@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const Events = require("./models/event.models.js");
+const Events = require("../models/event.models.js");
 const mongoose = require("mongoose");
 app.use(express.json());
 
