@@ -12,6 +12,10 @@
     {
       "src": "/api/ratapi",
       "dest": "api/ratapi.js"
+    },
+    {
+      "src": "/*",
+      "dest": "api/app.js"
     }
   ]
 }
