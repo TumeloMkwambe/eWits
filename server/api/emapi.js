@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
-const Events = require("../models/event.models.js");
+const Events = require("../models/event.models");
 const mongoose = require("mongoose");
 app.use(express.json());
 
 // GLOBAL VARIABLES
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.ENV || 3000;
 const database =
   "mongodb+srv://TumeloMkwambe:T69M5gA2oWaG1w@cluster0.79zpfwz.mongodb.net/WitsEvents?retryWrites=true&w=majority&appName=Cluster0";
 const schemaFields = ["name", "description", "date", "duration", "location", "poster", "capacity", "creator"];
@@ -26,10 +26,6 @@ mongoose
   });
 
 // REQUESTS
-
-app.get('/api/emapi', (req, res) => {
-  res.send({message: "Event Management API"});
-});
 
 app.get('/api/emapi/events', async (req, res) => {
   try{
@@ -100,5 +96,3 @@ app.delete('/api/emapi/event/:id', async (req, res) => {
     res.status(500).send({error: error.message})
   }
 });
-
-module.exports = app;
