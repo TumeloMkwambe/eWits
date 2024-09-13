@@ -1,7 +1,7 @@
 {
-  "name": "emapi1.1",
+  "name": "eWits-api-1.0.0",
   "version": "1.0.0",
-  "description": "event management api ",
+  "description": "eWits api ",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
