@@ -12,10 +12,6 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/app.js"
-    },
-    {
       "src": "/emapi/(.*)",
       "dest": "/app.js"
     },
