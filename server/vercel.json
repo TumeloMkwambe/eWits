@@ -16,11 +16,11 @@
   ],
   "routes": [
     {
-      "src": "emapi/(.*)",
-      "dest": "/emapi/app.js"
+      "src": "/emapi/(.*)",
+      "dest": "/emapi/"
     },
     {
-      "src": "notapi/(.*)",
+      "src": "/notapi/(.*)",
       "dest": "/notapi/app.js"
     },
     {
