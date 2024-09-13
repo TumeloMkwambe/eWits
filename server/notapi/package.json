@@ -1,0 +1,15 @@
+{
+  "name": "notapi",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "Notifications API",
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
