@@ -14,6 +14,10 @@
     {
       "src": "/emapi/(.*)",
       "dest": "/app.js"
+    },
+    {
+      "src": "/notapi/(.*)",
+      "dest": "/notapi.js"
     }
   ]
 }
