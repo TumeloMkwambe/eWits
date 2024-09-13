@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
+app.use(express.json());
 
-app.get("/", (req, res) => res.send("Include API specification for all APIs."));
+
+app.get("/", (req, res) => res.send("Include API specification for all APIs!"));
 
 app.get("/api", (req, res) => res.send("API Gateway"));
 
