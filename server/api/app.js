@@ -3,9 +3,7 @@ const app = express();
 
 app.get("/", (req, res) => res.send("Include API specification for all APIs."));
 
-app.get('/api', (req, res) => {
-    res.send("API Gateway");
-})
+app.get("/api", (req, res) => res.send("API Gateway"));
 
 const PORT = 3000 || process.env.PORT;
 

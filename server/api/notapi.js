@@ -27,10 +27,6 @@ mongoose
 
 // REQUESTS
 
-app.get('/api', (req, res) => {
-  res.send({message: "API?"});
-});
-
 app.get('/api/notapi', (req, res) => {
   res.send({message: "Notifications API"});
 });

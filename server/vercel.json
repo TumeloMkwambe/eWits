@@ -7,10 +7,10 @@
     },
     {
       "src": "/api/emapi/*",
-      "dest": "api/app.js"
+      "dest": "api/emapi.js"
     },
     {
-      "src": "/api/ratapi",
+      "src": "/api/ratapi/",
       "dest": "api/ratapi.js"
     },
     {

@@ -27,10 +27,6 @@ mongoose
 
 // REQUESTS
 
-app.get('/api', (req, res) => {
-  res.send({message: "API?"});
-});
-
 app.get('/api/emapi', (req, res) => {
   res.send({message: "Event Management API"});
 });
