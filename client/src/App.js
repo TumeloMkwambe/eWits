@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import Landing from './components/Landing';
 import Dashboard from './Pages/Dashboard/Dashboard';
+import ImageUpload from './components/ImageUpload';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/imageupload" element={<ImageUpload />} />
         <Route path="/logout" element={<Logout />} />
       </Routes>
     </BrowserRouter>

@@ -31,6 +31,7 @@ const Sidebar = () => {
       <SidebarItem><Link to="/tickets">Tickets</Link></SidebarItem>
       <SidebarItem><Link to="/notifications">Notifications</Link></SidebarItem>
       <SidebarItem><Link to="/profile">My Profile</Link></SidebarItem>
+      <SidebarItem><Link to="/imageupload">Upload Image</Link></SidebarItem>
       <SidebarItem><Link to="/logout">Logout</Link></SidebarItem>
     </SidebarContainer>
   );
