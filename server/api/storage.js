@@ -53,7 +53,7 @@ app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
   try {
     // Upload file to Firebase
     const imageUrl = await uploadImageToFirebase(req.file);
-    await Images.create({
+    await Image.create({
       imageUrl: imageUrl
     });
 
