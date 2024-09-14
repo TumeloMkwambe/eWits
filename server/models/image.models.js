@@ -3,6 +3,6 @@ const mongoose = require("mongoose");
 const ImageSchema = new mongoose.Schema({
     imageUrl: { type: String, required: true }
   });
-  const Image = mongoose.model('Image', ImageSchema);
+  const Images = mongoose.model('Image', ImageSchema);
 
-  module.exports = Image;
+  module.exports = Images;

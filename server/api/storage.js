@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Image = require('../models/image.models');
+const Images = require('../models/image.models');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const { bucket } = require('../firebase/firebase.config');
@@ -53,7 +53,7 @@ app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
   try {
     // Upload file to Firebase
     const imageUrl = await uploadImageToFirebase(req.file);
-    await Image.create({
+    await Images.create({
       imageUrl: imageUrl
     });
 
