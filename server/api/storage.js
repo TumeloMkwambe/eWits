@@ -7,6 +7,12 @@ const { bucket } = require('../firebase/firebase.config');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(cors({
+  origin: 'https://demo-app-two-snowy.vercel.app', // Replace with your React app's URL
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+}));
+
 // Multer Setup for File Upload
 const upload = multer({
   storage: multer.memoryStorage(), // Store in memory temporarily
