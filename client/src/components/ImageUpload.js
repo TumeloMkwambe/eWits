@@ -16,30 +16,15 @@ const ImageUpload = () => {
     formData.append('image', selectedFile);
 
     try {
-      // Make the POST request using fetch
-      const response = await fetch(`${process.env.REACT_APP_API_URI}/api/storage/upload`, {
-        method: 'POST',
-        body: formData,
+      const response = await axios.post(`${process.env.REACT_APP_API_URI}/api/storage/upload`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Note: fetch automatically sets this header when sending FormData
+          'Content-Type': 'multipart/form-data',
         },
       });
-    
-      // Check if the response is OK (status code 200-299)
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-    
-      // Parse the JSON response
-      const data = await response.json();
-      
-      // Set the image URL from the response
-      setImageUrl(data.imageUrl);
-    
+      setImageUrl(response.data.imageUrl);
     } catch (error) {
       console.error('Error uploading image', error);
     }
-    
   };
 
   return (
