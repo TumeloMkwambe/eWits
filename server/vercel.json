@@ -14,6 +14,10 @@
       "dest": "api/ratapi.js"
     },
     {
+      "src": "/api/storage/(.*)",
+      "dest": "api/storage.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "api/app.js"
     }
