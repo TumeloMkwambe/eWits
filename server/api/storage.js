@@ -46,7 +46,7 @@ app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
   try {
     // Upload file to Firebase
     const imageUrl = await uploadImageToFirebase(req.file);
-    const image = new Image({ imageUrl });
+    //const image = new Image({ imageUrl });
     //await image.save();
     res.status(200).json({ imageUrl });
   } catch (error) {
