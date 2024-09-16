@@ -6,8 +6,7 @@ app.use(express.json());
 
 // GLOBAL VARIABLES
 const PORT = process.env.ENV || 3000;
-const database =
-  "mongodb+srv://TumeloMkwambe:T69M5gA2oWaG1w@cluster0.79zpfwz.mongodb.net/WitsEvents?retryWrites=true&w=majority&appName=Cluster0";
+const database = process.env.MONGO_DATABASE_CONNECT;
 const schemaFields = ["name", "description", "date", "duration", "location", "poster", "capacity", "creator"];
 
 

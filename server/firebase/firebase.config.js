@@ -3,7 +3,7 @@ const serviceAccount = require('./ewits-storage-firebase-adminsdk-i9xm5-fe6da398
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: 'gs://ewits-storage.appspot.com',
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 });
 
 const bucket = admin.storage().bucket();
