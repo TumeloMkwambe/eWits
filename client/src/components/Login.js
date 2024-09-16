@@ -15,7 +15,7 @@ const LoginButton = () => {
 
   return (
     <div>
-      <h2>Welcome! Please log in.</h2>
+      {/* <h2>Welcome! Please log in.</h2> */}
       <button onClick={() => loginWithRedirect()}>Log In</button>
     </div>
   );
