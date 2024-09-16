@@ -3,6 +3,8 @@ const app = express();
 const Events = require("../models/event.models");
 const mongoose = require("mongoose");
 app.use(express.json());
+require('dotenv').config();
+
 
 // GLOBAL VARIABLES
 const PORT = process.env.ENV || 3000;
