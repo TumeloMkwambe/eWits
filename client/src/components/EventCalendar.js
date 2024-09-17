@@ -22,7 +22,7 @@ const EventCalendar = () => {
   useEffect( () => {
     // Fetch events from API
     const fetchCalendarEvents = async () => {
-      await fetch(`http://localhost:3000/api/emapi/events`)
+      await fetch(`${process.env.REACT_APP_API_URI}/api/emapi/events`)
       .then(response => response.json())
       .then(data => {
         const calendarEvents = [];
