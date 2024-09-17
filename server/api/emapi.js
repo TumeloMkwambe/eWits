@@ -7,7 +7,7 @@ require('dotenv').config();
 const cors = require('cors');
 
 app.use(cors({
-  origin: 'http://localhost:3001', // Replace with your React app's URL
+  origin: process.env.CLIENT_URI, // Replace with your React app's URL
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 }));

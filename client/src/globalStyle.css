@@ -11,6 +11,10 @@
     background-color: #f4f4f4;
     color: #333;
   }
+
+  .landing-page{
+    background-color: #2e0329;
+  }
   
   .header {
     display: flex;
@@ -245,3 +249,4 @@
         justify-content: space-between;
       }
     }
+
