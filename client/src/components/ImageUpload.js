@@ -14,9 +14,10 @@ const ImageUpload = () => {
 
     const formData = new FormData();
     formData.append('image', selectedFile);
-
+    console.log("formData", formData);
+    console.log(formData[0]);
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URI}/api/storage/upload`, formData, {
+      const response = await axios.post(`http://localhost:5000/api/storage/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -1,16 +1,12 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
+app.use(cors()); // enforce cors later
+app.use(express.json());
+
 const Events = require("../models/event.models");
 const mongoose = require("mongoose");
-app.use(express.json());
 require('dotenv').config();
-const cors = require('cors');
-
-app.use(cors({
-  origin: 'https://demo-app-two-snowy.vercel.app', // Replace with your React app's URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type'],
-}));
 
 // GLOBAL VARIABLES
 const PORT = process.env.ENV || 3000;

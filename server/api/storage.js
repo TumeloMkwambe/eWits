@@ -1,18 +1,16 @@
 const express = require('express');
+const app = express();
+const cors = require('cors');
+app.use(cors()); // enforce cors later
+app.use(express.json());
 const mongoose = require('mongoose');
 const Images = require('../models/image.models');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const { bucket } = require('../firebase/firebase.config');
-const app = express();
 const PORT = process.env.PORT || 5000;
-const cors = require('cors');
 
-app.use(cors({
-  origin: 'https://demo-app-two-snowy.vercel.app', // Replace with your React app's URL
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
-}));
+
 
 // Multer Setup for File Upload
 const upload = multer({
@@ -50,6 +48,7 @@ app.get('/api/storage', (req, res) => {
 
 // API Route to Upload File
 app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
+  console.log(req.file);
   try {
     // Upload file to Firebase
     const imageUrl = await uploadImageToFirebase(req.file);
@@ -63,8 +62,7 @@ app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
   }
 });
 
-const database =
-  "mongodb+srv://TumeloMkwambe:T69M5gA2oWaG1w@cluster0.79zpfwz.mongodb.net/WitsEvents?retryWrites=true&w=majority&appName=Cluster0";
+const database = process.env.MONGO_DATABASE_CONNECT;
 
 mongoose.set("strictQuery", false);
 mongoose
