@@ -118,7 +118,8 @@ const CreateEvent = () => {
         console.log("formData", formDataImg);
 
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URI}/api/storage/upload`, formDataImg, {
+            const response = await fetch(`${process.env.REACT_APP_API_URI}/api/storage/upload`, formDataImg, {
+              method: 'POST',
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
