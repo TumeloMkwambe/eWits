@@ -128,6 +128,7 @@ const CreateEvent = () => {
             console.error('Error uploading image', error);
           }
       // Prepare event data
+      console.log(imageUrl);
       const { title, description, location, capacity, firstname, lastname, email } = formData;
       const startDateArr = formData.start_date.split("-");
       const startTimeArr = formData.start_time.split(":");
