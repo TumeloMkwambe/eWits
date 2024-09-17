@@ -8,7 +8,7 @@ const cors = require('cors');
 
 app.use(cors({
   origin: process.env.CLIENT_URI, // Replace with your React app's URL
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
 }));
 
