@@ -25,12 +25,12 @@ const eventSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    date: {
+    start_date: {
       type: Date,
       required: true,
     },
-    duration: {
-      type: Number,
+    end_date: {
+      type: Date,
       required: true,
     },
     location: {

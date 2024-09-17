@@ -19,21 +19,27 @@ const CalendarContainer = styled.div`
 const EventCalendar = () => {
   const [events, setEvents] = useState([]);
 
-  useEffect(() => {
+  useEffect( () => {
     // Fetch events from API
-    fetch('/api/events')
+    const fetchCalendarEvents = async () => {
+      await fetch(`http://localhost:3000/api/emapi/events`)
       .then(response => response.json())
       .then(data => {
-        // Format events for react-big-calendar
-        const formattedEvents = data.map(event => ({
-          title: event.title,
-          start: new Date(event.start), // assuming the event has a start date
-          end: new Date(event.end),     // assuming the event has an end date
-          allDay: event.allDay || false,
-        }));
-        setEvents(formattedEvents);
+        const calendarEvents = [];
+        for(let i = 0; i < Object.keys(data).length; i++){
+          const calendarEvent = {
+            title: data[i].name,
+            start: new Date(data[i].start_date),
+            end: new Date(data[i].end_date),
+          }
+          //console.log(`title: ${title}, start: ${start}, end: ${end}`);
+          calendarEvents.push(calendarEvent);
+        }
+        setEvents(calendarEvents);
       })
       .catch(error => console.error('Error fetching events:', error));
+    }
+    fetchCalendarEvents();
   }, []);
 
   return (
