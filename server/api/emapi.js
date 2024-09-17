@@ -7,7 +7,7 @@ require('dotenv').config();
 const cors = require('cors');
 
 app.use(cors({
-  origin: process.env.CLIENT_URI, // Replace with your React app's URL
+  origin: 'https://demo-app-two-snowy.vercel.app/', // Replace with your React app's URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
 }));
