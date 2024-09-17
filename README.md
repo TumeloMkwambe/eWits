@@ -51,7 +51,7 @@ For detailed API documentation, please refer to the [API Documentation](https://
 
 The application is deployed on Azure. You can access the live site at the following link:
 
-- [Live Site](https://wonderful-water-0e6b1631e.5.azurestaticapps.net/) (insert link to deployed site)
+- [Live Site](https://demo-app-two-snowy.vercel.app/) (insert link to deployed site)
 
 
 
