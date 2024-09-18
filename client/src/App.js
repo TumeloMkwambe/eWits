@@ -4,20 +4,23 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import Landing from './components/Landing';
 import Dashboard from './Pages/Dashboard/Dashboard';
+import CreateEvent from './Pages/CreateEvent/createEvent';
+import Tickets from './Pages/Tickets/tickets';
+import Notifications from './Pages/Notifications/notifications';
+import MyEvents from './Pages/MyEvents/myEvents';
 import ImageUpload from './components/ImageUpload';
-import CreateEvent from './components/CreateEvent';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/imageupload" element={<ImageUpload />} />
-        <Route path="/create-event" element={<CreateEvent />} />
-        <Route path="/landing" element={<Landing />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </BrowserRouter>
   );

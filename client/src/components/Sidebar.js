@@ -1,39 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
-const SidebarContainer = styled.div`
-  width: 250px;
-  background-color: #f7f7f7;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-`;
-
-const SidebarItem = styled.div`
-  padding: 1rem;
-  margin: 0.5rem 0;
-  color: #333;
-  cursor: pointer;
-  border-radius: 8px;
-  &:hover {
-    background-color: #e0e0e0;
-  }
-`;
+import { useNavigate, NavLink } from 'react-router-dom';
+import profilePic from '../../src/images/wits.png'; 
+import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaImages } from 'react-icons/fa';
 
 const Sidebar = () => {
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+
+    navigate('/logout'); 
+  };
+
   return (
-    <SidebarContainer>
-      <SidebarItem><Link to="/">Home</Link></SidebarItem>
-      <SidebarItem><Link to="/create-event">Create Event</Link></SidebarItem>
-      <SidebarItem><Link to="/my-events">My Events</Link></SidebarItem>
-      <SidebarItem><Link to="/calendar">Calendar</Link></SidebarItem>
-      <SidebarItem><Link to="/tickets">Tickets</Link></SidebarItem>
-      <SidebarItem><Link to="/notifications">Notifications</Link></SidebarItem>
-      <SidebarItem><Link to="/profile">My Profile</Link></SidebarItem>
-      <SidebarItem><Link to="/imageupload">Upload Image</Link></SidebarItem>
-      <SidebarItem><Link to="/logout">Logout</Link></SidebarItem>
-    </SidebarContainer>
+    <div className="sidebar">
+
+  <div className="profile-section">
+    <img src={profilePic} alt="Profile" className="profile-image" />
+    <h3 className="profile-name">Clement</h3>
+  </div>
+  <nav>
+    <NavLink to="/home" className="nav-link">
+      <FaHome />
+      <span>Home</span>
+    </NavLink>
+    <NavLink to="/create-event" className="nav-link">
+      <FaCalendarAlt />
+      <span>Create Event</span>
+    </NavLink>
+    <NavLink to="/my-events" className="nav-link">
+      <FaCalendarAlt />
+      <span>My Events</span>
+    </NavLink>
+    <NavLink to="/calendar" className="nav-link">
+      <FaCalendarAlt />
+      <span>Calendar</span>
+    </NavLink>
+    <NavLink to="/tickets" className="nav-link">
+      <FaTicketAlt />
+      <span>Tickets</span>
+    </NavLink>
+    <NavLink to="/notifications" className="nav-link">
+      <FaBell />
+      <span>Notifications</span>
+    </NavLink>
+    <NavLink to="/imageupload" className="nav-link">
+      <FaImages />
+      <span>Upload Image</span>
+    </NavLink>
+  </nav>
+  <button className="logout-button" onClick={handleLogout}>
+    Logout
+  </button>
+  </div>
   );
 };
 

@@ -4,6 +4,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styled from 'styled-components';
+import Sidebar from './Sidebar';
 
 const localizer = momentLocalizer(moment);
 
@@ -43,23 +44,29 @@ const EventCalendar = () => {
   }, []);
 
   return (
-    <CalendarContainer>
-      <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-        defaultView="month"
-        views={['month', 'week', 'day', 'agenda']}
-        step={60}
-        showMultiDayTimes
-        selectable
-        popup
-        onSelectEvent={event => alert(event.title)}
-        onSelectSlot={slotInfo => alert(`Selected slot: ${slotInfo.start} to ${slotInfo.end}`)}
-      />
-    </CalendarContainer>
+    <div className="DashboardContainer">
+      <Sidebar/>
+      <div className="ContentArea">
+          <CalendarContainer>
+              <Calendar
+                    localizer={localizer}
+                    events={events}
+                    startAccessor="start"
+                    endAccessor="end"
+                    style={{ height: 500 }}
+                    defaultView="month"
+                    views={['month', 'week', 'day', 'agenda']}
+                    step={60}
+                    showMultiDayTimes
+                    selectable
+                    popup
+                    onSelectEvent={event => alert(event.title)}
+                    onSelectSlot={slotInfo => alert(`Selected slot: ${slotInfo.start} to ${slotInfo.end}`)}
+                  />
+                </CalendarContainer>
+        </div>
+    </div>
+    
   );
 };
 

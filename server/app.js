@@ -11,6 +11,6 @@ app.get("/api", (req, res) => res.send("API Gateway"));
 
 const PORT = 3000 || process.env.PORT;
 
-app.listen(PORT, () => console.log("Server ready on port 3000."));
+app.listen(PORT, () => console.log("Server ready on port 3001."));
 
 module.exports = app;

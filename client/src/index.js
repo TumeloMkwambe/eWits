@@ -6,13 +6,14 @@ import App from './App';
 const root = createRoot(document.getElementById('root'));
 
 root.render(
-<Auth0Provider
+
+ <Auth0Provider
     domain="boogeraids.eu.auth0.com"
     clientId="YMO4FTJK7KeCDRWlGFzDUiweeKamW6vI"
     authorizationParams={{
-      redirect_uri: window.location.origin
+      redirect_uri: window.location.origin === 'http://localhost:3001' ? 'http://localhost:3001' : window.location.origin,
     }}
-  >
-    <App />
+  > 
+  <App />,
   </Auth0Provider>,
 );

@@ -9,7 +9,14 @@ const Logout = () => {
   useEffect(() => {
     logout({ logoutParams: { returnTo: process.env.CLIENT } });
   }, [logout]);
-  return <div>Logging out...</div>;
+  return (
+    <div className='spinner-container'>
+      <div className='spinner'>
+
+      </div>
+    </div>
+  );
+  
 };
 
 export default Logout;

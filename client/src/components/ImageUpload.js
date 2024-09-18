@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Sidebar from '../../src/components/Sidebar'
+import '../../src/globals.css'
 
 const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -36,17 +38,27 @@ const ImageUpload = () => {
   };
 
   return (
-    <div>
-      <h2>Upload an Image</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="file" onChange={handleFileChange} />
-        <button type="submit">Upload</button>
-      </form>
-      {imageUrl && <div>
-        <h3>Uploaded Image:</h3>
-        <img src={imageUrl} alt="Uploaded" style={{ width: '300px' }} />
-      </div>}
+   
+
+
+<div className="DashboardContainer">
+  <Sidebar/>
+    <div className="ContentArea">
+        <div className="home">       
+            <div className="main-content">
+            <div className='imageUploadTitle'>Upload an Image</div>
+          <form onSubmit={handleSubmit}>
+            <input type="file" onChange={handleFileChange} />
+            <button type="submit">Upload</button>
+          </form>
+          {imageUrl && <div>
+            <h3>Uploaded Image:</h3>
+            <img src={imageUrl} alt="Uploaded" style={{ width: '300px' }} />
+          </div>}
+            </div>  
+        </div>
     </div>
+</div>
   );
 };
 
