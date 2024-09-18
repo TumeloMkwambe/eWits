@@ -17,7 +17,7 @@ const ImageUpload = () => {
     console.log("formData", formData);
     console.log(formData[0]);
     try {
-      const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/storage/upload`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
