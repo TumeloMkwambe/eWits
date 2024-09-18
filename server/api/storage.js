@@ -10,8 +10,6 @@ const { v4: uuidv4 } = require('uuid');
 const { bucket } = require('../firebase/firebase.config');
 const PORT = process.env.PORT || 5000;
 
-
-
 // Multer Setup for File Upload
 const upload = multer({
   storage: multer.memoryStorage(), // Store in memory temporarily
@@ -22,7 +20,6 @@ const upload = multer({
 async function uploadImageToFirebase(file) {
   const fileName = `${uuidv4()}-${file.originalname}`;
   const fileUpload = bucket.file(fileName);
-
   // Upload the file to Firebase Storage
   const stream = fileUpload.createWriteStream({
     metadata: {
@@ -48,7 +45,6 @@ app.get('/api/storage', (req, res) => {
 
 // API Route to Upload File
 app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
-  console.log(req.file);
   try {
     // Upload file to Firebase
     const imageUrl = await uploadImageToFirebase(req.file);
@@ -58,6 +54,7 @@ app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
 
     res.status(200).json({ imageUrl });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Error uploading file' });
   }
 });

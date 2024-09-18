@@ -118,18 +118,17 @@ const CreateEvent = () => {
         console.log("formData", formDataImg);
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URI}/api/storage/upload`, formDataImg, {
-              method: 'POST',
+            const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`, formDataImg, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
             });
             setImageUrl(response.data.imageUrl);
+            console.log(response.data.imageUrl);
           } catch (error) {
             console.error('Error uploading image', error);
           }
       // Prepare event data
-      console.log(imageUrl);
       const { title, description, location, capacity, firstname, lastname, email } = formData;
       const startDateArr = formData.start_date.split("-");
       const startTimeArr = formData.start_time.split(":");
@@ -142,7 +141,7 @@ const CreateEvent = () => {
         start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
         end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
         location,
-        poster: imageUrl,
+        poster: formDataImg.imageUrl,
         capacity,
         creator: {
           name: firstname,
@@ -160,7 +159,7 @@ const CreateEvent = () => {
         body: JSON.stringify(event)
       });
       alert("Event Successfully Created!")
-      window.location.reload();
+      //window.location.reload();
   };
 
   return (

@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('./ewits-storage-firebase-adminsdk-i9xm5-1a2d369b9c.json');
+const serviceAccount = require('./ewits-storage-firebase-adminsdk-i9xm5-45b6dfcf54.json');
 require('dotenv').config();
 
 admin.initializeApp({
