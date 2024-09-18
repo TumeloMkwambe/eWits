@@ -115,7 +115,6 @@ const CreateEvent = () => {
     e.preventDefault();
         const formDataImg = new FormData();
         formDataImg.append('image', formData.poster);
-        //console.log("formData", formDataImg);
         let posterUrl;
         try {
             const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`, formDataImg, {
@@ -152,13 +151,11 @@ const CreateEvent = () => {
 
       // Create the event
       try {
-        console.log("Event: ", event);
         const createdEvent = await axios.post(`${process.env.REACT_APP_API_URI}/api/emapi/event/create`, event, {
           headers: {
             'Content-Type': 'application/json',
           }
         });
-        console.log(createdEvent);
         alert("Event Successfully Created!")
       } catch (error) {
         console.log(error);
