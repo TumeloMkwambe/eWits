@@ -1,21 +1,21 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-// Allow requests from client
-const corsOptions = {
-  origin: 'https://demo-app-two-snowy.vercel.app', 
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Include credentials like cookies, if needed
-  optionsSuccessStatus: 200
-};
-app.use(cors(corsOptions));
-app.use(express.json());
 const mongoose = require('mongoose');
 const Images = require('../models/image.models');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const { bucket } = require('../firebase/firebase.config');
 const PORT = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // Multer Setup for File Upload
 const upload = multer({
