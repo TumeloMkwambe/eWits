@@ -35,37 +35,3 @@ app.get('/api/storage/', async (req, res) => {
     res.status(500).json({error: error.message})
   }
 });
-
-const Images = require('../models/image.models');
-const multer = require('multer');
-const { v4: uuidv4 } = require('uuid');
-const { bucket } = require('../firebase/firebase.config');
-
-// Multer Setup for File Upload
-const upload = multer({
-  storage: multer.memoryStorage(), // Store in memory temporarily
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-});
-
-// Firebase Storage Upload Function
-async function uploadImageToFirebase(file) {
-  const fileName = `${uuidv4()}-${file.originalname}`;
-  const fileUpload = bucket.file(fileName);
-  // Upload the file to Firebase Storage
-  const stream = fileUpload.createWriteStream({
-    metadata: {
-      contentType: file.mimetype,
-    },
-  });
-
-  return new Promise((resolve, reject) => {
-    stream.on('error', (error) => reject(error));
-    stream.on('finish', async () => {
-      // Make the file publicly accessible
-      await fileUpload.makePublic();
-      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
-      resolve(publicUrl);
-    });
-    stream.end(file.buffer);
-  });
-}
