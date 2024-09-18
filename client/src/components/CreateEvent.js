@@ -152,12 +152,11 @@ const CreateEvent = () => {
 
       // Create the event
       try {
-        const createdEvent = await fetch(`${process.env.REACT_APP_API_URI}/api/emapi/event/create`, {
-          method: 'POST',
+        console.log("Event: ", event);
+        const createdEvent = await axios.post(`${process.env.REACT_APP_API_URI}/api/emapi/event/create`, event, {
           headers: {
             'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(event)
+          }
         });
         console.log(createdEvent);
         alert("Event Successfully Created!")
