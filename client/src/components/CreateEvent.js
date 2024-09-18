@@ -116,7 +116,7 @@ const CreateEvent = () => {
         const formDataImg = new FormData();
         formDataImg.append('image', formData.poster);
         //console.log("formData", formDataImg);
-
+        let posterUrl;
         try {
             const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`, formDataImg, {
               headers: {
