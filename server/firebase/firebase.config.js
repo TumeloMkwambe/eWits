@@ -1,7 +1,7 @@
 const admin = require('firebase-admin');
 require('dotenv').config();
 
-const serviceAccount = {
+const serviceAccountObject = {
   "type": process.env.TYPE,
   "project_id": process.env.PROJECT_ID,
   "private_key_id": process.env.PRIVATE_KEY_ID,
@@ -14,6 +14,7 @@ const serviceAccount = {
   "client_x509_cert_url": process.env.CLIENT_CERT_URL,
   "universe_domain": process.env.UNIVERSE_DOMAIN
 }
+const serviceAccount = JSON.stringify(serviceAccountObject);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
