@@ -20,6 +20,7 @@ const ImageUpload = () => {
       const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*'
         },
       });
       setImageUrl(response.data.imageUrl);
