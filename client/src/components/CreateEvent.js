@@ -151,14 +151,19 @@ const CreateEvent = () => {
       };
 
       // Create the event
-      await fetch(`${process.env.REACT_APP_API_URI}/api/emapi/event/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(event)
-      });
-      alert("Event Successfully Created!")
+      try {
+        const createdEvent = await fetch(`${process.env.REACT_APP_API_URI}/api/emapi/event/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(event)
+        });
+        console.log(createdEvent);
+        alert("Event Successfully Created!")
+      } catch (error) {
+        console.log(error);
+      }
       //window.location.reload();
   };
 
