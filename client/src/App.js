@@ -5,17 +5,26 @@ import Logout from './components/Logout';
 import Landing from './components/Landing';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import CreateEvent from './components/CreateEvent';
+import Tickets from './Pages/Tickets/tickets';
+import Notifications from './Pages/Nofications/notifications';
+import MyEvents from './Pages/MyEvents/myEvents';
+import Calendar from './components/EventCalendar';
+import Home from './Pages/Home/Home';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/logout" element={<Logout />} />
         <Route path="/create-event" element={<CreateEvent />} />
-        <Route path="/landing" element={<Landing />} />
+        <Route path="/tickets" element={<Tickets />} />
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/my-events" element={<MyEvents />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route path="/calendar" element={<Calendar />} />
       </Routes>
     </BrowserRouter>
   );
