@@ -115,7 +115,7 @@ const CreateEvent = () => {
     e.preventDefault();
         const formDataImg = new FormData();
         formDataImg.append('image', formData.poster);
-        console.log("formData", formDataImg);
+        //console.log("formData", formDataImg);
 
         try {
             const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`, formDataImg, {
@@ -124,7 +124,7 @@ const CreateEvent = () => {
               },
             });
             setImageUrl(response.data.imageUrl);
-            console.log(response.data.imageUrl);
+            posterUrl = response.data.imageUrl;
           } catch (error) {
             console.error('Error uploading image', error);
           }
@@ -141,7 +141,7 @@ const CreateEvent = () => {
         start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
         end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
         location,
-        poster: formDataImg.imageUrl,
+        poster: posterUrl,
         capacity,
         creator: {
           name: firstname,
