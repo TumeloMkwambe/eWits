@@ -1,7 +1,14 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-app.use(cors()); // enforce cors later
+// Allow requests from client
+const corsOptions = {
+  origin: 'https://demo-app-two-snowy.vercel.app', 
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Include credentials like cookies, if needed
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 const mongoose = require('mongoose');
 const Images = require('../models/image.models');
