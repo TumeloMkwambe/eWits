@@ -37,6 +37,7 @@
   
   .nav-links li {
     margin-left: 20px;
+    margin: 5px;
   }
   
   .nav-links a, .login-btn {

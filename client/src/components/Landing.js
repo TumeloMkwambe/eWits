@@ -1,6 +1,4 @@
-// File: client/src/components/LandingPage.js
-
-import React from 'react'; 
+import React, { useEffect } from 'react'; 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from 'react-router-dom';
 import '../globalStyle.css';
@@ -18,9 +16,26 @@ import CCDU from '../images/CCDU.jpg';
 import WCCO from '../images/WCCO.jpeg';
 import SRC from '../images/SRC.jpeg';
 import ghosh from '../images/ghosh.jpeg';
-import LoginButton from './Login';
 
 const LandingPage = () => {
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0(); 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/home');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Show a spinner while loading
+  if (isLoading) {
+    return (
+      <div className="spinner-container">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="landing-page">
       <header className="header">
@@ -29,8 +44,12 @@ const LandingPage = () => {
         </div>
         <nav className="nav-bar">
           <ul className="nav-links">
-            <li><a href="#about-section">About</a></li>
-            <li><LoginButton /></li>
+            <button className="button">
+              About
+            </button>
+            <button className="button" onClick={() => loginWithRedirect()}>
+              Log In
+            </button>
           </ul>
         </nav>
       </header>

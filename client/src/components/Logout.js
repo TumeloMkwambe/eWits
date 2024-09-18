@@ -10,6 +10,7 @@ const Logout = () => {
     logout({ logoutParams: { returnTo: process.env.CLIENT } });
   }, [logout]);
   return (
+    
     <div className='spinner-container'>
       <div className='spinner'>
 
