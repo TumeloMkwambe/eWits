@@ -9,6 +9,7 @@ import Tickets from './Pages/Tickets/tickets';
 import Notifications from './Pages/Notifications/notifications';
 import MyEvents from './Pages/MyEvents/myEvents';
 import ImageUpload from './components/ImageUpload';
+import Calendar from './components/EventCalendar';
 import Home from './Pages/Home/Home';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/my-events" element={<MyEvents />} />
         <Route path="/imageupload" element={<ImageUpload />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/calendar" element={<Calendar />} />
       </Routes>
     </BrowserRouter>
   );

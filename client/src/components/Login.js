@@ -30,11 +30,10 @@ const LoginButton = () => {
               Log In
             </button>
           </div>
-          </div>
-          /* <div className="image-container">
+          <div className="image-container">
             <img src={witsImage} alt="Login Illustration" className="image" />
           </div>
-        </div> */
+        </div>
       )}
     </div>
   );

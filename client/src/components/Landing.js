@@ -44,13 +44,15 @@ const LandingPage = () => {
         </div>
         <nav className="nav-bar">
           <ul className="nav-links">
-            <button className="button">
-              About
-            </button>
-            <button className="button" onClick={() => loginWithRedirect()}>
+            <li className="nav-item">About</li>
+            <li className="nav-item">Services</li>
+            <li className="nav-item">Contacts</li>
+            <li className="nav-item">Blog</li> 
+          </ul>
+          
+          <button className="button" onClick={() => loginWithRedirect()}>
               Log In
             </button>
-          </ul>
         </nav>
       </header>
 
