@@ -37,6 +37,3 @@ app.get('/api/storage/', async (req, res) => {
 });
 
 const { bucket } = require('../firebase/firebase.config');
-const Images = require('../models/image.models');
-const multer = require('multer');
-const { v4: uuidv4 } = require('uuid');
