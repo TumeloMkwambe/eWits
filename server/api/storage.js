@@ -40,7 +40,7 @@ async function uploadImageToFirebase(file) {
 }
 
 app.get('/api/storage', (req, res) => {
-  res.send("Storage API!");
+  res.send("Storage!");
 });
 
 // API Route to Upload File
