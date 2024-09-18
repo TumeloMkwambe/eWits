@@ -45,6 +45,7 @@ app.get('/api/storage', (req, res) => {
 
 // API Route to Upload File
 app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
+  console.log(req.file);
   try {
     // Upload file to Firebase
     const imageUrl = await uploadImageToFirebase(req.file);
