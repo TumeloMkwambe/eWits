@@ -56,8 +56,7 @@ app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
     res.status(200).json({ imageUrl });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error,
-                         message: "Changed"});
+    res.status(500).json({ error: error});
   }
 });
 

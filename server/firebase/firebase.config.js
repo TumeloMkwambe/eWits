@@ -15,7 +15,6 @@ const serviceAccount = {
   "universe_domain": process.env.UNIVERSE_DOMAIN
 }
 
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
