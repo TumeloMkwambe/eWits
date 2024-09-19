@@ -7,7 +7,13 @@ function tickets () {
     <div className='DashboardContainer'>
         <Sidebar/>
         <div className='ContentArea'>
-            Your Tickets Right here bruv
+          <div className="TopBar">
+              <span className='page-topbar'>Tickets</span>
+          </div>
+          <div className="ScrollableContent">
+                      
+                      
+          </div>
         </div>
     </div>
   )

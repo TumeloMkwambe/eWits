@@ -1,17 +1,22 @@
-import React from 'react'
-import Sidebar from '../../components/Sidebar'
+import React from 'react';
+import Sidebar from '../../components/Sidebar';
+import '../../../src/globals.css'; // Assuming you have a CSS file for styling
 
 function CreateEvent() {
     return (
         <div className="DashboardContainer">
-            <Sidebar/>
+            <Sidebar />
             <div className="ContentArea">
-                
-                    Event Creation Page.
-                
+                <div className="TopBar">
+                    <span className='page-topbar'>Create Event</span>
+                </div>
+                <div className="ScrollableContent">
+                    
+                    
+                </div>
             </div>
         </div>
     );
 }
 
-export default CreateEvent
+export default CreateEvent;

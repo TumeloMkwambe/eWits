@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { useNavigate, NavLink } from 'react-router-dom';
 import profilePic from '../../src/images/wits.png'; 
 import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaImages } from 'react-icons/fa';
@@ -19,7 +17,13 @@ const Sidebar = () => {
 
   <div className="profile-section">
     <img src={profilePic} alt="Profile" className="profile-image" />
-    <h3 className="profile-name">Clement</h3>
+    
+      <NavLink to="/profile" className="nav-profile">
+      <h3 className="profile-name">Clement Jele</h3>
+    </NavLink>
+    
+    
+    
   </div>
   <nav>
     <NavLink to="/home" className="nav-link">

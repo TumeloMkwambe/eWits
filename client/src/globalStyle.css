@@ -20,6 +20,7 @@
     background-color: #ffffff;
   }
   
+ 
   .logo img {
     width: 400px;
   }
@@ -28,14 +29,85 @@
     display: flex;
     justify-content: flex-start;
   }
-  
-  .nav-links {
+
+
+.logo img {
+  display: block;
+}
+
+.nav-links, .button {
+  display: flex;
+}
+
+.drawer-toggle {
+  display: none; 
+}
+
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -250px; 
+  width: 250px;
+  height: 100%;
+  background-color: #3b3c3c;
+  padding: 20px;
+  z-index: 999;
+  transition: right 0.3s ease-in-out; 
+}
+
+.drawer.open {
+  right: 0; 
+}
+
+.drawer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.drawer-links li {
+  padding: 10px 0;
+  color: white;
+  cursor: pointer;
+}
+
+.drawer-button {
+  background-color: #555;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.nav-links {
     list-style: none;
     display: flex;
     align-items: center;
     justify-content: flex-start;
   }
   
+@media (max-width: 768px) {
+  .nav-links, .button, .logo {
+    display: none; 
+  }
+
+  .drawer-toggle {
+    display: block; 
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #333;
+  }
+}
+
+  
+  .nav-links >:hover{
+    cursor: pointer;
+    color: #2980b9;
+  }
   .nav-links li {
     margin-left: 20px;
     margin: 5px;
@@ -50,12 +122,11 @@
     transition: background-color 0.3s ease;
   }
   
-  .nav-links a:hover, .login-btn:hover {
-    background-color: #2980b9;
-  }
+  
   
   main {
-    padding: 50px 5%;
+    padding: 20px 2.5%;
+    
   }
   
   /*Sliding*/
@@ -63,16 +134,20 @@
   /* Carousel Container */
   
 .carousel-container {
+  margin-top: 10px;
   width: 100%;
   overflow: hidden;
-  margin: 20px auto;
+  margin: 5px auto;
   position: relative;
+  border-radius: 3rem;
+  border-left: 1px solid #e5e6ec;
+  border-right: 2px solid #e6e7ee;
 }
 
 .carousel {
   display: flex;
-  transition: transform 1.5s linear;
-  animation: slide 15s infinite linear; 
+  transition: transform 5s linear;
+  animation: slide 20s infinite linear; 
 }
 
 .carousel-item {

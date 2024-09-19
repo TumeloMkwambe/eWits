@@ -9,14 +9,9 @@ const mongoose = require("mongoose");
 require('dotenv').config();
 
 // GLOBAL VARIABLES
-<<<<<<< HEAD
+
 const PORT = process.env.ENV || 3000;
 const database = process.env.MONGO_DATABASE_CONNECT;
-=======
-const PORT = process.env.ENV || 3001;
-const database =
-  "mongodb+srv://TumeloMkwambe:T69M5gA2oWaG1w@cluster0.79zpfwz.mongodb.net/WitsEvents?retryWrites=true&w=majority&appName=Cluster0";
->>>>>>> c0d03f60 (Keep in mind that dashboard is a scc style and does not need to be a page since we are navigating to home immediately after loggin in)
 const schemaFields = ["name", "description", "date", "duration", "location", "poster", "capacity", "creator"];
 
 

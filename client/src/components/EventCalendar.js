@@ -47,6 +47,13 @@ const EventCalendar = () => {
     <div className="DashboardContainer">
       <Sidebar/>
       <div className="ContentArea">
+        <div className="TopBar">
+            <span className='page-topbar'>Calendar</span>
+        </div>
+        <div className="ScrollableContent">
+                    
+                    
+          </div>
           <CalendarContainer>
               <Calendar
                     localizer={localizer}

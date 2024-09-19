@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react'; 
+/* eslint-disable */
+
+import React, { useEffect, useState } from 'react'; 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from 'react-router-dom';
 import '../globalStyle.css';
@@ -19,7 +21,16 @@ import ghosh from '../images/ghosh.jpeg';
 
 const LandingPage = () => {
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0(); 
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen); 
+  };
+
+  const closeDrawer = () => {
+    setDrawerOpen(false); 
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -27,7 +38,24 @@ const LandingPage = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  // Show a spinner while loading
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      
+      if (drawerOpen && !event.target.closest('.drawer') && !event.target.closest('.drawer-toggle')) {
+        closeDrawer();
+      }
+    };
+
+    document.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [drawerOpen]);
+
+
+  
   if (isLoading) {
     return (
       <div className="spinner-container">
@@ -47,16 +75,30 @@ const LandingPage = () => {
             <li className="nav-item">About</li>
             <li className="nav-item">Services</li>
             <li className="nav-item">Contacts</li>
-            <li className="nav-item">Blog</li> 
+            <li className="nav-item">Blog</li>
           </ul>
-          
           <button className="button" onClick={() => loginWithRedirect()}>
-              Log In
-            </button>
-        </nav>
-      </header>
+            Log In
+          </button>
 
-      <main>
+          <button className="drawer-toggle" onClick={toggleDrawer}>
+            &#9776; 
+          </button>
+
+          
+          <div className={`drawer ${drawerOpen ? 'open' : ''}`}>
+            <ul className="drawer-links">
+              <li className="nav-item" onClick={toggleDrawer}>About</li>
+              <li className="nav-item" onClick={toggleDrawer}>Services</li>
+              <li className="nav-item" onClick={toggleDrawer}>Contacts</li>
+              <li className="nav-item" onClick={toggleDrawer}>Blog</li>
+              <button className="drawer-button" onClick={() => loginWithRedirect()}>Log In</button>
+            </ul>
+          </div>
+        </nav>
+        </header>
+
+      <main >
         <section className="welcome-section">
           <h2>Welcome to eWits!</h2>
         </section>
