@@ -19,7 +19,7 @@ const Sidebar = () => {
 
   <div className="profile-section">
     <img src={profilePic} alt="Profile" className="profile-image" />
-    <h3 className="profile-name">Clement</h3>
+    <h3 className="profile-name">App Name</h3>
   </div>
   <nav>
     <NavLink to="/home" className="nav-link">
@@ -45,10 +45,6 @@ const Sidebar = () => {
     <NavLink to="/notifications" className="nav-link">
       <FaBell />
       <span>Notifications</span>
-    </NavLink>
-    <NavLink to="/imageupload" className="nav-link">
-      <FaImages />
-      <span>Upload Image</span>
     </NavLink>
   </nav>
   <button className="logout-button" onClick={handleLogout}>

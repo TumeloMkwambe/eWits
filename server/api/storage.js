@@ -12,7 +12,7 @@ app.use(cors()); // enforce cors later
 app.use(express.json());
 
 // GLOBAL VARIABLES
-const PORT = process.env.ENV || 3000;
+const PORT = process.env.ENV || 5000;
 const database = process.env.MONGO_DATABASE_CONNECT;
 
 // MIDDLEWARE
