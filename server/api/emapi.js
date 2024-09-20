@@ -13,21 +13,6 @@ const PORT = process.env.ENV || 3000;
 const database = process.env.MONGO_DATABASE_CONNECT;
 const schemaFields = ["name", "description", "date", "duration", "location", "poster", "capacity", "creator"];
 
-
-// MIDDLEWARE
-mongoose.set("strictQuery", false);
-mongoose
-  .connect(database)
-  .then(() => {
-    console.log("Connected!");
-    app.listen(PORT, () => {
-      console.log("Server Listening on PORT:", PORT);
-    });
-  })
-  .catch(() => {
-    console.log("Connection failed!");
-  });
-
 // REQUESTS
 
 app.get('/api/emapi/events', async (req, res) => {
@@ -99,3 +84,16 @@ app.delete('/api/emapi/event/:id', async (req, res) => {
     res.status(500).send({error: error.message})
   }
 });
+
+mongoose.set("strictQuery", false);
+mongoose
+  .connect(database)
+  .then(() => {
+    console.log("Connected!");
+    app.listen(PORT, () => {
+      console.log("Server Listening on PORT:", PORT);
+    });
+  })
+  .catch(() => {
+    console.log("Connection failed!");
+  });

@@ -1,8 +1,7 @@
-// File: client/src/components/LandingPage.js
-
-import React from 'react'; 
+import React, { useEffect } from 'react'; 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from 'react-router-dom';
+import Login from './Login';
 import '../globalStyle.css';
 import WitsLogo from '../images/WitsLogo.png';
 import FacebookIcon from '../images/FacebookIcon.png';
@@ -21,6 +20,24 @@ import ghosh from '../images/ghosh.jpeg';
 import LoginButton from './Login';
 
 const LandingPage = () => {
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0(); 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/home');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Show a spinner while loading
+  if (isLoading) {
+    return (
+      <div className="spinner-container">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="landing-page">
       <header className="header">
@@ -29,9 +46,13 @@ const LandingPage = () => {
         </div>
         <nav className="nav-bar">
           <ul className="nav-links">
-            <li><a href="#about-section">About</a></li>
-            <li><LoginButton /></li>
+            <li className="nav-item">About</li>
+            <li className="nav-item">Services</li>
+            <li className="nav-item">Contacts</li>
+            <li className="nav-item">Blog</li> 
           </ul>
+          
+          <li> <LoginButton /> </li>
         </nav>
       </header>
 

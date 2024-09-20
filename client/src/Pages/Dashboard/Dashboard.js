@@ -8,7 +8,6 @@ import EventDetails from '../../components/EventDetails';
 import EditProfile from '../../components/EditProfile';
 import CreateEvent from '../../components/CreateEvent';
 import Logout from '../../components/Logout';
-import ImageUpload from '../../components/ImageUpload';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -32,7 +31,6 @@ const Dashboard = () => {
           <Route path="/create-event" element={<CreateEvent />} />
           <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/events/:id" element={<EventDetails />} />
-          <Route path="/imageupload" element={<ImageUpload />} />
           <Route path="/logout" element={<Logout/>} />
           {/* Add other routes as needed */}
         </Routes>

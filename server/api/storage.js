@@ -1,16 +1,33 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const cors = require('cors');
-app.use(cors()); // enforce cors later
-app.use(express.json());
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Images = require('../models/image.models');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const { bucket } = require('../firebase/firebase.config');
-const PORT = process.env.PORT || 5000;
+require('dotenv').config();
 
+app.use(cors()); // enforce cors later
+app.use(express.json());
 
+// GLOBAL VARIABLES
+const PORT = process.env.ENV || 5000;
+const database = process.env.MONGO_DATABASE_CONNECT;
+
+// MIDDLEWARE
+mongoose.set("strictQuery", false);
+mongoose
+  .connect(database)
+  .then(() => {
+    console.log("Connected!");
+    app.listen(PORT, () => {
+      console.log("Server Listening on PORT:", PORT);
+    });
+  })
+  .catch(() => {
+    console.log("Connection failed!");
+  });
 
 // Multer Setup for File Upload
 const upload = multer({
@@ -22,7 +39,6 @@ const upload = multer({
 async function uploadImageToFirebase(file) {
   const fileName = `${uuidv4()}-${file.originalname}`;
   const fileUpload = bucket.file(fileName);
-
   // Upload the file to Firebase Storage
   const stream = fileUpload.createWriteStream({
     metadata: {
@@ -42,11 +58,15 @@ async function uploadImageToFirebase(file) {
   });
 }
 
-app.get('/api/storage', (req, res) => {
-  res.send("Storage API!");
+app.get('/api/storage/', async (req, res) => {
+  try{
+    res.status(200).json({message: "Storage API!"});
+  }
+  catch(error){
+    res.status(500).json({error: error.message})
+  }
 });
 
-// API Route to Upload File
 app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
   console.log(req.file);
   try {
@@ -58,21 +78,7 @@ app.post('/api/storage/upload', upload.single('image'), async (req, res) => {
 
     res.status(200).json({ imageUrl });
   } catch (error) {
-    res.status(500).json({ error: 'Error uploading file' });
+    console.log(error);
+    res.status(500).json({ error: error });
   }
 });
-
-const database = process.env.MONGO_DATABASE_CONNECT;
-
-mongoose.set("strictQuery", false);
-mongoose
-  .connect(database)
-  .then(() => {
-    console.log("Connected!");
-    app.listen(PORT, () => {
-      console.log("Server Listening on PORT:", PORT);
-    });
-  })
-  .catch(() => {
-    console.log("Connection failed!");
-  });

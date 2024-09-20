@@ -115,15 +115,15 @@ const CreateEvent = () => {
     e.preventDefault();
         const formDataImg = new FormData();
         formDataImg.append('image', formData.poster);
-        console.log("formData", formDataImg);
-
+        let posterUrl;
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URI}/api/storage/upload`, formDataImg, {
+            const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`, formDataImg, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
             });
             setImageUrl(response.data.imageUrl);
+            posterUrl = response.data.imageUrl;
           } catch (error) {
             console.error('Error uploading image', error);
           }
@@ -140,7 +140,7 @@ const CreateEvent = () => {
         start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
         end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
         location,
-        poster: imageUrl,
+        poster: posterUrl,
         capacity,
         creator: {
           name: firstname,
@@ -150,15 +150,17 @@ const CreateEvent = () => {
       };
 
       // Create the event
-      await fetch(`${process.env.REACT_APP_API_URI}/api/emapi/event/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(event)
-      });
-      alert("Event Successfully Created!")
-      window.location.reload();
+      try {
+        const createdEvent = await axios.post(`${process.env.REACT_APP_API_URI}/api/emapi/event/create`, event, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        alert("Event Successfully Created!")
+      } catch (error) {
+        console.log(error);
+      }
+      //window.location.reload();
   };
 
   return (
