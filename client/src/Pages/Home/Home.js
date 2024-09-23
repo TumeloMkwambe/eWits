@@ -1,5 +1,6 @@
 import React from 'react';
 import Sidebar from '../../components/Sidebar';
+import PastEvents from '../../components/pastEvents';
 import '../../globals.css';
 
 function Home() {
@@ -11,11 +12,12 @@ function Home() {
                     <div className="main-content">
                         <div>
                             <h2 className='title-home'>
-                                Past Events
+                                Events
                             </h2>
                         </div>
                         <div className="past-events-container">
                             
+                            <PastEvents />
                         </div>
                         <div className="upcoming-events">
                             <h2>Upcoming Events</h2>
