@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
+import Sidebar from './Sidebar'
+
 // Styled-components
 const FormContainer = styled.div`
   max-width: 600px;
@@ -142,6 +144,7 @@ const CreateEvent = () => {
         location,
         poster: posterUrl,
         capacity,
+        likes: 0,
         creator: {
           name: firstname,
           surname: lastname,
@@ -164,7 +167,10 @@ const CreateEvent = () => {
   };
 
   return (
-    <FormContainer>
+    <div className='DashboardContainer'>
+        <Sidebar/>
+        <div className='ContentArea'>
+        <FormContainer>
       <FormTitle>Create a New Event</FormTitle>
       <form onSubmit={handleSubmit}>
         <FormGroup>
@@ -301,7 +307,10 @@ const CreateEvent = () => {
 
       {formData.poster && <ImagePreview src={URL.createObjectURL(formData.poster)} alt="Selected Preview" />}
     </FormContainer>
-  );
+        </div>
+
+    </div>
+  )
 };
 
 export default CreateEvent;

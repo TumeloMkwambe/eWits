@@ -18,6 +18,10 @@
       "dest": "api/storage.js"
     },
     {
+      "src": "/api/users/(.*)",
+      "dest": "api/users.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "api/app.js"
     }

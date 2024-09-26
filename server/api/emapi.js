@@ -68,13 +68,25 @@ app.get('/api/emapi/event/:id/:field', async (req, res) => {
 
 app.put('/api/emapi/event/:id', async (req, res) => {
   try {
-    await Events.findByIdAndUpdate({_id: req.params.id}, req.body);
-    const event = await Events.find({_id: req.params.id});
+    const event = await Events.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true});
     res.status(200).send(event);
   } catch (error) {
     res.status(500).send({error: error.message});
   }
 });
+
+app.put('/api/emapi/event/like/:id', async (req, res) => {
+  try {
+    const event = await Events.findByIdAndUpdate(
+      {_id: req.params.id},
+      { $inc: { likes: 1 } }, // Increment likes by 1
+      { new: true } // Return the updated document
+    );
+    res.status(200).send(event);
+  } catch (error) {
+    res.status(500).send({error: error.message});
+  }
+})
 
 app.delete('/api/emapi/event/:id', async (req, res) => {
   try {

@@ -308,7 +308,8 @@ body, html {
     flex-direction: column;
     justify-content: start;
     margin-bottom: 10px;
-    gap: 10px;
+    gap: 5px;
+    color: white;
   }
 
  
