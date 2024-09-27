@@ -60,7 +60,7 @@ const pastEvents = async () => {
 const likeEvent = async (eventID) => {
     const userID = sessionStorage.getItem('user');
     try {
-        const updatedEventID = await axios.put(`${process.env.REACT_APP_API_URI}/api/emapi/event/like/${eventID}`, {
+        const updatedEventID = await axios.put(`${process.env.REACT_APP_API_URI}/api/events/like/${eventID}`, {
           headers: {
             'Content-Type': 'application/json',
           }

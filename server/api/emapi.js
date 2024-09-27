@@ -6,6 +6,7 @@ app.use(express.json());
 
 const Events = require("../models/event.models");
 const mongoose = require("mongoose");
+const apiKeyAuth = require('../Authorization/auth');
 require('dotenv').config();
 
 // GLOBAL VARIABLES
@@ -13,9 +14,13 @@ const PORT = process.env.ENV || 3000;
 const database = process.env.MONGO_DATABASE_CONNECT;
 const schemaFields = ["name", "description", "date", "duration", "location", "poster", "capacity", "creator"];
 
+// MIDDLEWARE
+
+app.use(apiKeyAuth);
+
 // REQUESTS
 
-app.get('/api/emapi/events', async (req, res) => {
+app.get('/api/events', async (req, res) => {
   try{
     const events = await Events.find();
     res.status(200).json(events);
@@ -25,7 +30,7 @@ app.get('/api/emapi/events', async (req, res) => {
   }
 });
 
-app.get('/api/emapi/events/:field/:value', async (req, res) => {
+app.get('/api/events/:field/:value', async (req, res) => {
   try {
     const field = req.params.field;
     const value = req.params.value;
@@ -41,7 +46,7 @@ app.get('/api/emapi/events/:field/:value', async (req, res) => {
   }
 })
 
-app.post('/api/emapi/event/create', async (req, res) => {
+app.post('/api/events/create', async (req, res) => {
   try {
     const event = await Events.create(req.body);
     res.status(200).json(event);
@@ -50,7 +55,7 @@ app.post('/api/emapi/event/create', async (req, res) => {
   }
 });
 
-app.get('/api/emapi/event/:id/:field', async (req, res) => {
+app.get('/api/events/:id/:field', async (req, res) => {
   try {
     const eventID = req.params.id;
     const field = req.params.field;
@@ -66,7 +71,7 @@ app.get('/api/emapi/event/:id/:field', async (req, res) => {
   }
 });
 
-app.put('/api/emapi/event/:id', async (req, res) => {
+app.put('/api/events/:id', async (req, res) => {
   try {
     const event = await Events.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true});
     res.status(200).send(event);
@@ -75,7 +80,7 @@ app.put('/api/emapi/event/:id', async (req, res) => {
   }
 });
 
-app.put('/api/emapi/event/like/:id', async (req, res) => {
+app.put('/api/events/like/:id', async (req, res) => {
   try {
     const event = await Events.findByIdAndUpdate(
       {_id: req.params.id},
@@ -88,7 +93,7 @@ app.put('/api/emapi/event/like/:id', async (req, res) => {
   }
 })
 
-app.delete('/api/emapi/event/:id', async (req, res) => {
+app.delete('/api/events/:id', async (req, res) => {
   try {
     await Events.findByIdAndDelete({_id: req.params.id});
     res.status(200).send({status: "Event successfully deleted"});

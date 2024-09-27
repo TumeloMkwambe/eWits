@@ -205,7 +205,7 @@ const CreateEvent = () => {
 
       // Create the event
       try {
-        const createdEvent = await axios.post(`${process.env.REACT_APP_API_URI}/api/emapi/event/create`, event, {
+        const createdEvent = await axios.post(`${process.env.REACT_APP_API_URI}/api/events/create`, event, {
           headers: {
             'Content-Type': 'application/json',
           }
