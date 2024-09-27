@@ -4,6 +4,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styled from 'styled-components';
+import Sidebar from './Sidebar';
 
 const localizer = momentLocalizer(moment);
 
@@ -43,7 +44,10 @@ const EventCalendar = () => {
   }, []);
 
   return (
-    <CalendarContainer>
+    <div className='DashboardContainer'>
+        <Sidebar/>
+        <div className='ContentArea'>
+        <CalendarContainer>
       <Calendar
         localizer={localizer}
         events={events}
@@ -60,7 +64,11 @@ const EventCalendar = () => {
         onSelectSlot={slotInfo => alert(`Selected slot: ${slotInfo.start} to ${slotInfo.end}`)}
       />
     </CalendarContainer>
-  );
+        </div>
+
+    </div>
+  )
+
 };
 
 export default EventCalendar;

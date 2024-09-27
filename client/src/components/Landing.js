@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react'; 
-import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from 'react-router-dom';
 import Login from './Login';
 import '../globalStyle.css';
 import WitsLogo from '../images/WitsLogo.png';
@@ -17,26 +15,8 @@ import CCDU from '../images/CCDU.jpg';
 import WCCO from '../images/WCCO.jpeg';
 import SRC from '../images/SRC.jpeg';
 import ghosh from '../images/ghosh.jpeg';
-import LoginButton from './Login';
 
 const LandingPage = () => {
-  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0(); 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/home');
-    }
-  }, [isAuthenticated, navigate]);
-
-  // Show a spinner while loading
-  if (isLoading) {
-    return (
-      <div className="spinner-container">
-        <div className="spinner"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="landing-page">
@@ -52,7 +32,7 @@ const LandingPage = () => {
             <li className="nav-item">Blog</li> 
           </ul>
           
-          <li> <LoginButton /> </li>
+          <li> <Login /> </li>
         </nav>
       </header>
 

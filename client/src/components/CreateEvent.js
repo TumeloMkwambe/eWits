@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+
+import Sidebar from './Sidebar'
 
 // Styled-components
 const FormContainer = styled.div`
@@ -75,6 +77,39 @@ const ImagePreview = styled.img`
   border-radius: 5px;
 `;
 
+const Select = styled.select`
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+`;
+
+const availableVenues = async () => {
+  let venues;
+  const value = process.env.REACT_APP_VENUES_API_KEY;
+  const url = `${process.env.REACT_APP_VENUES_API}`;
+  await fetch(url, {
+    method: 'GET',
+    headers: {
+      'x-api-key': value,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      return response.json();
+    })
+    .then( data => {
+      venues = data;
+    })
+    .catch(error => console.error('Error:', error.message));
+  return venues;
+}
+
 const CreateEvent = () => {
     const [imageUrl, setImageUrl] = useState('');
     const [formData, setFormData] = useState({
@@ -95,11 +130,29 @@ const CreateEvent = () => {
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+
+    if (name === 'location') {
+        const selectedVenue = venues.find(venue => venue.Name === value);
+        if (selectedVenue) {
+            setFormData({
+                ...formData,
+                [name]: value,
+                capacity: selectedVenue.Capacity
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value,
+                capacity: ''
+            });
+        }
+    } else {
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    }
+};
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -142,6 +195,7 @@ const CreateEvent = () => {
         location,
         poster: posterUrl,
         capacity,
+        likes: 0,
         creator: {
           name: firstname,
           surname: lastname,
@@ -155,6 +209,19 @@ const CreateEvent = () => {
           headers: {
             'Content-Type': 'application/json',
           }
+        }).then( response => {
+          return response.data._id;
+        });
+
+        const myEvent = {
+          entry: createdEvent
+      }
+        const userID = sessionStorage.getItem('user');
+
+        const updatedUser = await axios.put(`${process.env.REACT_APP_USER_URI}/api/users/event/${userID}`, myEvent, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
         });
         alert("Event Successfully Created!")
       } catch (error) {
@@ -163,8 +230,22 @@ const CreateEvent = () => {
       //window.location.reload();
   };
 
+  const [venues, setVenues] = useState([]);
+
+    useEffect(() => {
+        const fetchVenues = async () => {
+            const venuesData = await availableVenues();
+            setVenues(venuesData);
+        };
+
+        fetchVenues();
+    }, []);
+
   return (
-    <FormContainer>
+    <div className='DashboardContainer'>
+        <Sidebar/>
+        <div className='ContentArea'>
+        <FormContainer>
       <FormTitle>Create a New Event</FormTitle>
       <form onSubmit={handleSubmit}>
         <FormGroup>
@@ -233,14 +314,19 @@ const CreateEvent = () => {
         </FormGroup>
 
         <FormGroup>
-          <Label>Location</Label>
-          <Input
-            type="text"
+          <Label>Venues</Label>
+          <Select
             name="location"
             value={formData.location}
             onChange={handleChange}
-            required
-          />
+            required>
+            <option value="">Select a location</option> {/* Default option */}
+            {venues.map((venue) => (
+              <option key={venue.id} value={venue.Name}>
+                {venue.Name}
+              </option>
+            ))}
+          </Select>
         </FormGroup>
 
         <FormGroup>
@@ -251,6 +337,7 @@ const CreateEvent = () => {
             value={formData.capacity}
             onChange={handleChange}
             required
+            readOnly
           />
         </FormGroup>
 
@@ -301,7 +388,10 @@ const CreateEvent = () => {
 
       {formData.poster && <ImagePreview src={URL.createObjectURL(formData.poster)} alt="Selected Preview" />}
     </FormContainer>
-  );
+        </div>
+
+    </div>
+  )
 };
 
 export default CreateEvent;

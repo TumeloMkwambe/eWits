@@ -28,7 +28,6 @@ const Dashboard = () => {
         <Routes>
           <Route path="/" element={<EventCalendar />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/create-event" element={<CreateEvent />} />
           <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/logout" element={<Logout/>} />
