@@ -61,6 +61,20 @@ app.put('/api/users/like/:id', async (req, res) => {
   }
 });
 
+app.put('/api/users/event/:id', async (req, res) => {
+  try {
+      const updatedUser = await Users.findByIdAndUpdate(
+          {_id: req.params.id},
+          { $push: { my_events: [req.body.entry] } },
+          { new: true }
+      );
+
+      res.status(200).send(updatedUser);
+  } catch (error) {
+      res.status(500).send({ error: error.message });
+  }
+});
+
 app.post('/api/users/create', async (req, res) => {
   try {
     const existingUser = await Users.findOne({ email: req.body.email });

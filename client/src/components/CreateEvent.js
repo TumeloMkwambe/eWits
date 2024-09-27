@@ -92,7 +92,7 @@ const Select = styled.select`
 const availableVenues = async () => {
   let venues;
   const value = process.env.REACT_APP_VENUES_API_KEY;
-  const url = `https://campus-infrastructure-management.azurewebsites.net/api/venues`;
+  const url = `${process.env.REACT_APP_VENUES_API}`;
   await fetch(url, {
     method: 'GET',
     headers: {
@@ -206,6 +206,19 @@ const CreateEvent = () => {
       // Create the event
       try {
         const createdEvent = await axios.post(`${process.env.REACT_APP_API_URI}/api/emapi/event/create`, event, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }).then( response => {
+          return response.data._id;
+        });
+
+        const myEvent = {
+          entry: createdEvent
+      }
+        const userID = sessionStorage.getItem('user');
+
+        const updatedUser = await axios.put(`${process.env.REACT_APP_USER_URI}/api/users/event/${userID}`, myEvent, {
           headers: {
             'Content-Type': 'application/json',
           }

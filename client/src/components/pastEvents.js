@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function stringifyDate(date1, date2) {
-    // Convert input parameters to Date objects
     date1 = new Date(date1);
     date2 = new Date(date2);
     
