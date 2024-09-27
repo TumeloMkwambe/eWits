@@ -23,7 +23,7 @@
     },
     {
       "src": "/api/users/(.*)",
-      "dest": "api/users.js"
+      "dest": "api/user.js"
     },
     {
       "src": "/(.*)",
