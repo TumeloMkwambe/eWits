@@ -11,7 +11,7 @@ const postUser = async (name, email) => {
     my_events: []
   }
   try {
-    await axios.post(`${process.env.REACT_APP_API_URI}/api/users/create`, user, {
+    await axios.post(`${process.env.REACT_APP_USER_URI}/api/users/create`, user, {
       headers: {
         'Content-Type': 'application/json',
       }

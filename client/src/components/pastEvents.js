@@ -26,7 +26,7 @@ function stringifyDate(date1, date2) {
 const pastEvents = async () => {
     const userID = sessionStorage.getItem('user');
     const Events = [];
-    const likedEvents = await axios.get(`${process.env.REACT_APP_API_URI}/api/users/${userID}`, {
+    const likedEvents = await axios.get(`${process.env.REACT_APP_USER_URI}/api/users/${userID}`, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -73,7 +73,7 @@ const likeEvent = async (eventID) => {
             entry: updatedEventID
         }
 
-        const updatedUser = await axios.put(`${process.env.REACT_APP_API_URI}/api/users/like/${userID}`, likedEvent, {
+        const updatedUser = await axios.put(`${process.env.REACT_APP_USER_URI}/api/users/like/${userID}`, likedEvent, {
             headers: {
               'Content-Type': 'application/json',
             }

@@ -6,7 +6,7 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 // GLOBAL VARIABLES
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3002;
 const database =
   "mongodb+srv://TumeloMkwambe:T69M5gA2oWaG1w@cluster0.79zpfwz.mongodb.net/WitsEvents?retryWrites=true&w=majority&appName=Cluster0";
 const schemaFields = ["name", "description", "date", "duration", "location", "poster", "capacity", "creator"];
