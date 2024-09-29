@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'; 
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Login from './Login';
 import '../globalStyle.css';
 import WitsLogo from '../images/WitsLogo.png';
@@ -15,76 +16,138 @@ import CCDU from '../images/CCDU.jpg';
 import WCCO from '../images/WCCO.jpeg';
 import SRC from '../images/SRC.jpeg';
 import ghosh from '../images/ghosh.jpeg';
+import Logo from '../images/eWits.png';
+import axios from 'axios';
+
+function stringifyDate(date1, date2) {
+  date1 = new Date(date1);
+  date2 = new Date(date2);
+  
+  const monthNames = [
+      "January", "February", "March", "April", "May", "June", 
+      "July", "August", "September", "October", "November", "December"
+  ];
+
+  const start_hour = String(date1.getHours()).padStart(2, '0');
+  const start_minute = String(date1.getMinutes()).padStart(2, '0');
+  const end_hour = String(date2.getHours()).padStart(2, '0');
+  const end_minute = String(date2.getMinutes()).padStart(2, '0');
+
+  const time = `${start_hour}:${start_minute} - ${end_hour}:${end_minute}`;
+  const date = `${date1.getDate()} ${monthNames[date1.getMonth()]} ${date1.getFullYear()}`;
+  
+  return [time, date];
+}
+
+const pastEvents = async () => {
+  const userID = sessionStorage.getItem('user');
+  const Events = [];
+  const likedEvents = await axios.get(`${process.env.REACT_APP_USER_URI}/api/users/${userID}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then( response => {
+      return response.data.liked_events;
+    });
+
+  await axios.get(`${process.env.REACT_APP_API_URI}/api/events`, {
+      headers: {
+          'x-api-key': process.env.REACT_APP_VENUES_API_KEY
+      }
+  })
+  .then(response => {
+      const data = response.data;
+      console.log(data);
+      for (let i = 0; i < Object.keys(data).length; i++) {
+          const event = {
+              id: data[i]._id,
+              img: data[i].poster,
+              topic: data[i].name,
+              location: data[i].location,
+              time: stringifyDate(data[i].start_date, data[i].end_date)[0],
+              date: stringifyDate(data[i].start_date, data[i].end_date)[1],
+          };
+  
+          if (likedEvents.includes(event.id)) {
+              Events.unshift(event);
+          } else {
+              Events.push(event);
+          }
+      }
+  })
+  .catch(error => console.error('Error fetching events:', error));
+
+  return Events;
+};
 
 const LandingPage = () => {
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    // Check if events are stored in localStorage
+    const storedEvents = localStorage.getItem('events');
+    if (storedEvents) {
+        setEvents(JSON.parse(storedEvents));
+    } else {
+        const fetchEvents = async () => {
+            const eventsData = await pastEvents();
+            setEvents(eventsData);
+            // Store fetched events in localStorage
+            localStorage.setItem('events', JSON.stringify(eventsData));
+        };
+
+        fetchEvents();
+    }
+  }, []);
 
   return (
     <div className="landing-page">
       <header className="header">
         <div className="logo">
-          <img src={WitsLogo} alt="App Logo" />
+          <img src={Logo} alt="App Logo" className="logo"/>
         </div>
         <nav className="nav-bar">
-          <ul className="nav-links">
-            <li className="nav-item">About</li>
-            <li className="nav-item">Services</li>
-            <li className="nav-item">Contacts</li>
-            <li className="nav-item">Blog</li> 
-          </ul>
-          
-          <li> <Login /> </li>
+            <a>About</a>
+            <a>Services</a>
+            <a>Contacts</a>
+            <a>Blog</a>
         </nav>
+        <a> <Login /> </a>
       </header>
 
       <main>
-        <section className="welcome-section">
-          <h2>Welcome to eWits!</h2>
-        </section>
+      <h2>eWits Takes The Edge Off!</h2>
+          <section className="welcome-section">
+            <div>
+              <h3>Brand Manifesto</h3>
+            <article>At eWits, we believe that campus life should be vibrant, engaging, and accessible to all. We exist to revolutionize the way events are experienced by creating a seamless connection between students and their community.</article>
+            </div>
+            <div>
+            <h3>Our Purpose</h3>
+            <article>We empower students to take the edge off the chaos of campus events by providing a centralized platform where creativity and organization meet. From event creation to management, registration, ticketing, and verification, we simplify the entire process.
+            </article>
+            </div>
+            <div>
+            <h3>Our Vision</h3>
+            <article>
+              We envision a world where every student feels included, informed, and inspired to participate in campus life. eWits is not just an app; it's a community hub that fosters connection and engagement, turning every event into a memorable experience.
+            </article>
+            </div>
+          </section>
 
         <section className="carousel-container">
           <div className="carousel">
-            <div className="carousel-item">
-              <img src={Parade} alt="Slide 1" className="carousel-image" />
-              <div className="carousel-description">
-                <h3>Title 1</h3>
-                <p>Description for image 1</p>
-              </div>
-            </div>
-            <div className="carousel-item">
-              <img src={CCDU} alt="Slide 2" className="carousel-image" />
-              <div className="carousel-description">
-                <h3>Title 2</h3>
-                <p>Description for image 2</p>
-              </div>
-            </div>
-            <div className="carousel-item">
-              <img src={WCCO} alt="Slide 3" className="carousel-image" />
-              <div className="carousel-description">
-                <h3>Title 3</h3>
-                <p>Description for image 3</p>
-              </div>
-            </div>
-            <div className="carousel-item">
-              <img src={SRC} alt="Slide 4" className="carousel-image" />
-              <div className="carousel-description">
-                <h3>Title 4</h3>
-                <p>Description for image 4</p>
-              </div>
-            </div>
-            <div className="carousel-item">
-              <img src={ghosh} alt="Slide 5" className="carousel-image" />
-              <div className="carousel-description">
-                <h3>Title 5</h3>
-                <p>Description for image 5</p>
-              </div>
-            </div>
-            <div className="carousel-item">
-              <img src={Tour} alt="Slide 6" className="carousel-image" />
-              <div className="carousel-description">
-                <h3>Title 6</h3>
-                <p>Description for image 6</p>
-              </div>
-            </div>
+          {events.map(event => (
+                  <div className='carousel-item'>
+                      <img src={event.img} alt={`Event ${event.id}`} className="carousel-image"/>
+                      <div className='carousel-info'>
+                        <p className='carousel-name'>{event.topic}</p>
+                        <p className='carousel-location'>{event.location}</p>
+                        <p className='carousel-date'>{event.date}</p>
+                      </div>
+                    </div>
+              ))} 
           </div>
         </section>
 

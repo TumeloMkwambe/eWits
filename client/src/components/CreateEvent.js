@@ -18,6 +18,7 @@ const FormTitle = styled.h2`
   text-align: center;
   margin-bottom: 2rem;
   color: #333;
+  background-color: #f9f9f9;
 `;
 
 const FormGroup = styled.div`
@@ -59,14 +60,14 @@ const Textarea = styled.textarea`
 const Button = styled.button`
   width: 100%;
   padding: 1rem;
-  background-color: #007bff;
+  background-color: #003b5b;
   color: #fff;
   font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: #0056b3;
+    background-color: #85714e;
   }
 `;
 
@@ -207,6 +208,7 @@ const CreateEvent = () => {
       try {
         const createdEvent = await axios.post(`${process.env.REACT_APP_API_URI}/api/events/create`, event, {
           headers: {
+            'x-api-key': process.env.REACT_APP_VENUES_API_KEY,
             'Content-Type': 'application/json',
           }
         }).then( response => {
@@ -223,11 +225,10 @@ const CreateEvent = () => {
             'Content-Type': 'application/json',
           }
         });
-        alert("Event Successfully Created!")
+        window.location.reload();
       } catch (error) {
         console.log(error);
       }
-      //window.location.reload();
   };
 
   const [venues, setVenues] = useState([]);

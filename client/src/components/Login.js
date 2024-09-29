@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from 'react-router-dom';
+import '../globalStyle.css';
 import axios from 'axios';
 
 const postUser = async (name, email) => {
@@ -39,7 +40,7 @@ const Login =  () => {
   return (
     <div>
       {/* <h2>Welcome! Please log in.</h2> */}
-      <button onClick={() => loginWithRedirect()}>Log In</button>
+      <button onClick={() => loginWithRedirect()} className='Login'>Log In</button>
     </div>
   );
   

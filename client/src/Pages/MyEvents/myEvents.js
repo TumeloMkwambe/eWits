@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Sidebar from '../../components/Sidebar';
 import axios from 'axios';
 
 function stringifyDate(date1, date2) {
@@ -30,11 +31,14 @@ const myEvents = async () => {
         'Content-Type': 'application/json',
       }
     }).then( response => {
-      console.log(response.data);
       return response.data.my_events;
     });
-  await fetch(`${process.env.REACT_APP_API_URI}/api/emapi/events`)
-      .then(response => response.json())
+    await axios.get(`${process.env.REACT_APP_API_URI}/api/events`, {
+      headers: {
+        'x-api-key': process.env.REACT_APP_VENUES_API_KEY,
+      },
+      })
+      .then(response => response.data)
       .then(data => {
         for (let i = 0; i < Object.keys(data).length; i++) {
           const event = {
@@ -45,7 +49,6 @@ const myEvents = async () => {
               date: stringifyDate(data[i].start_date, data[i].end_date)[1],
               location: data[i].location
           };
-          console.log(myEvents);
           if(myEvents.includes(event.id)){
               Events.push(event);
           }
@@ -68,6 +71,8 @@ const MyEvents = () => {
   }, []);
 
   return (
+    <div className='DashboardContainer'>
+      <Sidebar/>
       <div className="past-events">
           {events.map(event => (
               <Link to={`/event/${event.id}`} className="event" key={event.id}>
@@ -88,6 +93,7 @@ const MyEvents = () => {
               </Link>
           ))}
       </div>
+    </div>
   );
 };
 

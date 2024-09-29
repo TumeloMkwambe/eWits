@@ -24,17 +24,9 @@ function stringifyDate(date1, date2) {
     return [time, date];
 }
 
-const pastEvents = async () => {
+const upcomingEvents = async () => {
     const userID = sessionStorage.getItem('user');
     const Events = [];
-    const likedEvents = await axios.get(`${process.env.REACT_APP_USER_URI}/api/users/${userID}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      }).then( response => {
-        return response.data.liked_events;
-      });
-
     await axios.get(`${process.env.REACT_APP_API_URI}/api/events`, {
         headers: {
             'x-api-key': process.env.REACT_APP_VENUES_API_KEY
@@ -52,16 +44,15 @@ const pastEvents = async () => {
                 location: data[i].location,
                 likes: data[i].likes
             };
-    
-            if (likedEvents.includes(event.id)) {
-                Events.unshift(event);
-            } else {
-                Events.push(event);
+            current_date = new Date();
+            console.log(current_date)
+            console.log(data[i].end_date)
+            if(data[i].end_date < current_date){
+                Event.push(event);
             }
         }
     })
     .catch(error => console.error('Error fetching events:', error));
-    console.log(Events);
     return Events;
 };
 
@@ -90,20 +81,20 @@ const likeEvent = async (eventID) => {
     }
 }
 
-const PastEvents = () => {
+const UpcomingEvents = () => {
     const [events, setEvents] = useState([]);
-
+    console.log("H");
     useEffect(() => {
         // Check if events are stored in localStorage
-        const storedEvents = sessionStorage.getItem('events');
+        const storedEvents = sessionStorage.getItem('upcomingEvents');
         if (storedEvents) {
             setEvents(JSON.parse(storedEvents));
         } else {
             const fetchEvents = async () => {
-                const eventsData = await pastEvents();
+                const eventsData = await upcomingEvents();
                 setEvents(eventsData);
                 // Store fetched events in localStorage
-                sessionStorage.setItem('events', JSON.stringify(eventsData));
+                sessionStorage.setItem('upcomingEvents', JSON.stringify(eventsData));
             };
 
             fetchEvents();
@@ -132,4 +123,4 @@ const PastEvents = () => {
     );
 };
 
-export default PastEvents;
+export default upcomingEvents;
