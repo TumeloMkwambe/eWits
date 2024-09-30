@@ -34,7 +34,7 @@ const createdEvents = async () => {
     });
     await axios.get(`${process.env.REACT_APP_API_URI}/api/events`, {
       headers: {
-        'x-api-key': process.env.REACT_APP_VENUES_API_KEY,
+        'x-api-key': process.env.REACT_APP_API_KEY,
       },
       })
       .then(response => response.data)
