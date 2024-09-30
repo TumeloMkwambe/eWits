@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Sidebar from '../../components/Sidebar';
 import axios from 'axios';
 
 function stringifyDate(date1, date2) {
@@ -23,7 +22,7 @@ function stringifyDate(date1, date2) {
   return [time, date];
 }
 
-const myEvents = async () => {
+const createdEvents = async () => {
   const userID = sessionStorage.getItem('user');
   const Events = [];
   const myEvents = await axios.get(`${process.env.REACT_APP_USER_URI}/api/users/${userID}`, {
@@ -58,12 +57,12 @@ const myEvents = async () => {
   return Events;
 };
 
-const MyEvents = () => {
+const CreatedEvents = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
       const fetchEvents = async () => {
-          const eventsData = await myEvents();
+          const eventsData = await createdEvents();
           setEvents(eventsData);
       };
 
@@ -71,8 +70,6 @@ const MyEvents = () => {
   }, []);
 
   return (
-    <div className='DashboardContainer'>
-      <Sidebar/>
       <div className="past-events">
           {events.map(event => (
               <Link to={`/event/${event.id}`} className="event" key={event.id}>
@@ -93,8 +90,7 @@ const MyEvents = () => {
               </Link>
           ))}
       </div>
-    </div>
   );
 };
 
-export default MyEvents
+export default CreatedEvents

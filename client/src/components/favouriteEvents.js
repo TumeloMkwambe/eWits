@@ -24,9 +24,17 @@ function stringifyDate(date1, date2) {
     return [time, date];
 }
 
-const upcomingEvents = async () => {
+const favouriteEvents = async () => {
     const userID = sessionStorage.getItem('user');
     const Events = [];
+    const likedEvents = await axios.get(`${process.env.REACT_APP_USER_URI}/api/users/${userID}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }).then( response => {
+        return response.data.liked_events;
+      });
+
     await axios.get(`${process.env.REACT_APP_API_URI}/api/events`, {
         headers: {
             'x-api-key': process.env.REACT_APP_VENUES_API_KEY
@@ -44,11 +52,9 @@ const upcomingEvents = async () => {
                 location: data[i].location,
                 likes: data[i].likes
             };
-            current_date = new Date();
-            console.log(current_date)
-            console.log(data[i].end_date)
-            if(data[i].end_date < current_date){
-                Event.push(event);
+    
+            if (likedEvents.includes(event.id)) {
+                Events.push(event);
             }
         }
     })
@@ -81,25 +87,39 @@ const likeEvent = async (eventID) => {
     }
 }
 
-const UpcomingEvents = () => {
+const FavouriteEvents = () => {
     const [events, setEvents] = useState([]);
-    console.log("H");
+
     useEffect(() => {
-        // Check if events are stored in localStorage
-        const storedEvents = sessionStorage.getItem('upcomingEvents');
+        const fetchEvents = async () => {
+            try {
+                const eventsData = await favouriteEvents(); // Fetch new events
+                setEvents(eventsData); // Update state with new events
+                sessionStorage.setItem('events', JSON.stringify(eventsData)); // Store events in sessionStorage
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        };
+    
+        // Check if the page was refreshed (using the new performance API)
+        const navigationType = performance.getEntriesByType('navigation')[0]?.type;
+    
+        if (navigationType === 'reload') {
+            // If the page was refreshed, clear stored events
+            sessionStorage.removeItem('events');
+        }
+    
+        const storedEvents = sessionStorage.getItem('events');
+    
         if (storedEvents) {
+            // Use stored events if available
             setEvents(JSON.parse(storedEvents));
         } else {
-            const fetchEvents = async () => {
-                const eventsData = await upcomingEvents();
-                setEvents(eventsData);
-                // Store fetched events in localStorage
-                sessionStorage.setItem('upcomingEvents', JSON.stringify(eventsData));
-            };
-
+            // Fetch new events if none are stored (only once per session)
             fetchEvents();
         }
     }, []);
+    
 
     return (
         <div className="past-events">
@@ -123,4 +143,4 @@ const UpcomingEvents = () => {
     );
 };
 
-export default upcomingEvents;
+export default FavouriteEvents;

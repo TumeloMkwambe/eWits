@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import Sidebar from './Sidebar'
+import Sidebar from './sidebar'
 
 // Styled-components
 const FormContainer = styled.div`
@@ -108,10 +108,11 @@ const availableVenues = async () => {
       venues = data;
     })
     .catch(error => console.error('Error:', error.message));
+    console.log("Venues: ", venues)
   return venues;
 }
 
-const CreateEvent = () => {
+const EventForm = () => {
     const [imageUrl, setImageUrl] = useState('');
     const [formData, setFormData] = useState({
     title: '',
@@ -243,9 +244,6 @@ const CreateEvent = () => {
     }, []);
 
   return (
-    <div className='DashboardContainer'>
-        <Sidebar/>
-        <div className='ContentArea'>
         <FormContainer>
       <FormTitle>Create a New Event</FormTitle>
       <form onSubmit={handleSubmit}>
@@ -389,10 +387,7 @@ const CreateEvent = () => {
 
       {formData.poster && <ImagePreview src={URL.createObjectURL(formData.poster)} alt="Selected Preview" />}
     </FormContainer>
-        </div>
-
-    </div>
   )
 };
 
-export default CreateEvent;
+export default EventForm;
