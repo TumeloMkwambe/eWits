@@ -209,7 +209,7 @@ const EventForm = () => {
       try {
         const createdEvent = await axios.post(`${process.env.REACT_APP_API_URI}/api/events/create`, event, {
           headers: {
-            'x-api-key': process.env.REACT_APP_VENUES_API_KEY,
+            'x-api-key': process.env.REACT_APP_API_KEY,
             'Content-Type': 'application/json',
           }
         }).then( response => {
