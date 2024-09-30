@@ -26,11 +26,11 @@ const Sidebar = () => {
       <FaHome />
       <span>Home</span>
     </NavLink>
-    <NavLink to="/create-event" className="nav-link">
+    <NavLink to="/createevent" className="nav-link">
       <FaCalendarAlt />
       <span>Create Event</span>
     </NavLink>
-    <NavLink to="/my-events" className="nav-link">
+    <NavLink to="/myevents" className="nav-link">
       <FaCalendarAlt />
       <span>My Events</span>
     </NavLink>

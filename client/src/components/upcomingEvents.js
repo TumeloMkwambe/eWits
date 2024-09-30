@@ -24,17 +24,8 @@ function stringifyDate(date1, date2) {
     return [time, date];
 }
 
-const pastEvents = async () => {
-    const userID = sessionStorage.getItem('user');
+const upcomingEvents = async () => {
     const Events = [];
-    const likedEvents = await axios.get(`${process.env.REACT_APP_USER_URI}/api/users/${userID}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      }).then( response => {
-        return response.data.liked_events;
-      });
-
     await axios.get(`${process.env.REACT_APP_API_URI}/api/events`, {
         headers: {
             'x-api-key': process.env.REACT_APP_VENUES_API_KEY
@@ -53,15 +44,16 @@ const pastEvents = async () => {
                 likes: data[i].likes
             };
     
-            if (likedEvents.includes(event.id)) {
-                Events.unshift(event);
-            } else {
+            const current_date = new Date();
+            const start_date = new Date(data[i].start_date);
+
+            if(current_date < start_date){
+
                 Events.push(event);
             }
         }
     })
     .catch(error => console.error('Error fetching events:', error));
-    console.log(Events);
     return Events;
 };
 
@@ -90,25 +82,35 @@ const likeEvent = async (eventID) => {
     }
 }
 
-const PastEvents = () => {
+const UpcomingEvents = () => {
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
-        // Check if events are stored in localStorage
-        const storedEvents = sessionStorage.getItem('events');
+        const fetchEvents = async () => {
+            try {
+                const eventsData = await upcomingEvents();
+                setEvents(eventsData);
+                sessionStorage.setItem('upcoming-events', JSON.stringify(eventsData))
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        };
+
+        const navigationType = performance.getEntriesByType('navigation')[0]?.type;
+    
+        if (navigationType === 'reload') {
+            sessionStorage.removeItem('upcoming-events');
+        }
+    
+        const storedEvents = sessionStorage.getItem('upcoming-events');
+    
         if (storedEvents) {
             setEvents(JSON.parse(storedEvents));
         } else {
-            const fetchEvents = async () => {
-                const eventsData = await pastEvents();
-                setEvents(eventsData);
-                // Store fetched events in localStorage
-                sessionStorage.setItem('events', JSON.stringify(eventsData));
-            };
-
             fetchEvents();
         }
     }, []);
+    
 
     return (
         <div className="past-events">
@@ -132,4 +134,4 @@ const PastEvents = () => {
     );
 };
 
-export default PastEvents;
+export default UpcomingEvents;

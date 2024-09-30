@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Login from './Login';
-import '../globalStyle.css';
-import WitsLogo from '../images/WitsLogo.png';
-import FacebookIcon from '../images/FacebookIcon.png';
-import InstagramIcon from '../images/InstagramIcon.jpeg';
-import xIcon from '../images/xIcon.png';
-import LinkedInIcon from '../images/LinkedInIcon.png';
-import YouTubeIcon from '../images/YouTubeIcon.png';
-import WSS from '../images/WSS.png';
-import GreatHall from '../images/GreatHall.png';
-import Tour from '../images/Tour.png';
-import Parade from '../images/Parade.jpeg';
-import CCDU from '../images/CCDU.jpg';
-import WCCO from '../images/WCCO.jpeg';
-import SRC from '../images/SRC.jpeg';
-import ghosh from '../images/ghosh.jpeg';
-import Logo from '../images/eWits.png';
+import Login from '../../components/login';
+import '../../globalStyle.css';
+import FacebookIcon from '../../images/FacebookIcon.png';
+import InstagramIcon from '../../images/InstagramIcon.jpeg';
+import xIcon from '../../images/xIcon.png';
+import LinkedInIcon from '../../images/LinkedInIcon.png';
+import YouTubeIcon from '../../images/YouTubeIcon.png';
+import WSS from '../../images/WSS.png';
+import GreatHall from '../../images/GreatHall.png';
+import Logo from '../../images/eWits.png';
 import axios from 'axios';
 
 function stringifyDate(date1, date2) {
@@ -40,16 +33,7 @@ function stringifyDate(date1, date2) {
 }
 
 const pastEvents = async () => {
-  const userID = sessionStorage.getItem('user');
   const Events = [];
-  const likedEvents = await axios.get(`${process.env.REACT_APP_USER_URI}/api/users/${userID}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    }).then( response => {
-      return response.data.liked_events;
-    });
-
   await axios.get(`${process.env.REACT_APP_API_URI}/api/events`, {
       headers: {
           'x-api-key': process.env.REACT_APP_VENUES_API_KEY
@@ -57,7 +41,6 @@ const pastEvents = async () => {
   })
   .then(response => {
       const data = response.data;
-      console.log(data);
       for (let i = 0; i < Object.keys(data).length; i++) {
           const event = {
               id: data[i]._id,
@@ -68,11 +51,7 @@ const pastEvents = async () => {
               date: stringifyDate(data[i].start_date, data[i].end_date)[1],
           };
   
-          if (likedEvents.includes(event.id)) {
-              Events.unshift(event);
-          } else {
-              Events.push(event);
-          }
+          Events.push(event);
       }
   })
   .catch(error => console.error('Error fetching events:', error));
