@@ -10,75 +10,10 @@ import YouTubeIcon from '../../images/YouTubeIcon.png';
 import WSS from '../../images/WSS.png';
 import GreatHall from '../../images/GreatHall.png';
 import Logo from '../../images/eWits.png';
-import axios from 'axios';
-
-function stringifyDate(date1, date2) {
-  date1 = new Date(date1);
-  date2 = new Date(date2);
-  
-  const monthNames = [
-      "January", "February", "March", "April", "May", "June", 
-      "July", "August", "September", "October", "November", "December"
-  ];
-
-  const start_hour = String(date1.getHours()).padStart(2, '0');
-  const start_minute = String(date1.getMinutes()).padStart(2, '0');
-  const end_hour = String(date2.getHours()).padStart(2, '0');
-  const end_minute = String(date2.getMinutes()).padStart(2, '0');
-
-  const time = `${start_hour}:${start_minute} - ${end_hour}:${end_minute}`;
-  const date = `${date1.getDate()} ${monthNames[date1.getMonth()]} ${date1.getFullYear()}`;
-  
-  return [time, date];
-}
-
-const pastEvents = async () => {
-  const Events = [];
-  await axios.get(`${process.env.REACT_APP_API_URI}/api/events`, {
-      headers: {
-          'x-api-key': process.env.REACT_APP_VENUES_API_KEY
-      }
-  })
-  .then(response => {
-      const data = response.data;
-      for (let i = 0; i < Object.keys(data).length; i++) {
-          const event = {
-              id: data[i]._id,
-              img: data[i].poster,
-              topic: data[i].name,
-              location: data[i].location,
-              time: stringifyDate(data[i].start_date, data[i].end_date)[0],
-              date: stringifyDate(data[i].start_date, data[i].end_date)[1],
-          };
-  
-          Events.push(event);
-      }
-  })
-  .catch(error => console.error('Error fetching events:', error));
-
-  return Events;
-};
+import LandingEvents from '../../components/landingEvents';
 
 const LandingPage = () => {
-
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    // Check if events are stored in localStorage
-    const storedEvents = localStorage.getItem('events');
-    if (storedEvents) {
-        setEvents(JSON.parse(storedEvents));
-    } else {
-        const fetchEvents = async () => {
-            const eventsData = await pastEvents();
-            setEvents(eventsData);
-            // Store fetched events in localStorage
-            localStorage.setItem('events', JSON.stringify(eventsData));
-        };
-
-        fetchEvents();
-    }
-  }, []);
+  const events = LandingEvents();
 
   return (
     <div className="landing-page">
