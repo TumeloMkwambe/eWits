@@ -49,7 +49,7 @@ For detailed API documentation, please refer to the [API Documentation](https://
 
 ## Deployment
 
-The application is deployed on Azure. You can access the live site at the following link:
+The application is deployed on Vercel. You can access the live site at the following link:
 
 - [Live Site](https://demo-app-two-snowy.vercel.app/) (insert link to deployed site)
 
