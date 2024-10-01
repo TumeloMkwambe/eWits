@@ -33,7 +33,7 @@ The Events and Activities App is a MERN stack application that provides tools fo
 - **Frontend**: React.js
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
-- **Hosting**: Azure Static Web Apps, Azure App Service
+- **Hosting**: Vercel
 
 
 ## Usage
