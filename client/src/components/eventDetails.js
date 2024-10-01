@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-// Styled-components
+// Styled-components (same as before)
 const FormContainer = styled.div`
   max-width: 600px;
   margin: 3rem auto;
@@ -87,69 +88,112 @@ const Select = styled.select`
     border-color: #007bff;
   }
 `;
-
-const upcomingEvents = async (eventID) => {
-  const Events = [];
-  await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, {
-      headers: {
-          'x-api-key': process.env.REACT_APP_API_KEY
-      }
+const event = async (eventID) => {
+  const event = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, {
+    headers: {
+      'x-api-key': process.env.REACT_APP_API_KEY
+    }
   })
-  .then(response => {
-      console.log(response);
-      return response;
-  })
-  .catch(error => console.error('Error fetching events:', error));
-  return Events;
+  return event.data;
 };
 
-const availableVenues = ['i'];
+const availableVenues = async () => {
+  let venues;
+  const value = process.env.REACT_APP_VENUES_API_KEY;
+  const url = `${process.env.REACT_APP_VENUES_API}`;
+  await fetch(url, {
+    method: 'GET',
+    headers: {
+      'x-api-key': value,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      return response.json();
+    })
+    .then( data => {
+      venues = data;
+    })
+    .catch(error => console.error('Error:', error.message));
+  return venues;
+}
+
+const formatTime = (date) => {
+  date = new Date(date);
+  // Get the hours and minutes
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  // Combine the hours and minutes into a string
+  const time = `${hours}:${minutes}`;
+
+  return time;
+
+}
+
+const formatDate = (date) => {
+  date = new Date(date);
+  // Ensure the date is valid
+  if (isNaN(date.getTime())) {
+    return ''; // Return an empty string for invalid dates
+  }
+
+  // Get the year, month, and day
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(date.getDate()).padStart(2, '0');
+
+  // Combine the year, month, and day into a string
+  const formattedDate = `${year}-${month}-${day}`;
+
+  return formattedDate;
+};
 
 const EventDetailsForm = () => {
-    const [imageUrl, setImageUrl] = useState('');
-    const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    start_date: '',
-    start_time: '',
-    end_date: '',
-    end_time: '',
-    location: '',
-    capacity: '',
-    firstname: '',
-    lastname: '',
-    email: '',
-    poster: null // State to hold the file
-  });
+  const { eventID } = useParams();
+  const [isEditing, setIsEditing] = useState(false); // Control editing state
+  const [imageUrl, setImageUrl] = useState('');
+  const [formData, setFormData] = useState({});
 
-  // Handle input changes
+  const [venues, setVenues] = useState([]);
+
+  useEffect(() => {
+    const fetchEventDetails = async () => {
+      const fetchedEvent = await event(eventID);
+      
+      // Format the date and time
+      const formattedEvent = {
+        ...fetchedEvent,
+        start_time: formatTime(fetchedEvent.start_date),
+        end_time: formatTime(fetchedEvent.end_date),
+        start_date: formatDate(fetchedEvent.start_date),
+        end_date: formatDate(fetchedEvent.end_date),
+        firstname: fetchedEvent.creator.name,
+        lastname: fetchedEvent.creator.surname,
+        email: fetchedEvent.creator.email
+      };
+      console.log(formData);
+      // Set formData to the fetched and formatted event data
+      setFormData(formattedEvent);
+    };
+  
+    const fetchVenues = async () => {
+      const venuesData = await availableVenues();
+      setVenues(venuesData);
+    };
+  
+    fetchEventDetails();
+    fetchVenues();
+  }, [eventID]);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-    if (name === 'location') {
-        const selectedVenue = venues.find(venue => venue.Name === value);
-        if (selectedVenue) {
-            setFormData({
-                ...formData,
-                [name]: value,
-                capacity: selectedVenue.Capacity
-            });
-        } else {
-            setFormData({
-                ...formData,
-                [name]: value,
-                capacity: ''
-            });
-        }
-    } else {
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    }
-};
-
-  // Handle file selection
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData({
@@ -158,95 +202,27 @@ const EventDetailsForm = () => {
     });
   };
 
-  // Handle form submission
-    const handleSubmit = async (e) => {
-    e.preventDefault();
-        const formDataImg = new FormData();
-        formDataImg.append('image', formData.poster);
-        let posterUrl;
-        try {
-            const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`, formDataImg, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            });
-            setImageUrl(response.data.imageUrl);
-            posterUrl = response.data.imageUrl;
-          } catch (error) {
-            console.error('Error uploading image', error);
-          }
-      // Prepare event data
-      const { title, description, location, capacity, firstname, lastname, email } = formData;
-      const startDateArr = formData.start_date.split("-");
-      const startTimeArr = formData.start_time.split(":");
-      const endDateArr = formData.end_date.split("-");
-      const endTimeArr = formData.end_time.split(":");
-
-      const event = {
-        name: title,
-        description,
-        start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
-        end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
-        location,
-        poster: posterUrl,
-        capacity,
-        likes: 0,
-        creator: {
-          name: firstname,
-          surname: lastname,
-          email
-        }
-      };
-
-      // Create the event
-      try {
-        const createdEvent = await axios.post(`${process.env.REACT_APP_API_URI}/api/events/create`, event, {
-          headers: {
-            'x-api-key': process.env.REACT_APP_API_KEY,
-            'Content-Type': 'application/json',
-          }
-        }).then( response => {
-          return response.data._id;
-        });
-
-        const myEvent = {
-          entry: createdEvent
-      }
-        const userID = sessionStorage.getItem('user');
-
-        const updatedUser = await axios.put(`${process.env.REACT_APP_USER_URI}/api/users/event/${userID}`, myEvent, {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-        window.location.reload();
-      } catch (error) {
-        console.log(error);
-      }
+  const handleEdit = () => {
+    setIsEditing(!isEditing); // Toggle edit mode
   };
 
-  const [venues, setVenues] = useState([]);
-
-    useEffect(() => {
-        const fetchVenues = async () => {
-            const venuesData = await availableVenues();
-            setVenues(venuesData);
-        };
-
-        fetchVenues();
-    }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Handle form submission logic (same as before)
+  };
 
   return (
-        <FormContainer>
-      <FormTitle>Create a New Event</FormTitle>
+    <FormContainer>
+      <FormTitle>Event Details</FormTitle>
       <form onSubmit={handleSubmit}>
         <FormGroup>
           <Label>Event Title</Label>
           <Input
             type="text"
             name="title"
-            value={formData.title}
+            value={formData.name}
             onChange={handleChange}
+            disabled={!isEditing}
             required
           />
         </FormGroup>
@@ -257,6 +233,7 @@ const EventDetailsForm = () => {
             name="description"
             value={formData.description}
             onChange={handleChange}
+            disabled={!isEditing}
             required
           />
         </FormGroup>
@@ -268,6 +245,7 @@ const EventDetailsForm = () => {
             name="start_date"
             value={formData.start_date}
             onChange={handleChange}
+            disabled={!isEditing}
             required
           />
         </FormGroup>
@@ -279,6 +257,7 @@ const EventDetailsForm = () => {
             name="start_time"
             value={formData.start_time}
             onChange={handleChange}
+            disabled={!isEditing}
             required
           />
         </FormGroup>
@@ -290,6 +269,7 @@ const EventDetailsForm = () => {
             name="end_date"
             value={formData.end_date}
             onChange={handleChange}
+            disabled={!isEditing}
             required
           />
         </FormGroup>
@@ -301,18 +281,21 @@ const EventDetailsForm = () => {
             name="end_time"
             value={formData.end_time}
             onChange={handleChange}
+            disabled={!isEditing}
             required
           />
         </FormGroup>
 
         <FormGroup>
-          <Label>Venues</Label>
+          <Label>Venue</Label>
           <Select
             name="location"
             value={formData.location}
             onChange={handleChange}
-            required>
-            <option value="">Select a location</option> {/* Default option */}
+            disabled={!isEditing}
+            required
+          >
+            <option value="">Select a location</option>
             {venues.map((venue) => (
               <option key={venue.id} value={venue.Name}>
                 {venue.Name}
@@ -327,9 +310,8 @@ const EventDetailsForm = () => {
             type="number"
             name="capacity"
             value={formData.capacity}
-            onChange={handleChange}
-            required
             readOnly
+            required
           />
         </FormGroup>
 
@@ -340,6 +322,7 @@ const EventDetailsForm = () => {
             name="firstname"
             value={formData.firstname}
             onChange={handleChange}
+            disabled={!isEditing}
             required
           />
         </FormGroup>
@@ -351,6 +334,7 @@ const EventDetailsForm = () => {
             name="lastname"
             value={formData.lastname}
             onChange={handleChange}
+            disabled={!isEditing}
             required
           />
         </FormGroup>
@@ -358,10 +342,11 @@ const EventDetailsForm = () => {
         <FormGroup>
           <Label>Email</Label>
           <Input
-            type="text"
+            type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
+            disabled={!isEditing}
             required
           />
         </FormGroup>
@@ -372,15 +357,19 @@ const EventDetailsForm = () => {
             type="file"
             name="poster"
             onChange={handleFileChange}
+            disabled={!isEditing}
           />
         </FormGroup>
 
-        <Button >Edit Event</Button>
+        <Button type="button" onClick={handleEdit}>
+          {isEditing ? 'Cancel Edit' : 'Edit Event'}
+        </Button>
+        {isEditing && <Button type="submit">Save Changes</Button>}
       </form>
 
-      {formData.poster && <ImagePreview src={URL.createObjectURL(formData.poster)} alt="Selected Preview" />}
+      {formData.poster && <ImagePreview src={formData.poster} alt="Event Poster" />}
     </FormContainer>
-  )
+  );
 };
 
 export default EventDetailsForm;

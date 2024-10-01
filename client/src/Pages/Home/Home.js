@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from '../../components/sidebar.js';
 import FavouriteEvents from '../../components/favouriteEvents.js';
 import UpcomingEvents from '../../components/upcomingEvents.js';
+import EventList from '../../components/search.js';
 import '../../globals.css';
 
 
@@ -11,6 +12,9 @@ const Home = () => {
         <div className="DashboardContainer">
             <Sidebar/>
             <div className="ContentArea">
+                <div className='search'>
+                    <EventList />
+                </div>
                 <div className="home">       
                     <div className="main-content">
                         <div>

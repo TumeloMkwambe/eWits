@@ -141,7 +141,7 @@ const FavouriteEvents = () => {
         <div className="past-events">
             {events.map(event => (
                 <div key={event.id}>
-                    <Link to={`/event/${event.id}`} className="event">
+                    <Link to={`/home/${event.id}`} className="event">
                         <img src={event.img} alt={`Event ${event.id}`} />
                         <div className="event-topic">{event.topic}</div>
                         <div className='event-span'>

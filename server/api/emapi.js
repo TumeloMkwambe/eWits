@@ -30,6 +30,16 @@ app.get('/api/events', async (req, res) => {
   }
 });
 
+app.get('/api/events/:id', async (req, res) => {
+  try{
+    const events = await Events.findById({_id: req.params.id});
+    res.status(200).json(events);
+  }
+  catch(error){
+    res.status(500).json({error: error.message})
+  }
+});
+
 app.get('/api/events/:field/:value', async (req, res) => {
   try {
     const field = req.params.field;

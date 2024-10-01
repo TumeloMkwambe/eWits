@@ -6,7 +6,9 @@ const EventDetails = () => {
     return (
         <div className="DashboardContainer">
             <Sidebar />
+            <div className="ContentArea">
             <EventDetailsForm />
+            </div>
         </div>
     );
 }
