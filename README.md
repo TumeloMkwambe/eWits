@@ -1,5 +1,3 @@
----
-
 # Events and Activities App
 
 ## Table of Contents API specifications, 
