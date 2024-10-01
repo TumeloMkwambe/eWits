@@ -48,7 +48,6 @@ const upcomingEvents = async () => {
             const start_date = new Date(data[i].start_date);
 
             if(current_date < start_date){
-
                 Events.push(event);
             }
         }
@@ -57,78 +56,91 @@ const upcomingEvents = async () => {
     return Events;
 };
 
-const likeEvent = async (eventID) => {
-    const userID = sessionStorage.getItem('user');
-    try {
-        const updatedEventID = await axios.put(`${process.env.REACT_APP_API_URI}/api/events/like/${eventID}`, {}, {
-            headers: {
-                'x-api-key': process.env.REACT_APP_VENUES_API_KEY
-            }
-        }).then( response => {
-            return response.data._id;
-        });
-
-        const likedEvent = {
-            entry: updatedEventID
-        }
-
-        await axios.put(`${process.env.REACT_APP_USER_URI}/api/users/like/${userID}`, likedEvent, {
-            headers: {
-              'Content-Type': 'application/json',
-            }
-        });
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 const UpcomingEvents = () => {
     const [events, setEvents] = useState([]);
+    const [likedStatus, setLikedStatus] = useState({});
+
+    const likeEvent = async (e, eventID) => {
+        e.stopPropagation();
+        const userID = sessionStorage.getItem('user');
+        try {
+            const likedEvent = { entry: eventID };
+    
+            const updatedUser = await axios.put(`${process.env.REACT_APP_USER_URI}/api/users/like/${userID}`, likedEvent, {
+                headers: {
+                  'Content-Type': 'application/json',
+                }
+            });
+    
+            if (updatedUser.data.liked_events.includes(eventID)) {
+                await axios.put(`${process.env.REACT_APP_API_URI}/api/events/like/${eventID}`, {}, {
+                    headers: {
+                        'x-api-key': process.env.REACT_APP_API_KEY
+                    }
+                });
+                setLikedStatus((prev) => ({ ...prev, [eventID]: true }));
+            } else {
+                await axios.put(`${process.env.REACT_APP_API_URI}/api/events/dislike/${eventID}`, {}, {
+                    headers: {
+                        'x-api-key': process.env.REACT_APP_API_KEY
+                    }
+                });
+                setLikedStatus((prev) => ({ ...prev, [eventID]: false }));
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        fetchEvents();
+    };
+
+    const fetchEvents = async () => {
+        try {
+            const upcomingEventsData = await upcomingEvents();
+            setEvents(upcomingEventsData);
+            sessionStorage.setItem('upcoming-events', JSON.stringify(upcomingEventsData));
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const eventsData = await upcomingEvents();
-                setEvents(eventsData);
-                sessionStorage.setItem('upcoming-events', JSON.stringify(eventsData))
-            } catch (error) {
-                console.error('Error fetching events:', error);
-            }
-        };
-
         const navigationType = performance.getEntriesByType('navigation')[0]?.type;
-    
+        
         if (navigationType === 'reload') {
             sessionStorage.removeItem('upcoming-events');
         }
-    
-        const storedEvents = sessionStorage.getItem('upcoming-events');
-    
-        if (storedEvents) {
-            setEvents(JSON.parse(storedEvents));
+
+        const storedUpcomingEvents = sessionStorage.getItem('upcoming-events');
+        
+        if (storedUpcomingEvents) {
+            setEvents(JSON.parse(storedUpcomingEvents));
         } else {
             fetchEvents();
         }
-    }, []);
-    
+    }, []); // Add empty dependency array to prevent infinite loop
 
     return (
         <div className="past-events">
             {events.map(event => (
-                <Link to={`/event/${event.id}`} className="event" key={event.id}>
-                    <img src={event.img} alt={`Event ${event.id}`} />
-                    <div className="event-topic">{event.topic}</div>
-
-                    <div className='event-span'>
-                        <p>{event.date}</p>
-                        <p>{event.time}</p>
-                        <p>{event.location}</p>
-                        <div className='like'>
-                            <FontAwesomeIcon icon={faHeart} onClick={() => likeEvent(event.id)} className='liked'/>
-                            <p className='likes'>{event.likes}</p>
+                <div key={event.id}>
+                    <Link to={`/event/${event.id}`} className="event">
+                        <img src={event.img} alt={`Event ${event.id}`} />
+                        <div className="event-topic">{event.topic}</div>
+                        <div className="event-span">
+                            <p>{event.date}</p>
+                            <p>{event.time}</p>
+                            <p>{event.location}</p>
                         </div>
+                    </Link>
+                    <div onClick={(e) => likeEvent(e, event.id)} className='like'>
+                        <FontAwesomeIcon 
+                            icon={faHeart} 
+                            className='liked' 
+                            style={{ color: likedStatus[event.id] ? 'red' : 'grey' }} 
+                        />
+                        <p className='likes'>{event.likes}</p>
                     </div>
-                </Link>
+                </div>
             ))}
         </div>
     );

@@ -4,6 +4,7 @@ import Login from './components/login';
 import Logout from './components/logout';
 import Landing from './Pages/Landing/Landing';
 import CreateEvent from './Pages/CreateEvent/CreateEvent';
+import EventDetails from './Pages/EventDetails/EventDetails';
 import Tickets from './Pages/Tickets/Tickets';
 import Notifications from './Pages/Nofications/Notifications';
 import MyEvents from './Pages/MyEvents/MyEvents';
@@ -21,6 +22,7 @@ function App() {
         <Route path="/tickets" element={<Tickets />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/myevents" element={<MyEvents />} />
+        <Route path="/myevents/:id" element={<EventDetails />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/calendar" element={<Calendar />} />
       </Routes>

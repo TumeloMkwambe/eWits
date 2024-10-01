@@ -72,7 +72,7 @@ const CreatedEvents = () => {
   return (
       <div className="past-events">
           {events.map(event => (
-              <Link to={`/event/${event.id}`} className="event" key={event.id}>
+              <Link to={`/myevent/${event.id}`} className="event" key={event.id}>
                   <img src={event.img} alt={`Event ${event.id}`}/>
                   <div className="event-topic">{event.topic}</div>
 

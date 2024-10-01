@@ -4,7 +4,9 @@ import FavouriteEvents from '../../components/favouriteEvents.js';
 import UpcomingEvents from '../../components/upcomingEvents.js';
 import '../../globals.css';
 
-function Home() {
+
+const Home = () => {
+
     return (
         <div className="DashboardContainer">
             <Sidebar/>
