@@ -12,9 +12,6 @@ const Home = () => {
         <div className="DashboardContainer">
             <Sidebar/>
             <div className="ContentArea">
-                <div className='search'>
-                    <EventList />
-                </div>
                 <div className="home">       
                     <div className="main-content">
                         <div>
