@@ -45,6 +45,10 @@ const eventSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    likes: {
+      type: Number,
+      default: 0
+    },
     creator: {
       type: creatorSchema,
       required: true,

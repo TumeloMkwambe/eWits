@@ -6,7 +6,11 @@
       "dest": "/api/notapi.js"
     },
     {
-      "src": "/api/emapi/(.*)",
+      "src": "/api/events/(.*)",
+      "dest": "api/emapi.js"
+    },
+    {
+      "src": "/api/events",
       "dest": "api/emapi.js"
     },
     {
@@ -16,6 +20,10 @@
     {
       "src": "/api/storage/(.*)",
       "dest": "api/storage.js"
+    },
+    {
+      "src": "/api/users/(.*)",
+      "dest": "api/user.js"
     },
     {
       "src": "/(.*)",

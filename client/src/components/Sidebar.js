@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { useNavigate, NavLink } from 'react-router-dom';
-import profilePic from '../../src/images/wits.png'; 
+import Logo from '../images/logo1.svg'
 import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaImages } from 'react-icons/fa';
 
 const Sidebar = () => {
@@ -16,25 +18,19 @@ const Sidebar = () => {
     <div className="sidebar">
 
   <div className="profile-section">
-    <img src={profilePic} alt="Profile" className="profile-image" />
-    
-      <NavLink to="/profile" className="nav-profile">
-      <h3 className="profile-name">Clement Jele</h3>
-    </NavLink>
-    
-    
-    
+    <img src={Logo} alt="Profile" className="profile-image" />
+    <h3 className="profile-name">eWits</h3>
   </div>
   <nav>
     <NavLink to="/home" className="nav-link">
       <FaHome />
       <span>Home</span>
     </NavLink>
-    <NavLink to="/create-event" className="nav-link">
+    <NavLink to="/createevent" className="nav-link">
       <FaCalendarAlt />
       <span>Create Event</span>
     </NavLink>
-    <NavLink to="/my-events" className="nav-link">
+    <NavLink to="/myevents" className="nav-link">
       <FaCalendarAlt />
       <span>My Events</span>
     </NavLink>
@@ -50,10 +46,8 @@ const Sidebar = () => {
       <FaBell />
       <span>Notifications</span>
     </NavLink>
-    <NavLink to="/imageupload" className="nav-link">
-      <FaImages />
-      <span>Upload Image</span>
-    </NavLink>
+    
+  
   </nav>
   <button className="logout-button" onClick={handleLogout}>
     Logout

@@ -1,6 +1,7 @@
 import React from 'react';
-import Sidebar from '../../components/Sidebar';
-import PastEvents from '../../components/pastEvents';
+import Sidebar from '../../components/sidebar.js';
+import FavouriteEvents from '../../components/favouriteEvents.js';
+import UpcomingEvents from '../../components/upcomingEvents.js';
 import '../../globals.css';
 
 function Home() {
@@ -12,16 +13,16 @@ function Home() {
                     <div className="main-content">
                         <div>
                             <h2 className='title-home'>
-                                Past Events
+                                Favourite Events
                             </h2>
                         </div>
                         <div className="past-events-container">
                             
-                            <PastEvents />
+                            <FavouriteEvents />
                         </div>
-                        <div className="upcoming-events">
-                            <h2>Upcoming Events</h2>
-                            <p>Nothing yet. Here you use the cards above but with your own details. Events go in the past events component.</p>
+                        <h2 className='upcoming-events'>Upcoming Events</h2>
+                        <div className="past-events-container">
+                            < UpcomingEvents />
                         </div>
                     </div>  
                 </div>

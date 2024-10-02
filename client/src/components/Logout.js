@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
@@ -10,15 +9,7 @@ const Logout = () => {
   useEffect(() => {
     logout({ logoutParams: { returnTo: process.env.CLIENT } });
   }, [logout]);
-  return (
-    
-    <div className='spinner-container'>
-      <div className='spinner'>
-
-      </div>
-    </div>
-  );
-  
+  return <div>Logging out...</div>;
 };
 
 export default Logout;

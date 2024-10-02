@@ -1,2 +1,5 @@
 node_modules/
 .env
+/src/components/eventDetailss.js
+/src/components/eventForm.js
+/src/components/eventsFetchedDetails.js
