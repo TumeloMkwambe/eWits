@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import DisplayEvents from "./displayEvents";
+import { fetchEvents } from "../Requests/events";
 
 function stringifyDate(date1, date2) {
     date1 = new Date(date1);
@@ -24,24 +22,13 @@ function stringifyDate(date1, date2) {
     return [time, date];
 }
 
-const favouriteEvents = async () => {
-    const userID = sessionStorage.getItem('user');
-    const Events = [];
-    const likedEvents = await axios.get(`${process.env.REACT_APP_USER_URI}/api/users/${userID}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      }).then( response => {
-        return response.data.liked_events;
-      });
+const FavouriteEvents = () => {
 
-    await axios.get(`${process.env.REACT_APP_API_URI}/api/events`, {
-        headers: {
-            'x-api-key': process.env.REACT_APP_API_KEY
-        }
-    })
-    .then(response => {
-        const data = response.data;
+    const upcomingEvents = async () => {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        const Events = [];
+        await fetchEvents();
+        const data = JSON.parse(sessionStorage.getItem('events'));
         for (let i = 0; i < Object.keys(data).length; i++) {
             const event = {
                 id: data[i]._id,
@@ -53,94 +40,16 @@ const favouriteEvents = async () => {
                 likes: data[i].likes
             };
     
-            if (likedEvents.includes(event.id)) {
+            if(user.liked_events.includes(event.id)){
                 Events.push(event);
             }
         }
-    })
-    .catch(error => console.error('Error fetching events:', error));
-    return Events;
-};
-
-const likeEvent = async (eventID) => {
-    const userID = sessionStorage.getItem('user');
-    try {
-        const updatedEventID = await axios.put(`${process.env.REACT_APP_API_URI}/api/events/like/${eventID}`, {}, {
-            headers: {
-                'x-api-key': process.env.REACT_APP_VENUES_API_KEY
-            }
-        }).then( response => {
-            return response.data._id;
-        });
-
-        const likedEvent = {
-            entry: updatedEventID
-        }
-
-        await axios.put(`${process.env.REACT_APP_USER_URI}/api/users/like/${userID}`, likedEvent, {
-            headers: {
-              'Content-Type': 'application/json',
-            }
-        });
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-const FavouriteEvents = () => {
-    const [events, setEvents] = useState([]);
-
-    useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const eventsData = await favouriteEvents(); // Fetch new events
-                setEvents(eventsData); // Update state with new events
-                sessionStorage.setItem('events', JSON.stringify(eventsData)); // Store events in sessionStorage
-            } catch (error) {
-                console.error('Error fetching events:', error);
-            }
-        };
-    
-        // Check if the page was refreshed (using the new performance API)
-        const navigationType = performance.getEntriesByType('navigation')[0]?.type;
-    
-        if (navigationType === 'reload') {
-            // If the page was refreshed, clear stored events
-            sessionStorage.removeItem('events');
-        }
-    
-        const storedEvents = sessionStorage.getItem('events');
-    
-        if (storedEvents) {
-            // Use stored events if available
-            setEvents(JSON.parse(storedEvents));
-        } else {
-            // Fetch new events if none are stored (only once per session)
-            fetchEvents();
-        }
-    }, []);
-    
+        return Events;
+    };
 
     return (
-        <div className="past-events">
-            {events.map(event => (
-                <Link to={`/event/${event.id}`} className="event" key={event.id}>
-                    <img src={event.img} alt={`Event ${event.id}`} />
-                    <div className="event-topic">{event.topic}</div>
-
-                    <div className='event-span'>
-                        <p>{event.date}</p>
-                        <p>{event.time}</p>
-                        <p>{event.location}</p>
-                        <div className='like'>
-                            <FontAwesomeIcon icon={faHeart} onClick={() => likeEvent(event.id)} className='liked'/>
-                            <p className='likes'>{event.likes}</p>
-                        </div>
-                    </div>
-                </Link>
-            ))}
-        </div>
+        <DisplayEvents filteredEvents={upcomingEvents} route={"home"}/>
     );
-};
+}
 
 export default FavouriteEvents;

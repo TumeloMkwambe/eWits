@@ -2,9 +2,12 @@ import React from 'react';
 import Sidebar from '../../components/sidebar.js';
 import FavouriteEvents from '../../components/favouriteEvents.js';
 import UpcomingEvents from '../../components/upcomingEvents.js';
+import EventList from '../../components/search.js';
 import '../../globals.css';
 
-function Home() {
+
+const Home = () => {
+
     return (
         <div className="DashboardContainer">
             <Sidebar/>

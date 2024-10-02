@@ -17,9 +17,7 @@ const postUser = async (name, email) => {
         'Content-Type': 'application/json',
       }
     }).then( response => {
-      console.log("Email: ", email);
-      console.log("User: ", user);
-      sessionStorage.setItem('user', response.data._id);
+      sessionStorage.setItem('user', JSON.stringify(response.data));
     });
   } catch (error) {
     console.log(error);

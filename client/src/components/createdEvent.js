@@ -22,8 +22,10 @@ function stringifyDate(date1, date2) {
     return [time, date];
 }
 
-const UpcomingEvents = () => {
-    const upcomingEvents = async () => {
+const CreatedEvents = () => {
+
+    const createdEvents = async () => {
+        const user = JSON.parse(sessionStorage.getItem('user'));
         const Events = [];
         await fetchEvents();
         const data = JSON.parse(sessionStorage.getItem('events'));
@@ -38,10 +40,7 @@ const UpcomingEvents = () => {
                 likes: data[i].likes
             };
     
-            const current_date = new Date();
-            const start_date = new Date(data[i].start_date);
-    
-            if(current_date < start_date){
+            if(user.my_events.includes(event.id)){
                 Events.push(event);
             }
         }
@@ -49,8 +48,8 @@ const UpcomingEvents = () => {
     };
 
     return (
-        <DisplayEvents filteredEvents={upcomingEvents} route={"home"}/>
+        <DisplayEvents filteredEvents={createdEvents} route={"myevents"}/>
     );
 }
 
-export default UpcomingEvents;
+export default CreatedEvents;
