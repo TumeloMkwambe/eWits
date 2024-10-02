@@ -7,7 +7,7 @@
 - [Tech Stack](#tech-stack)
 
 - [Usage](#usage)
-- [API Documentation](#api-documentation)
+- [Documentation](#documentation)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 - [Links](#links)
@@ -53,7 +53,7 @@ By centralizing event management and fostering communication, the Events and Act
 - **Managing Events**: Event organizers can update event details, monitor registrations, and send notifications.
 - **Viewing the Calendar**: Users can explore the event calendar to discover events by date, type, or location.
 
-## API Documentation
+## Documentation
 
 For detailed API documentation, please refer to the [API Documentation](https://ewits.gitbook.io/ewits-docs) (insert link to API documentation).
 
