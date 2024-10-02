@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { useNavigate, NavLink } from 'react-router-dom';
 import Logo from '../../src/images/logo1.svg'
 import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaImages } from 'react-icons/fa';
+import { requestPermission } from '../Pages/Nofications/Notifications';
+
 
 const Sidebar = () => {
 
@@ -42,8 +44,8 @@ const Sidebar = () => {
       <FaTicketAlt />
       <span>Tickets</span>
     </NavLink>
-    <NavLink to="/notifications" className="nav-link">
-      <FaBell />
+    <NavLink to="/notifications" onClick={requestPermission} className="nav-link">
+      <FaBell/>
       <span>Notifications</span>
     </NavLink>
   </nav>

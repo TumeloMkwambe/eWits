@@ -6,13 +6,26 @@ import Landing from './Pages/Landing/Landing';
 import CreateEvent from './Pages/CreateEvent/CreateEvent';
 import EventDetails from './Pages/EventDetails/EventDetails';
 import Tickets from './Pages/Tickets/Tickets';
-import Notifications from './Pages/Nofications/Notifications';
+import { Notifications } from './Pages/Nofications/Notifications';
 import MyEvents from './Pages/MyEvents/MyEvents';
 import Calendar from './Pages/Calendar/Calendar';
 import EventDetailsCard from './Pages/EventDetailsCard/EventDetailsCard';
 import Home from './Pages/Home/Home';
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./public/firebase-messaging-sw.js')
+    .then((registration) => {
+      console.log('Service Worker registered with scope:', registration.scope);
+    })
+    .catch((error) => {
+      console.error('Service Worker registration failed:', error);
+    });
+} else {
+  console.warn('Service workers are not supported in this browser.');
+}
+
 function App() {
+
   return (
     <BrowserRouter>
       <Routes>

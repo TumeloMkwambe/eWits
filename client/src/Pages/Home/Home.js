@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sidebar from '../../components/sidebar.js';
 import FavouriteEvents from '../../components/favouriteEvents.js';
 import UpcomingEvents from '../../components/upcomingEvents.js';

@@ -15,6 +15,26 @@ const creatorSchema = mongoose.Schema({
   },
 });
 
+const priceSchema = mongoose.Schema({
+  general: {
+    type: Number,
+    default: 0
+  },
+  vip: {
+    type: Number,
+    default: 0
+  }
+})
+
+const ticketSchema = mongoose.Schema({
+  type: {
+    type: String
+  },
+  price: {
+    type: priceSchema
+  }
+});
+
 const eventSchema = mongoose.Schema(
   {
     name: {
@@ -53,6 +73,13 @@ const eventSchema = mongoose.Schema(
       type: creatorSchema,
       required: true,
     },
+    interested_users: {
+      type: [String],
+      required: false
+    },
+    ticket: {
+      type: ticketSchema
+    }
   },
   {
     timestamps: true,
