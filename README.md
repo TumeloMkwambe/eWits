@@ -69,7 +69,7 @@ The application is deployed on Vercel. You can access the live site at the follo
 ## Links
 
 - [Live Site](https://demo-app-two-snowy.vercel.app/)
-- [API Documentation](https://ewits.gitbook.io/ewits-docs)
+- [Documentation](https://ewits.gitbook.io/ewits-docs)
 - [GitHub Repository](https://github.com/TumeloMkwambe/eWits/)
 
 ---
