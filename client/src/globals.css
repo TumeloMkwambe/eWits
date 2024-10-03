@@ -256,35 +256,6 @@ body, html {
     padding: 10px;
     
   }
-
-  .notification-header {
-    border: 1px solid red;
-    margin: auto;
-    background-color: #fff;
-    margin-bottom: 5px;
-  }
-
-  .notifications {
-    width: 80%;
-    border: 1px solid red;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    .notification-card {
-      border: 1px solid red;
-      background-color: #f9f9f9; /* Light background color */
-      border: 1px solid #ddd; /* Light border */
-      border-radius: 8px; /* Rounded corners */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-      padding: 16px; /* Spacing inside the card */
-      margin-bottom: 16px; /* Spacing between cards */
-      display: flex; /* To align content horizontally */
-      align-items: center;
-    }
-  }
   
   /* Past Events Container */
   .past-events-container {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { createdEventNotification } from '../Requests/notifications';
+import { fetchEvents } from '../Requests/events';
 
 // Styled-components
 const FormContainer = styled.div`
@@ -10,26 +10,26 @@ const FormContainer = styled.div`
   padding: 2rem;
   background-color: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-`;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);`
+;
 
 const FormTitle = styled.h2`
   text-align: center;
   margin-bottom: 2rem;
   color: #333;
-  background-color: #f9f9f9;
-`;
+  background-color: #f9f9f9;`
+;
 
 const FormGroup = styled.div`
-  margin-bottom: 1.5rem;
-`;
+  margin-bottom: 1.5rem;`
+;
 
 const Label = styled.label`
   display: block;
   margin-bottom: 0.5rem;
   color: #555;
-  font-weight: bold;
-`;
+  font-weight: bold;`
+;
 
 const Input = styled.input`
   width: 100%;
@@ -40,8 +40,8 @@ const Input = styled.input`
   &:focus {
     outline: none;
     border-color: #007bff;
-  }
-`;
+  }`
+;
 
 const Textarea = styled.textarea`
   width: 100%;
@@ -53,8 +53,8 @@ const Textarea = styled.textarea`
   &:focus {
     outline: none;
     border-color: #007bff;
-  }
-`;
+  }`
+;
 
 const Button = styled.button`
   width: 100%;
@@ -67,15 +67,15 @@ const Button = styled.button`
   cursor: pointer;
   &:hover {
     background-color: #85714e;
-  }
-`;
+  }`
+;
 
 const ImagePreview = styled.img`
   max-width: 100%;
   max-height: 300px;
   margin-top: 1rem;
-  border-radius: 5px;
-`;
+  border-radius: 5px;`
+;
 
 const Select = styled.select`
   width: 100%;
@@ -86,8 +86,8 @@ const Select = styled.select`
   &:focus {
     outline: none;
     border-color: #007bff;
-  }
-`;
+  }`
+;
 
 const availableVenues = async () => {
   let venues;
@@ -115,6 +115,7 @@ const EventForm = () => {
     description: '',
     start_date: '',
     start_time: '',
+    event_type: '',
     end_date: '',
     end_time: '',
     location: '',
@@ -131,7 +132,20 @@ const EventForm = () => {
   });
 
   const [venues, setVenues] = useState([]);
-
+  const eventTypes = [
+    'Sports',
+    'Religion',
+    'Education',
+    'Music',
+    'Arts and Culture',
+    'Business and Networking',
+    'Food and Drink',
+    'Community and Social',
+    'Health and Wellness',
+    'Charity and Fundraising',
+    'Technology',
+    'Family',
+  ];
   // Handle input changes
 // Handle input changes
 const handleChange = (e) => {
@@ -201,7 +215,7 @@ const handleChange = (e) => {
     }
 
     // Prepare event data
-    const { title, description, location, capacity, firstname, lastname, email, ticketPrices, isPaid } = formData;
+    const { title, description, location, event_type, capacity, firstname, lastname, email, ticketPrices, isPaid } = formData;
     const startDateArr = formData.start_date.split('-');
     const startTimeArr = formData.start_time.split(':');
     const endDateArr = formData.end_date.split('-');
@@ -213,6 +227,7 @@ const handleChange = (e) => {
       start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
       end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
       location,
+      event_type,
       poster: posterUrl,
       capacity,
       likes: 0,
@@ -260,15 +275,8 @@ const handleChange = (e) => {
           },
         }
       );
-      const notificationBody = {
-        user_id: user._id,
-        event_id: createdEvent,
-        fcm_token: user.fcm_token,
-        message: `You have successfully created an event with name ${event.name}!`
-      }
-
-      await createdEventNotification(notificationBody);
-      //window.location.reload();
+      await fetchEvents();
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -306,6 +314,18 @@ const handleChange = (e) => {
             onChange={handleChange}
             required
           />
+        </FormGroup>
+
+        <FormGroup>
+          <Label>Event Type</Label>
+          <Select name="event_type" value={formData.event_type} onChange={handleChange} required>
+            <option value="">Select Event Type</option>
+            {eventTypes.map((type) => (
+              <option value={type}>
+                {type}
+              </option>
+            ))}
+          </Select>
         </FormGroup>
 
         <FormGroup>

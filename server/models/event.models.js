@@ -24,11 +24,12 @@ const priceSchema = mongoose.Schema({
     type: Number,
     default: 0
   }
-})
+});
 
 const ticketSchema = mongoose.Schema({
   type: {
-    type: String
+    type: String,
+    default: "free"
   },
   price: {
     type: priceSchema
@@ -45,6 +46,22 @@ const eventSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    event_type: {
+      type: String,
+      enum: [
+        'Sports',
+        'Religion',
+        'Education',
+        'Music',
+        'Arts and Culture',
+        'Business and Networking',
+        'Food and Drink',
+        'Community and Social',
+        'Health and Wellness',
+        'Charity and Fundraising',
+        'Technology',
+        'Family',
+      ]},
     start_date: {
       type: Date,
       required: true,
@@ -74,8 +91,7 @@ const eventSchema = mongoose.Schema(
       required: true,
     },
     interested_users: {
-      type: [String],
-      required: false
+      type: [String]
     },
     ticket: {
       type: ticketSchema

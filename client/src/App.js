@@ -6,14 +6,13 @@ import Landing from './Pages/Landing/Landing';
 import CreateEvent from './Pages/CreateEvent/CreateEvent';
 import EventDetails from './Pages/EventDetails/EventDetails';
 import Tickets from './Pages/Tickets/Tickets';
-import { Notifications } from './Pages/Nofications/Notifications';
+import Notifications from './Pages/Nofications/Notifications';
 import MyEvents from './Pages/MyEvents/MyEvents';
 import Calendar from './Pages/Calendar/Calendar';
 import EventDetailsCard from './Pages/EventDetailsCard/EventDetailsCard';
 import Home from './Pages/Home/Home';
 
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>

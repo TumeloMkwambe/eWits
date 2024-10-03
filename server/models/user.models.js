@@ -16,14 +16,6 @@ const UsersSchema = new mongoose.Schema({
     my_events: {
         type: [String],
         required: false
-    },
-    operating_system: {
-        type: [String],
-        required: true
-    },
-    fcm_token: {
-        type: String,
-        required: false
     }
   });
   const Users = mongoose.model('Users', UsersSchema);

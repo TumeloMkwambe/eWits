@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Bowser from 'bowser';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from 'react-router-dom';
 import '../globalStyle.css';
@@ -10,8 +9,7 @@ const postUser = async (name, email) => {
     name: name,
     email: email,
     liked_events: [],
-    my_events: [],
-    operating_system: Bowser.getParser(window.navigator.userAgent).getOSName()
+    my_events: []
   }
   try {
     await axios.post(`${process.env.REACT_APP_USER_URI}/api/users/create`, user, {
@@ -33,8 +31,7 @@ const Login =  () => {
     const handleLogin = async () => {
       if (isAuthenticated) {
         // Wait for postUser to finish before navigating
-
-        await postUser(user.name, user.email); //
+        await postUser(user.name, user.email);
         navigate('/home');
       }
     };

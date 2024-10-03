@@ -8,16 +8,7 @@ const userLikesEvent = async (eventID) => {
           'Content-Type': 'application/json',
         }
     });
-    sessionStorage.getItem('user', updatedUser);
+    sessionStorage('user', updatedUser);
 }
 
-const updateUser = async (userID, updateToken) => {
-  const user = await axios.put(`${process.env.REACT_APP_USER_URI}/api/users/${userID}`, updateToken, {
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  });
-  sessionStorage.getItem('user', user);
-}
-
-export { updateUser, userLikesEvent };
+export { userLikesEvent };
