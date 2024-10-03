@@ -287,15 +287,13 @@ const EventDetailsForm = () => {
       };
   
       try {
-        console.log(event);
-        console.log(eventID);
         const createdEvent = await axios.put(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, event, {
           headers: {
             'x-api-key': process.env.REACT_APP_API_KEY,
             'Content-Type': 'application/json',
           },
         }).then( response => {
-            console.log(response);
+            return response;
         });
         
         // Link event to user
@@ -305,6 +303,8 @@ const EventDetailsForm = () => {
           headers: {
             'Content-Type': 'application/json',
           },
+        }).then( response => {
+            console.log(response);
         });
   
         //window.location.reload();
