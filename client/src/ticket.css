@@ -1,0 +1,133 @@
+/* General container styling */
+.ticket-container {
+    background-color: #f2f2f2;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    margin: 20px auto;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Header styling */
+  .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .ticket-header h2 {
+    margin: 0;
+    font-size: 22px;
+    background: transparent;
+    background-color: none;
+  }
+  
+  .ticket-header p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: gray;
+  }
+
+  h2{
+    font-size: 18px;
+    background-color: none;
+    background: none;
+  }
+
+  .datehandle-date h1{
+    font-size: 40px;
+    background: transparent;
+    color: #ff69b4;
+  }
+  
+  /* Done button styling */
+  .done-button {
+    background: none;
+    border: none;
+    color: #ff69b4;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  /* Event image styling */
+  .event-image {
+    width: 100%;
+    height: auto;
+    margin: 12px 0;
+    border-radius: 10px;
+  }
+  
+  /* Event details styling */
+  .event-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+  }
+  
+  .event-info {
+    max-width: 70%;
+  }
+  
+  .event-info h3 {
+    margin: 0;
+    font-size: 24px;
+    background-color: none;
+  }
+  
+  .event-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: gray;
+  }
+  
+  /* QR Code styling */
+  .qr-code img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    display: flex;
+    border-radius: 9px;
+  }
+
+  /*date handler at the bottom*/
+  .datehandle{
+    display: flex;
+    flex-direction: column;
+    
+  }
+
+  .datehandle-date{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+  }
+  
+  /* Location information styling */
+  .location-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .location-info h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .location-info p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: gray;
+  }
+
+  .ticket-bottom{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    
+  }
+  

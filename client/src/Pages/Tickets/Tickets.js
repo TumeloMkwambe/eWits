@@ -1,5 +1,6 @@
 import React from 'react'
 import Sidebar from '../../components/sidebar'
+import TicketView from '../../components/ticketView'
 
 
 function tickets () {
@@ -7,7 +8,13 @@ function tickets () {
     <div className='DashboardContainer'>
         <Sidebar/>
         <div className='ContentArea'>
-            Your Tickets Right here bruv
+        <div>
+                <h2 className='title-home'>
+                  Tickets
+                </h2>
+              </div>
+                
+                <TicketView  />
         </div>
     </div>
   )
