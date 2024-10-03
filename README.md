@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/TumeloMkwambe/eWits/graph/badge.svg?token=5PDX3BAHWH)](https://codecov.io/gh/TumeloMkwambe/eWits)
+
 # Events and Activities App
 
 ## Table of Contents API specifications, 
