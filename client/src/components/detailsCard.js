@@ -146,6 +146,11 @@ const DetailsCard = () => {
       </CardGroup>
 
       <CardGroup>
+        <Label>Event Type</Label>
+        <Text>{formData.event_type || 'N/A'}</Text>
+      </CardGroup>
+
+      <CardGroup>
         <Label>Start Date</Label>
         <Text>{formData.start_date || 'N/A'}</Text>
       </CardGroup>

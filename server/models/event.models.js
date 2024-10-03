@@ -46,6 +46,22 @@ const eventSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    event_type: {
+      type: String,
+      enum: [
+        'Sports',
+        'Religion',
+        'Education',
+        'Music',
+        'Arts and Culture',
+        'Business and Networking',
+        'Food and Drink',
+        'Community and Social',
+        'Health and Wellness',
+        'Charity and Fundraising',
+        'Technology',
+        'Family',
+      ]},
     start_date: {
       type: Date,
       required: true,

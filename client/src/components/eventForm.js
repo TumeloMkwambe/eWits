@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { fetchEvents } from '../Requests/events';
 
 // Styled-components
 const FormContainer = styled.div`
@@ -114,6 +115,7 @@ const EventForm = () => {
     description: '',
     start_date: '',
     start_time: '',
+    event_type: '',
     end_date: '',
     end_time: '',
     location: '',
@@ -130,7 +132,20 @@ const EventForm = () => {
   });
 
   const [venues, setVenues] = useState([]);
-
+  const eventTypes = [
+    'Sports',
+    'Religion',
+    'Education',
+    'Music',
+    'Arts and Culture',
+    'Business and Networking',
+    'Food and Drink',
+    'Community and Social',
+    'Health and Wellness',
+    'Charity and Fundraising',
+    'Technology',
+    'Family',
+  ];
   // Handle input changes
 // Handle input changes
 const handleChange = (e) => {
@@ -200,7 +215,7 @@ const handleChange = (e) => {
     }
 
     // Prepare event data
-    const { title, description, location, capacity, firstname, lastname, email, ticketPrices, isPaid } = formData;
+    const { title, description, location, event_type, capacity, firstname, lastname, email, ticketPrices, isPaid } = formData;
     const startDateArr = formData.start_date.split('-');
     const startTimeArr = formData.start_time.split(':');
     const endDateArr = formData.end_date.split('-');
@@ -212,6 +227,7 @@ const handleChange = (e) => {
       start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
       end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
       location,
+      event_type,
       poster: posterUrl,
       capacity,
       likes: 0,
@@ -259,7 +275,8 @@ const handleChange = (e) => {
           },
         }
       );
-      //window.location.reload();
+      await fetchEvents();
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -297,6 +314,18 @@ const handleChange = (e) => {
             onChange={handleChange}
             required
           />
+        </FormGroup>
+
+        <FormGroup>
+          <Label>Event Type</Label>
+          <Select name="event_type" value={formData.event_type} onChange={handleChange} required>
+            <option value="">Select Event Type</option>
+            {eventTypes.map((type) => (
+              <option value={type}>
+                {type}
+              </option>
+            ))}
+          </Select>
         </FormGroup>
 
         <FormGroup>

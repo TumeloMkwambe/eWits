@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { fetchedEvents, fetchEvents } from '../Requests/events';
 
 // Styled-components (same as before)
 const FormContainer = styled.div`
@@ -158,7 +159,20 @@ const EventDetailsForm = () => {
       isPaid: 'free',
     });
     const [venues, setVenues] = useState([]);
-  
+    const eventTypes = [
+      'Sports',
+      'Religion',
+      'Education',
+      'Music',
+      'Arts and Culture',
+      'Business and Networking',
+      'Food and Drink',
+      'Community and Social',
+      'Health and Wellness',
+      'Charity and Fundraising',
+      'Technology',
+      'Family',
+    ];
     useEffect(() => {
       const fetchEventDetails = async () => {
         const fetchedEvent = await event(eventID);
@@ -260,18 +274,19 @@ const EventDetailsForm = () => {
       }
   
       // Prepare event data
-      const { title, description, location, capacity, firstname, lastname, email, start_date, end_date, start_time, end_time } = formData;
+      const { title, description, event_type, location, capacity, firstname, lastname, email, start_date, end_date, start_time, end_time } = formData;
       const startDateArr = start_date.split("-");
       const startTimeArr = start_time.split(":");
       const endDateArr = end_date.split("-");
       const endTimeArr = end_time.split(":");
   
       const event = {
-        name: title,
+        name: formData.title,
         description,
         start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
         end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
         location,
+        event_type,
         poster: posterUrl,
         capacity,
         likes: 0,
@@ -306,8 +321,8 @@ const EventDetailsForm = () => {
         }).then( response => {
             console.log(response);
         });
-  
-        //window.location.reload();
+        await fetchEvents();
+        window.location.reload();
       } catch (error) {
         console.error(error);
       }
@@ -322,7 +337,7 @@ const EventDetailsForm = () => {
           <Input
             type="text"
             name="title"
-            value={formData.name}
+            value={formData.title}
             onChange={handleChange}
             disabled={!isEditing}
             required
@@ -338,6 +353,24 @@ const EventDetailsForm = () => {
             disabled={!isEditing}
             required
           />
+        </FormGroup>
+
+        <FormGroup>
+          <Label>Event Type</Label>
+          <Select
+            name="event_type"
+            value={formData.event_type}
+            onChange={handleChange}
+            disabled={!isEditing}
+            required
+          >
+            <option value="">Select Event Type</option>
+            {eventTypes.map((type) => (
+              <option value={type}>
+                {type}
+              </option>
+            ))}
+          </Select>
         </FormGroup>
 
         <FormGroup>
