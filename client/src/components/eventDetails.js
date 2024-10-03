@@ -328,6 +328,24 @@ const EventDetailsForm = () => {
       }
     };
 
+    const handleDelete = async (e) => {
+      e.preventDefault(); // Only needed if part of a form
+  
+      try {
+          const response = await axios.delete(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, {
+              headers: {
+                  'x-api-key': process.env.REACT_APP_API_KEY,
+                  'Content-Type': 'application/json'
+              }
+          });
+          console.log('Event deleted successfully:', response.data);
+      } catch (error) {
+          console.error('Error deleting the event:', error);
+      }
+      window.history.back();
+  };
+  
+
   return (
     <FormContainer>
       <FormTitle>Event Details</FormTitle>
@@ -535,6 +553,7 @@ const EventDetailsForm = () => {
           {isEditing ? 'Cancel Edit' : 'Edit Event'}
         </Button>
         {isEditing && <Button type="submit">Save Changes</Button>}
+        {!isEditing ? <Button onClick={handleDelete}>Delete Event</Button> : null}
       </form>
 
       {formData.poster && <ImagePreview src={formData.poster} alt="Event Poster" />}
