@@ -90,4 +90,14 @@ app.post('/api/users/create', async (req, res) => {
   }
 });
 
+app.put('/api/users/:id', async (req, res) => {
+  try {
+    const user = await Users.findById({_id: req.params.id});
+    const updatedUser = await Users.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true});
+    res.status(200).send(updatedUser);
+  } catch (error) {
+    res.status(500).send({error: error.message});
+  }
+});
+
 module.exports = app;
