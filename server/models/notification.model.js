@@ -5,6 +5,10 @@ const notificationsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    event_id: {
+        type: String,
+        required: true
+    },
     notification: {
         type: String,
         required: true
