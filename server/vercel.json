@@ -2,7 +2,11 @@
   "version": 2,
   "routes": [
     {
-      "src": "/api/notapi/(.*)",
+      "src": "/api/notifications/(.*)",
+      "dest": "/api/notapi.js"
+    },
+    {
+      "src": "/api/notifications",
       "dest": "/api/notapi.js"
     },
     {

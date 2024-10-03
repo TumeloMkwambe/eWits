@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sidebar from '../../components/sidebar.js';
 import FavouriteEvents from '../../components/favouriteEvents.js';
 import UpcomingEvents from '../../components/upcomingEvents.js';
 import EventList from '../../components/search.js';
 import '../../globals.css';
+import { requestPermission } from '../Nofications/Notifications.js';
 
 
 const Home = () => {
-
     return (
         <div className="DashboardContainer">
             <Sidebar/>
