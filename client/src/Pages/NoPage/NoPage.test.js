@@ -13,7 +13,7 @@ describe('NoPage Component', () => {
         // Check if the image is rendered correctly
         const image = getByAltText('404 Illustration');
         expect(image).toBeInTheDocument();
-        expect(image.src).toBe(witsImage);
+        expect(image.src).toContain('wits.png'); // Use toContain since src is absolute
 
         // Check if the title is rendered
         const title = getByText("Oops! Page Not Found");
@@ -31,10 +31,13 @@ describe('NoPage Component', () => {
     test('button redirects to home page on click', () => {
         const { getByText } = render(<NoPage />);
 
-        // Mock the window.location.href
+        // Mock window.location.href to simulate navigation
+        delete window.location;
+        window.location = { href: '' }; // Reset href to a blank string for testing
+
         const button = getByText('Go Back Home');
         fireEvent.click(button);
 
-        expect(window.location.href).toBe('http://localhost/');
+        expect(window.location.href).toBe('http://localhost/'); // Check if the URL was changed correctly
     });
 });
