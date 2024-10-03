@@ -11,12 +11,14 @@ const postUser = async (name, email) => {
     liked_events: [],
     my_events: []
   }
+  console.log("User: ", user);
   try {
     await axios.post(`${process.env.REACT_APP_USER_URI}/api/users/create`, user, {
       headers: {
         'Content-Type': 'application/json',
       }
     }).then( response => {
+      console.log("Response");
       sessionStorage.setItem('user', JSON.stringify(response.data));
     });
   } catch (error) {
