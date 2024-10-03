@@ -63,6 +63,74 @@ The application is deployed on Vercel. You can access the live site at the follo
 
 - [Live Site](https://demo-app-two-snowy.vercel.app/) (insert link to deployed site)
 
+## Local Testing
+npm install --save-dev jest
+npm install --save-dev @testing-library/react
+npm install --save-dev @testing-library/jest-dom
+npm install --save-dev babel-jest @babel/preset-env @babel/preset-react
+npm install --save-dev react-test-renderer
+To add **code coverage reports** in Jest, you need to configure Jest to collect coverage data when running your tests.
+
+### Steps:
+
+1. **Update Jest configuration**: You can configure coverage options directly in your `package.json` or in a Jest configuration file (`jest.config.js`).
+
+2. **Run tests with coverage**: Use the `--coverage` flag when running Jest to generate coverage reports.
+
+Here’s how to set it up:
+
+### 1. **Add coverage configuration in `package.json`**:
+
+In your `package.json`, under the `jest` key, add the `collectCoverage` option and specify the directories/files for which you want to collect coverage:
+
+```json
+{
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "coverageReporters": ["text", "lcov", "html"]
+  }
+}
+```
+
+Explanation:
+- **`collectCoverage: true`**: Enables coverage collection.
+- **`coverageDirectory: "coverage"`**: Specifies where coverage reports will be saved.
+- **`collectCoverageFrom`**: Lists the files for which you want to collect coverage (e.g., all JS/JSX/TS/TSX files in the `src` folder). You can exclude files (like `d.ts` files) with the `!` notation.
+- **`coverageReporters`**: Specifies the formats for the coverage report. Common options are:
+  - `"text"`: Shows a summary in the terminal.
+  - `"lcov"`: Generates an HTML report viewable in a browser.
+  - `"html"`: Another HTML report option (good for local viewing).
+
+### 2. **Create a `jest.config.js` file (optional)**:
+
+If you prefer to manage configuration in a separate file, you can create a `jest.config.js` file with the following content:
+
+```javascript
+module.exports = {
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx,ts,tsx}',
+    '!src/**/*.d.ts'
+  ],
+  coverageReporters: ['text', 'lcov', 'html']
+};
+```
+
+### 3. **Run Jest with coverage**:
+
+To generate a coverage report, simply run the following command:
+
+```bash
+npm test -- --coverage
+```
+
+This will run your tests and produce coverage reports in the specified formats. You can open the generated `index.html` file (usually inside the `coverage/lcov-report` folder) to see detailed coverage in a browser.
 
 
 
