@@ -27,6 +27,16 @@ function App() {
         <Route path="/myevents/:eventID" element={<EventDetails />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/calendar" element={<Calendar />} />
+        <Route 
+          path="/completion" 
+          element={
+            <Elements stripe={stripePromise}>
+              <CompletePage />
+            </Elements>
+          } 
+        />
+        <Route path="/payments/*" element={<Payment />} />
+
       </Routes>
     </BrowserRouter>
   );
