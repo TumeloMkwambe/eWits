@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from '../../components/sidebar.js';
 import FavouriteEvents from '../../components/favouriteEvents.js';
 import UpcomingEvents from '../../components/upcomingEvents.js';
+import FetchedEvents from '../../components/ticketRegForm.js'
 import '../../globals.css';
 
 function Home() {
@@ -9,23 +10,25 @@ function Home() {
         <div className="DashboardContainer">
             <Sidebar/>
             <div className="ContentArea">
-                <div className="home">       
-                    <div className="main-content">
+                      
+                    {/* <div className="main-content"> */}
                         <div>
                             <h2 className='title-home'>
                                 Favourite Events
                             </h2>
                         </div>
                         <div className="past-events-container">
-                            
-                            <FavouriteEvents />
+                        <FetchedEvents />
                         </div>
-                        <h2 className='upcoming-events'>Upcoming Events</h2>
+                        <div>
+                            <h2 className='title-home'>Upcoming Events</h2>
+                        </div>
+                        
                         <div className="past-events-container">
                             < UpcomingEvents />
                         </div>
-                    </div>  
-                </div>
+                    
+                {/* </div> */}
             </div>
         </div>
     );

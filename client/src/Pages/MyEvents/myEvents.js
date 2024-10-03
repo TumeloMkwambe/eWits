@@ -8,7 +8,7 @@ const MyEvents = () => {
             <Sidebar/>
             <div className="ContentArea">
                 <div className="home">       
-                    <div className="main-content">
+                    
                         <div>
                             <h2 className='title-home'>
                                 Created Events
@@ -18,7 +18,7 @@ const MyEvents = () => {
                             
                             <CreatedEvents />
                         </div>
-                    </div>  
+                     
                 </div>
             </div>
         </div>

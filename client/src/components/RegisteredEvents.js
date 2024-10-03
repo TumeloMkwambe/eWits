@@ -1,15 +1,18 @@
+
 import React, { useState, useEffect } from "react";
+import BuyTicketModal from "./BuyTicketModal"; // Import the modal component
 
 const RegisteredEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null); // State to hold selected event ID
 
   useEffect(() => {
     const fetchRegisteredEvents = async () => {
       try {
-        // Fetch all events from the events collection
-        const response = await fetch(`${process.env.REACT_APP_URI_RAT}/events`);
+        const response = await fetch(`/events`);
         
         if (!response.ok) {
           throw new Error("Failed to fetch events");
@@ -25,12 +28,17 @@ const RegisteredEvents = () => {
     };
 
     fetchRegisteredEvents();
-  }, []); // No dependency on userId needed
+  }, []);
 
   // Function to handle "Buy" button click
   const handleBuyTicket = (eventId) => {
-    alert(`You clicked "Buy" for event ID: ${eventId}`);
-    // Logic to handle ticket purchasing can be implemented here
+    setSelectedEventId(eventId); // Set the selected event ID
+    setModalOpen(true); // Open the modal
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedEventId(null); // Reset selected event ID
   };
 
   if (loading) return <div>Loading...</div>;
@@ -48,7 +56,6 @@ const RegisteredEvents = () => {
               <p><strong>Location:</strong> {event.location}</p>
               <p><strong>Start Date:</strong> {new Date(event.start_date).toLocaleDateString()}</p>
               <p><strong>End Date:</strong> {new Date(event.end_date).toLocaleDateString()}</p>
-
               <p><strong>Capacity:</strong> {event.capacity}</p>
               <img
                 src={event.poster}
@@ -62,6 +69,13 @@ const RegisteredEvents = () => {
       ) : (
         <p>No events found.</p>
       )}
+      
+      {/* Render the Buy Ticket Modal */}
+      <BuyTicketModal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        eventId={selectedEventId}
+      />
     </div>
   );
 };

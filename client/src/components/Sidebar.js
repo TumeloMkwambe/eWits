@@ -46,6 +46,16 @@ const Sidebar = () => {
       <FaBell />
       <span>Notifications</span>
     </NavLink>
+    <NavLink to="/payments" className="nav-link">
+      <FaBell />
+      <span>Payment</span>
+    </NavLink>
+    <NavLink to="/dummy" className="nav-link">
+      <FaBell />
+      <span>Dummy</span>
+    </NavLink>
+    
+    
     
   
   </nav>

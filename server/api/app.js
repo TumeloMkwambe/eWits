@@ -3,6 +3,9 @@ const app = express();
 const cors = require('cors');
 app.use(cors());
 app.use(express.json());
+const stripeRoutes = require('./stripeapi');
+
+// app.use('/api/stripe', stripeRoutes);
 
 
 app.get("/", (req, res) => res.send("Include API specification for all APIs!"));
