@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -59,71 +59,58 @@ const Button = styled.button`
 
 const formatTime = (date) => {
   date = new Date(date);
-  // Get the hours and minutes
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
-
-  // Combine the hours and minutes into a string
-  const time = `${hours}:${minutes}`;
-
-  return time;
-
-}
+  return `${hours}:${minutes}`;
+};
 
 const formatDate = (date) => {
   date = new Date(date);
-  // Ensure the date is valid
   if (isNaN(date.getTime())) {
-    return ''; // Return an empty string for invalid dates
+    return '';
   }
-
-  // Get the year, month, and day
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
-
-  // Combine the year, month, and day into a string
-  const formattedDate = `${year}-${month}-${day}`;
-
-  return formattedDate;
+  return `${year}-${month}-${day}`;
 };
 
 const DetailsCard = () => {
+  const { eventID } = useParams(); // Get eventID from URL
+  const [formData, setFormData] = useState({});
+  const navigate = useNavigate(); // Initialize useNavigate
 
-  const { eventID } = useParams();
-    const [formData, setFormData] = useState({});
-
-    const event = async (eventID) => {
-        const event = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, {
-          headers: {
-            'x-api-key': process.env.REACT_APP_API_KEY
-          }
-        })
-        return event.data;
+  const event = async (eventID) => {
+    const event = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, {
+      headers: {
+        'x-api-key': process.env.REACT_APP_API_KEY,
+      },
+    });
+    return event.data;
   };
 
-    useEffect(() => {
-        const fetchEventDetails = async () => {
-          const fetchedEvent = await event(eventID);
-          
-          // Format the date and time
-          const formattedEvent = {
-            ...fetchedEvent,
-            start_time: formatTime(fetchedEvent.start_date),
-            end_time: formatTime(fetchedEvent.end_date),
-            start_date: formatDate(fetchedEvent.start_date),
-            end_date: formatDate(fetchedEvent.end_date),
-            firstname: fetchedEvent.creator.name,
-            lastname: fetchedEvent.creator.surname,
-            email: fetchedEvent.creator.email
-          };
-          
-          // Set formData to the fetched and formatted event data
-          setFormData(formattedEvent);
-        };
-      
-        fetchEventDetails();
-      }, [eventID]);
+  useEffect(() => {
+    const fetchEventDetails = async () => {
+      const fetchedEvent = await event(eventID);
+      const formattedEvent = {
+        ...fetchedEvent,
+        start_time: formatTime(fetchedEvent.start_date),
+        end_time: formatTime(fetchedEvent.end_date),
+        start_date: formatDate(fetchedEvent.start_date),
+        end_date: formatDate(fetchedEvent.end_date),
+        firstname: fetchedEvent.creator.name,
+        lastname: fetchedEvent.creator.surname,
+        email: fetchedEvent.creator.email,
+      };
+      setFormData(formattedEvent);
+    };
+
+    fetchEventDetails();
+  }, [eventID]);
+
+  const handleRegisterClick = () => {
+    navigate(`/events/${eventID}/register`); // Navigate to RegisterEvent.js page
+  };
 
   return (
     <CardContainer>
@@ -135,8 +122,9 @@ const DetailsCard = () => {
           <Text>No image available</Text>
         )}
       </CardGroup>
+
       <CardGroup>
-        <Label className='details-card-label'>Event Title</Label>
+        <Label className="details-card-label">Event Title</Label>
         <Text>{formData.name || 'N/A'}</Text>
       </CardGroup>
 
@@ -194,9 +182,12 @@ const DetailsCard = () => {
         <Label>Email</Label>
         <Text>{formData.email || 'N/A'}</Text>
       </CardGroup>
-      <Button>Register</Button>
+
+      {/* Register button that navigates to the registration page */}
+      <Button onClick={handleRegisterClick}>Register</Button>
     </CardContainer>
   );
 };
 
 export default DetailsCard;
+
