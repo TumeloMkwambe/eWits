@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter,Routes,Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/login';
 import Logout from './components/logout';
 import Landing from './Pages/Landing/Landing';
@@ -11,6 +11,9 @@ import MyEvents from './Pages/MyEvents/MyEvents';
 import Calendar from './Pages/Calendar/Calendar';
 import EventDetailsCard from './Pages/EventDetailsCard/EventDetailsCard';
 import Home from './Pages/Home/Home';
+import RegisterEvent from './components/RegisterEvent';  // Import RegisterEvent component
+import DetailsCard from './components/detailsCard'; // Adjust the import path as necessary
+
 
 function App() {
   return (
@@ -27,6 +30,8 @@ function App() {
         <Route path="/myevents/:eventID" element={<EventDetails />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/calendar" element={<Calendar />} />
+        <Route path="/events/:eventID" element={<DetailsCard />} />
+        <Route path="/events/:eventID/register" element={<RegisterEvent />} />
       </Routes>
     </BrowserRouter>
   );
