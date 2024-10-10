@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams for accessing route params
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -62,8 +62,8 @@ const RegisterEvent = () => {
   });
 
   useEffect(() => {
-    console.log('Event ID:', eventID); // Log the eventID to confirm it's passed correctly
-  }, [eventID]); // This will run whenever eventID changes
+    console.log('Event ID:', eventID);
+  }, [eventID]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -71,16 +71,34 @@ const RegisterEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      // POST the registration data to the API
-      await axios.post(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/register`, formData, {
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      if (!user) {
+        throw new Error('User not found in session storage');
+      }
+
+      const registrationData = {
+        ...formData,
+        creator: {
+          name: user.name,  // Pass name from session storage
+          surname: user.surname || "N/A",  // Surname is required in the schema
+          email: user.email,  // Pass email from session storage
+        },
+        userID: user._id,  // Add user ID from session storage
+        eventID: eventID   // Include the eventID
+      };
+
+      console.log('Sending registration data:', registrationData);
+
+      await axios.post(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/register`, registrationData, {
         headers: {
           'x-api-key': process.env.REACT_APP_API_KEY,
         },
       });
+
       alert('Registration successful!');
     } catch (error) {
+      console.error(error);
       alert('Registration failed. Please try again.');
     }
   };

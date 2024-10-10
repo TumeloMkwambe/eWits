@@ -71,15 +71,24 @@ app.post('/api/events/:eventID/register', async (req, res) => {
   try {
     const registrationData = {
       eventID: req.params.eventID,
-      ...req.body
+      fullName: req.body.fullName,
+      studentNumber: req.body.studentNumber,
+      email: req.body.email,
+      phone: req.body.phone,
+      creator: req.body.creator,
+      userID: req.body.userID,
     };
+
+    console.log("Received registration data:", registrationData);
 
     const registration = await Registration.create(registrationData);
     res.status(200).json(registration);
   } catch (error) {
+    console.error("Error registering for event:", error.message);
     res.status(500).json({ error: error.message });
   }
 });
+
 
 app.get('/api/events/:id/:field', async (req, res) => {
   try {
