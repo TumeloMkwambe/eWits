@@ -1,5 +1,6 @@
 import React from 'react'
 import Sidebar from '../../components/sidebar'
+import TicketsPage from '../../components/TicketsPage'
 
 
 function tickets () {
@@ -13,4 +14,4 @@ function tickets () {
   )
 }
 
-export default tickets
+export default TicketsPage

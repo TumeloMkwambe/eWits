@@ -69,18 +69,29 @@ app.post('/api/events/create', async (req, res) => {
 // New registration endpoint
 app.post('/api/events/:eventID/register', async (req, res) => {
   try {
+    const { eventID } = req.params;
+    const { fullName, studentNumber, email, phone, creator, userID } = req.body;
+
+    // Check if the user is already registered for the event
+    const existingRegistration = await Registration.findOne({ eventID, userID });
+
+    if (existingRegistration) {
+      return res.status(400).json({ message: 'You have already registered for this event.' });
+    }
+
     const registrationData = {
-      eventID: req.params.eventID,
-      fullName: req.body.fullName,
-      studentNumber: req.body.studentNumber,
-      email: req.body.email,
-      phone: req.body.phone,
-      creator: req.body.creator,
-      userID: req.body.userID,
+      eventID,
+      fullName,
+      studentNumber,
+      email,
+      phone,
+      creator,
+      userID,
     };
 
     console.log("Received registration data:", registrationData);
 
+    // Create a new registration entry
     const registration = await Registration.create(registrationData);
     res.status(200).json(registration);
   } catch (error) {
@@ -88,6 +99,7 @@ app.post('/api/events/:eventID/register', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 
 app.get('/api/events/:id/:field', async (req, res) => {
@@ -137,6 +149,26 @@ app.delete('/api/events/:id', async (req, res) => {
   }
 });
 
+// New route to fetch registered events for a user
+app.get('/api/user/:userID/tickets', async (req, res) => {
+  try {
+    const userID = req.params.userID;
+    
+    // Fetch all registrations for this user
+    const registrations = await Registration.find({ userID: userID });
+    
+    if (!registrations || registrations.length === 0) {
+      return res.status(404).json({ message: "No tickets found for this user." });
+    }
+
+    res.status(200).json(registrations);
+  } catch (error) {
+    console.error("Error fetching tickets for user:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 mongoose.set("strictQuery", false);
 mongoose
   .connect(database)
@@ -148,4 +180,4 @@ mongoose
   })
   .catch(() => {
     console.log("Connection failed!");
-  });
+  }); 
