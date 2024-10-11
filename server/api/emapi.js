@@ -89,11 +89,16 @@ app.post('/api/events/:eventID/register', async (req, res) => {
       userID,
     };
 
-    console.log("Received registration data:", registrationData);
-
     // Create a new registration entry
     const registration = await Registration.create(registrationData);
-    res.status(200).json(registration);
+
+    // Count the total number of registrations for the event
+    const registrationCount = await Registration.countDocuments({ eventID });
+
+    // Update the registration count in the Events model
+    await Events.findByIdAndUpdate(eventID, { registrationCount }, { new: true });
+
+    res.status(200).json({ message: 'Registration successful', registration });
   } catch (error) {
     console.error("Error registering for event:", error.message);
     res.status(500).json({ error: error.message });
