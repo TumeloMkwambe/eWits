@@ -1,3 +1,4 @@
+
 const express = require("express");
 const app = express();
 const cors = require('cors');
@@ -69,17 +70,43 @@ app.post('/api/events/create', async (req, res) => {
 // New registration endpoint
 app.post('/api/events/:eventID/register', async (req, res) => {
   try {
+    const { eventID } = req.params;
+    const { fullName, studentNumber, email, phone, creator, userID } = req.body;
+
+    // Check if the user is already registered for the event
+    const existingRegistration = await Registration.findOne({ eventID, userID });
+
+    if (existingRegistration) {
+      return res.status(400).json({ message: 'You have already registered for this event.' });
+    }
+
     const registrationData = {
-      eventID: req.params.eventID,
-      ...req.body
+      eventID,
+      fullName,
+      studentNumber,
+      email,
+      phone,
+      creator,
+      userID,
     };
 
+    // Create a new registration entry
     const registration = await Registration.create(registrationData);
-    res.status(200).json(registration);
+
+    // Count the total number of registrations for the event
+    const registrationCount = await Registration.countDocuments({ eventID });
+
+    // Update the registration count in the Events model
+    await Events.findByIdAndUpdate(eventID, { registrationCount }, { new: true });
+
+    res.status(200).json({ message: 'Registration successful', registration });
   } catch (error) {
+    console.error("Error registering for event:", error.message);
     res.status(500).json({ error: error.message });
   }
 });
+
+
 
 app.get('/api/events/:id/:field', async (req, res) => {
   try {
@@ -128,6 +155,26 @@ app.delete('/api/events/:id', async (req, res) => {
   }
 });
 
+// New route to fetch registered events for a user
+app.get('/api/user/:userID/tickets', async (req, res) => {
+  try {
+    const userID = req.params.userID;
+    
+    // Fetch all registrations for this user
+    const registrations = await Registration.find({ userID: userID });
+    
+    if (!registrations || registrations.length === 0) {
+      return res.status(404).json({ message: "No tickets found for this user." });
+    }
+
+    res.status(200).json(registrations);
+  } catch (error) {
+    console.error("Error fetching tickets for user:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 mongoose.set("strictQuery", false);
 mongoose
   .connect(database)
@@ -139,4 +186,4 @@ mongoose
   })
   .catch(() => {
     console.log("Connection failed!");
-  });
+  }); 

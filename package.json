@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "@testing-library/jest-dom": "^6.5.0"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.4",
+    "stripe": "^17.2.0"
   }
 }

@@ -22,11 +22,44 @@ const LandingPage = () => {
           <img src={Logo} alt="App Logo" className="logo"/>
         </div>
         <nav className="nav-bar">
-            <a>About</a>
-            <a>Services</a>
-            <a>Contacts</a>
-            <a>Blog</a>
-        </nav>
+    <a>
+      About
+      <span className="hover-info">
+      At eWits, we’re revolutionizing the event experience. 
+      Our platform empowers users to effortlessly create, manage, and attend events, all in one place. 
+      From discovering the latest campus activities to purchasing tickets, we make event management seamless. 
+      Whether you're hosting or participating, eWits ensures that every event runs smoothly, fostering community engagement and making every moment memorable. 
+      Join us and simplify your event journey!
+      </span>
+    </a>
+    <a>
+      Services
+      <span className="hover-info">
+      Unlock a world of endless possibilities with eWits. 
+      Whether it’s a campus concert, a workshop, or a networking event, we’ve got you covered. 
+      Our services provide you with the tools to create and manage unforgettable experiences. 
+      From event registration to seamless ticket purchases, we make it all happen—effortlessly.
+      </span>
+    </a>
+    <a>
+      Contacts
+      <span className="hover-info">
+      Got questions or need assistance? 
+      We're here for you! Our team is dedicated to ensuring that your event experience is smooth and enjoyable. 
+      Whether you're organizing or attending, we’re just a call or message away. 
+      Let’s connect and make your event unforgettable!
+      </span>
+    </a>
+    <a>
+      Blog
+      <span className="hover-info">
+      Stay in the loop with the latest event trends, tips, and insider stories! 
+      Our blog keeps you informed and inspired, whether you’re looking to host an event or find new ways to engage with your community. 
+      Dive into a world of creativity and innovation with eWits.
+      </span>
+    </a>
+</nav>
+
         <a> <Login /> </a>
       </header>
 

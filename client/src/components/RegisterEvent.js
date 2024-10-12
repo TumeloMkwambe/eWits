@@ -1,7 +1,12 @@
+
+
+
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams for accessing route params
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import '../globals.css'
+import Sidebar from './sidebar';
 
 // Styled-components for the form
 const FormContainer = styled.div`
@@ -60,10 +65,35 @@ const RegisterEvent = () => {
     email: '',
     phone: ''
   });
+  const [isRegistered, setIsRegistered] = useState(false); // Track if the user is already registered
+  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
-    console.log('Event ID:', eventID); // Log the eventID to confirm it's passed correctly
-  }, [eventID]); // This will run whenever eventID changes
+    const checkRegistration = async () => {
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      if (!user) {
+        alert('User not found. Please log in again.');
+        return;
+      }
+
+      try {
+        // Make a request to check if the user has already registered for the event
+        const response = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/registrations/${user._id}`, {
+          headers: {
+            'x-api-key': process.env.REACT_APP_API_KEY,
+          }
+        });
+
+        if (response.data.isRegistered) {
+          setIsRegistered(true);
+        }
+      } catch (error) {
+        console.error('Error checking registration:', error);
+      }
+    };
+
+    checkRegistration();
+  }, [eventID]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -72,68 +102,104 @@ const RegisterEvent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (isRegistered) {
+      alert('You have already registered for this event.');
+      return;
+    }
+
     try {
-      // POST the registration data to the API
-      await axios.post(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/register`, formData, {
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      if (!user) {
+        throw new Error('User not found in session storage');
+      }
+
+      const registrationData = {
+        ...formData,
+        creator: {
+          name: user.name,
+          surname: user.surname || 'N/A',
+          email: user.email,
+        },
+        userID: user._id,
+        eventID: eventID
+      };
+
+      console.log('Sending registration data:', registrationData);
+
+      // Make the API call to register the user
+      await axios.post(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/register`, registrationData, {
         headers: {
           'x-api-key': process.env.REACT_APP_API_KEY,
         },
       });
+
       alert('Registration successful!');
+      // Redirect to TicketsPage after successful registration
+      navigate('/tickets'); // Replace '/tickets' with your actual route for TicketsPage
     } catch (error) {
-      alert('Registration failed. Please try again.');
+      console.error(error);
+      alert('You have already registered for this event.');
     }
   };
 
   return (
-    <FormContainer>
-      <FormTitle>Register for Event</FormTitle>
-      <form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label>Full Name</Label>
-          <Input 
-            type="text" 
-            name="fullName" 
-            value={formData.fullName} 
-            onChange={handleChange} 
-            required 
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>Student Number</Label>
-          <Input 
-            type="text" 
-            name="studentNumber" 
-            value={formData.studentNumber} 
-            onChange={handleChange} 
-            required 
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>Email</Label>
-          <Input 
-            type="email" 
-            name="email" 
-            value={formData.email} 
-            onChange={handleChange} 
-            required 
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>Phone</Label>
-          <Input 
-            type="tel" 
-            name="phone" 
-            value={formData.phone} 
-            onChange={handleChange} 
-            required 
-          />
-        </FormGroup>
-        <Button type="submit">Register</Button>
-      </form>
-    </FormContainer>
+    <div className='DashboardContainer'>
+      <Sidebar/>
+      <div className='ContentArea'>
+      <FormContainer>
+              <FormTitle>Register for Event</FormTitle>
+              {isRegistered ? (
+                <p>You have already registered for this event.</p>
+              ) : (
+                <form onSubmit={handleSubmit}>
+                  <FormGroup>
+                    <Label>Full Name</Label>
+                    <Input 
+                      type="text" 
+                      name="fullName" 
+                      value={formData.fullName} 
+                      onChange={handleChange} 
+                      required 
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Student Number</Label>
+                    <Input 
+                      type="text" 
+                      name="studentNumber" 
+                      value={formData.studentNumber} 
+                      onChange={handleChange} 
+                      required 
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Email</Label>
+                    <Input 
+                      type="email" 
+                      name="email" 
+                      value={formData.email} 
+                      onChange={handleChange} 
+                      required 
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Phone</Label>
+                    <Input 
+                      type="tel" 
+                      name="phone" 
+                      value={formData.phone} 
+                      onChange={handleChange} 
+                      required 
+                    />
+                  </FormGroup>
+                  <Button type="submit">Register</Button>
+                </form>
+              )}
+          </FormContainer>
+      </div>
+    </div>
+    
   );
 };
 
 export default RegisterEvent;
-
