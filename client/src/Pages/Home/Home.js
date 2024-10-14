@@ -6,9 +6,7 @@ import FilteredEvents from '../../components/filteredEvents.js';
 import EventList from '../../components/search.js';
 import '../../globals.css';
 
-
 const Home = () => {
-
     const Types = [
         'Sports',
         'Religion',
@@ -22,13 +20,13 @@ const Home = () => {
         'Charity and Fundraising',
         'Technology',
         'Family',
-      ];
+    ];
 
     return (
         <div className="DashboardContainer">
-            <Sidebar/>
+            <Sidebar />
             <div className="ContentArea">
-                <div className="home">       
+                <div className="home">
                     <div className="main-content">
                         <div>
                             <h2 className='title-home'>
@@ -36,20 +34,18 @@ const Home = () => {
                             </h2>
                         </div>
                         <div className="past-events-container">
-                            
                             <FavouriteEvents />
                         </div>
 
-                        {Types.map( type => {
-                            return <div>
+                        {Types.map(type => (
+                            <div key={type}>
                                 <h2 className='upcoming-events'>{type}</h2>
                                 <div className="past-events-container">
-                                    < FilteredEvents type={type} />
+                                    <FilteredEvents type={type} />
                                 </div>
                             </div>
-                        })}
-
-                    </div>  
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

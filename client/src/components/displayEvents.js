@@ -3,28 +3,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { fetchEvents } from '../Requests/events';
-import { likeEvent, dislikeEvent } from '../Requests/events';
-import { userLikesEvent } from '../Requests/users';
+import { fetchEvents, likeEvent, dislikeEvent, userLikesEvent } from '../Requests/events';
 
 const like = async (e, eventID) => {
     e.stopPropagation();
     try {
-        userLikesEvent();
-        const updatedUser = sessionStorage.getItem('user');
+        await userLikesEvent(); // Assuming this function returns a promise
+        const updatedUser = JSON.parse(sessionStorage.getItem('user')); // Parse the user object
 
         if (updatedUser.data.liked_events.includes(eventID)) {
-            likeEvent(eventID);
+            await likeEvent(eventID); // Add await here if it's an async function
         } else {
-            dislikeEvent(eventID);
+            await dislikeEvent(eventID); // Add await here if it's an async function
         }
     } catch (error) {
         console.log(error);
     }
-    fetchEvents();
+    await fetchEvents(); // Add await here if it's an async function
 };
 
-const DisplayEvents = ({ filteredEvents, route}) => {
+const DisplayEvents = ({ filteredEvents, route }) => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -32,22 +30,26 @@ const DisplayEvents = ({ filteredEvents, route}) => {
         const filtered_events = await filteredEvents();
         setEvents(filtered_events);
         setLoading(false);
-    }
+    };
 
     useEffect(() => {
-        const navigationType = performance.getEntriesByType('navigation')[0]?.type;
+        // Only run this effect if not in test environment
+        if (process.env.NODE_ENV !== 'test') {
+            const navigationType = performance.getEntriesByType('navigation')[0]?.type;
 
-        if (navigationType === 'reload') {
-            fetchFilteredEvents();
-        }
-        else{
-            fetchFilteredEvents()
+            if (navigationType === 'reload') {
+                fetchFilteredEvents();
+            } else {
+                fetchFilteredEvents();
+            }
+        } else {
+            fetchFilteredEvents(); // Fetch events directly in the test environment
         }
     }, []);
+
     if (loading) {
         return <div>Loading events...</div>;
-    }
-    else{
+    } else {
         return (
             <div className="past-events">
                 {events.map(event => (
