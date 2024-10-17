@@ -15,8 +15,9 @@ const MyEvents = () => {
                             </h2>
                         </div>
                         <div className="past-events-container">
-                            
-                            <CreatedEvents />
+                            <div className="past-events-container">
+                                <CreatedEvents />
+                            </div>  
                         </div>
                     </div>  
                 </div>

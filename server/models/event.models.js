@@ -95,6 +95,10 @@ const eventSchema = mongoose.Schema(
     },
     ticket: {
       type: ticketSchema
+    },
+    registrationCount: { // New field to track the number of registrations
+      type: Number,
+      default: 0,
     }
   },
   {

@@ -1,12 +1,13 @@
 import React from 'react'
 import Sidebar from '../../components/sidebar'
+import Review from '../../components/Review'
 
 function notifications ()  {
   return (
     <div className='DashboardContainer'>
         <Sidebar/>
         <div className='ContentArea'>
-            Your Notifications here bruv
+            <h3>Notifications</h3>
         </div>
     </div>
   )

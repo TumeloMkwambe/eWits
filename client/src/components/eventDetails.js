@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
 import { fetchedEvents, fetchEvents } from '../Requests/events';
 
@@ -152,6 +152,7 @@ const formatDate = (date) => {
 
 const EventDetailsForm = () => {
     const { eventID } = useParams();
+    const navigate = useNavigate(); // Use navigate hook to redirect
     const [isEditing, setIsEditing] = useState(false); // Control editing state
     const [imageUrl, setImageUrl] = useState('');
     const [formData, setFormData] = useState({
@@ -176,7 +177,7 @@ const EventDetailsForm = () => {
     useEffect(() => {
       const fetchEventDetails = async () => {
         const fetchedEvent = await event(eventID);
-        console.log(fetchedEvent);
+        //console.log(fetchedEvent);
         // Format the date and time
         const formattedEvent = {
           ...fetchedEvent,
@@ -195,7 +196,7 @@ const EventDetailsForm = () => {
           } : { general: fetchedEvent.ticket.price.general,
                 vip: fetchedEvent.ticket.price.vip }
         };
-        console.log(formattedEvent);
+       // console.log(formattedEvent);
   
         // Set formData to the fetched and formatted event data
         setFormData(formattedEvent);
@@ -255,7 +256,7 @@ const EventDetailsForm = () => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       let posterUrl = formData.poster;
-  
+    
       // Handle file upload if poster is changed
       if (formData.poster instanceof File) {
         const formDataImg = new FormData();
@@ -272,14 +273,14 @@ const EventDetailsForm = () => {
           console.error('Error uploading image', error);
         }
       }
-  
+    
       // Prepare event data
       const { title, description, event_type, location, capacity, firstname, lastname, email, start_date, end_date, start_time, end_time } = formData;
       const startDateArr = start_date.split("-");
       const startTimeArr = start_time.split(":");
       const endDateArr = end_date.split("-");
       const endTimeArr = end_time.split(":");
-  
+    
       const event = {
         name: formData.title,
         description,
@@ -296,21 +297,21 @@ const EventDetailsForm = () => {
           email,
         },
         ticket: {
-            type: formData.isPaid,
-            price: formData.ticket
+          type: formData.isPaid,
+          price: formData.ticket,
         },
       };
-  
+    
       try {
         const createdEvent = await axios.put(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, event, {
           headers: {
             'x-api-key': process.env.REACT_APP_API_KEY,
             'Content-Type': 'application/json',
           },
-        }).then( response => {
-            return response;
+        }).then(response => {
+          return response;
         });
-        
+    
         // Link event to user
         const myEvent = { entry: createdEvent.data._id };
         const userID = JSON.parse(sessionStorage.getItem('user'));
@@ -318,15 +319,16 @@ const EventDetailsForm = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-        }).then( response => {
-            console.log(response);
         });
         await fetchEvents();
-        window.location.reload();
+        
+        // Redirect to the correct route
+        navigate('/createdevents');  // Use '/createdevents' as the correct path
       } catch (error) {
         console.error(error);
       }
     };
+    
 
     const handleDelete = async (e) => {
       e.preventDefault(); // Only needed if part of a form
@@ -357,7 +359,7 @@ const EventDetailsForm = () => {
             name="title"
             value={formData.title}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           />
         </FormGroup>
@@ -368,7 +370,7 @@ const EventDetailsForm = () => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           />
         </FormGroup>
@@ -379,7 +381,7 @@ const EventDetailsForm = () => {
             name="event_type"
             value={formData.event_type}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           >
             <option value="">Select Event Type</option>
@@ -398,7 +400,7 @@ const EventDetailsForm = () => {
             name="start_date"
             value={formData.start_date}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           />
         </FormGroup>
@@ -410,7 +412,7 @@ const EventDetailsForm = () => {
             name="start_time"
             value={formData.start_time}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           />
         </FormGroup>
@@ -422,7 +424,7 @@ const EventDetailsForm = () => {
             name="end_date"
             value={formData.end_date}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           />
         </FormGroup>
@@ -434,7 +436,7 @@ const EventDetailsForm = () => {
             name="end_time"
             value={formData.end_time}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           />
         </FormGroup>
@@ -445,7 +447,7 @@ const EventDetailsForm = () => {
             name="location"
             value={formData.location}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           >
             <option value="">Select a location</option>
@@ -475,7 +477,7 @@ const EventDetailsForm = () => {
             name="firstname"
             value={formData.firstname}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           />
         </FormGroup>
@@ -487,7 +489,7 @@ const EventDetailsForm = () => {
             name="lastname"
             value={formData.lastname}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           />
         </FormGroup>
@@ -499,7 +501,7 @@ const EventDetailsForm = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           />
         </FormGroup>
@@ -521,7 +523,7 @@ const EventDetailsForm = () => {
                 name="ticket.general" // Correctly map to ticketPrices.general
                 value={formData.ticket.general}
                 onChange={handleChange}
-                disabled={!isEditing}
+                disabled={isEditing}
             />
             </FormGroup>
 
@@ -532,7 +534,7 @@ const EventDetailsForm = () => {
                 name="ticket.vip" // Correctly map to ticketPrices.vip
                 value={formData.ticket.vip}
                 onChange={handleChange}
-                disabled={!isEditing}
+                disabled={isEditing}
             />
             </FormGroup>
 
@@ -545,14 +547,15 @@ const EventDetailsForm = () => {
             type="file"
             name="poster"
             onChange={handleFileChange}
-            disabled={!isEditing}
+            disabled={isEditing}
           />
         </FormGroup>
 
         <Button type="button" onClick={handleEdit}>
           {isEditing ? 'Cancel Edit' : 'Edit Event'}
         </Button>
-        {isEditing && <Button type="submit">Save Changes</Button>}
+        {isEditing && <Button type="submit">Save Changes</Button> }
+        
         {!isEditing ? <Button onClick={handleDelete}>Delete Event</Button> : null}
       </form>
 
