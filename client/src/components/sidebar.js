@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate, NavLink } from 'react-router-dom';
 import Logo from '../../src/images/logo1.svg'
-import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaImages } from 'react-icons/fa';
+import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaPen, FaUserFriends } from 'react-icons/fa';
 
 const Sidebar = () => {
 
@@ -13,11 +13,14 @@ const Sidebar = () => {
 
     navigate('/logout'); 
   };
+  const handleProfileClick = () => {
+    navigate('/home'); 
+  };
 
   return (
     <div className="sidebar">
 
-  <div className="profile-section">
+  <div className="profile-section" onClick={handleProfileClick }>
     <img src={Logo} alt="Profile" className="profile-image" />
     <h3 className="profile-name">eWits</h3>
   </div>
@@ -31,7 +34,7 @@ const Sidebar = () => {
       <span>Create Event</span>
     </NavLink>
     <NavLink to="/myevents" className="nav-link">
-      <FaCalendarAlt />
+      <FaUserFriends />
       <span>My Events</span>
     </NavLink>
     <NavLink to="/calendar" className="nav-link">
@@ -45,6 +48,10 @@ const Sidebar = () => {
     <NavLink to="/notifications" className="nav-link">
       <FaBell />
       <span>Notifications</span>
+    </NavLink>
+    <NavLink to="/reviews" className="nav-link">
+      <FaPen />
+      <span>Reviews</span>
     </NavLink>
   </nav>
   <button className="logout-button" onClick={handleLogout}>

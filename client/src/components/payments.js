@@ -1,4 +1,4 @@
-// PaymentApp.jsx
+
 import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -7,25 +7,39 @@ import CompletePage from "./CompletePage";
 import '../StripeStyling.css';
 import '../loadingContainer.css';
 import Sidebar from "./sidebar";
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const stripePromise = loadStripe(process.env.STRIPE_PULIC_KEY);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 export default function PaymentApp() {
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [error, setError] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('Location state:', location.state);
+    const { ticket } = location.state || {};
+    console.log('Ticket information:', ticket);
+
     const fetchPaymentIntent = async () => {
+      if (!ticket) {
+        console.error("No ticket information provided");
+        setError("No ticket information provided. Please select a ticket first.");
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetch('http://localhost:5252/create-payment-intent', {
+        const response = await fetch(`${process.env.REACT_APP_STRIPE}/create-payment-intent`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            items: [{ id: "Volvo", amount: 14500 }]
+            items: [{ id: ticket.event.name, amount: ticket.price * 100 }]
           })
         });
 
@@ -44,7 +58,7 @@ export default function PaymentApp() {
     };
 
     fetchPaymentIntent();
-  }, []);
+  }, [location.state]);
 
   const appearance = {
     theme: 'stripe',
@@ -104,7 +118,12 @@ export default function PaymentApp() {
   };
 
   if (error) {
-    return <div className="error-message">Error: {error}</div>;
+    return (
+      <div className="error-message">
+        <p>Error: {error}</p>
+        <button onClick={() => navigate('/tickets')}>Return to Tickets</button>
+      </div>
+    );
   }
 
   return (
@@ -115,7 +134,7 @@ export default function PaymentApp() {
 
         {!loading && clientSecret && !paymentCompleted && (
           <Elements options={options} stripe={stripePromise}>
-            <CheckoutForm onPaymentComplete={() => setPaymentCompleted(true)} />
+            <CheckoutForm onPaymentComplete={() => setPaymentCompleted(true)} ticketInfo={location.state?.ticket} />
           </Elements>
         )}
 

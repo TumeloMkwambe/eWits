@@ -1,12 +1,9 @@
 
 
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-import '../globals.css'
-import Sidebar from './sidebar';
 
 // Styled-components for the form
 const FormContainer = styled.div`
@@ -143,63 +140,59 @@ const RegisterEvent = () => {
   };
 
   return (
-    <div className='DashboardContainer'>
-      <Sidebar/>
-      <div className='ContentArea'>
-      <FormContainer>
-              <FormTitle>Register for Event</FormTitle>
-              {isRegistered ? (
-                <p>You have already registered for this event.</p>
-              ) : (
-                <form onSubmit={handleSubmit}>
-                  <FormGroup>
-                    <Label>Full Name</Label>
-                    <Input 
-                      type="text" 
-                      name="fullName" 
-                      value={formData.fullName} 
-                      onChange={handleChange} 
-                      required 
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label>Student Number</Label>
-                    <Input 
-                      type="text" 
-                      name="studentNumber" 
-                      value={formData.studentNumber} 
-                      onChange={handleChange} 
-                      required 
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label>Email</Label>
-                    <Input 
-                      type="email" 
-                      name="email" 
-                      value={formData.email} 
-                      onChange={handleChange} 
-                      required 
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label>Phone</Label>
-                    <Input 
-                      type="tel" 
-                      name="phone" 
-                      value={formData.phone} 
-                      onChange={handleChange} 
-                      required 
-                    />
-                  </FormGroup>
-                  <Button type="submit">Register</Button>
-                </form>
-              )}
-          </FormContainer>
-      </div>
-    </div>
-    
+    <FormContainer>
+      <FormTitle>Register for Event</FormTitle>
+      {isRegistered ? (
+        <p>You have already registered for this event.</p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <FormGroup>
+            <Label>Full Name</Label>
+            <Input 
+              type="text" 
+              name="fullName" 
+              value={formData.fullName} 
+              onChange={handleChange} 
+              required 
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Student Number</Label>
+            <Input 
+              type="text" 
+              name="studentNumber" 
+              value={formData.studentNumber} 
+              onChange={handleChange} 
+              required 
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Email</Label>
+            <Input 
+              type="email" 
+              name="email" 
+              value={formData.email} 
+              onChange={handleChange} 
+              required 
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Phone</Label>
+            <Input 
+              type="tel" 
+              name="phone" 
+              value={formData.phone} 
+              onChange={handleChange} 
+              required 
+            />
+          </FormGroup>
+          <Button type="submit">Register</Button>
+        </form>
+      )}
+    </FormContainer>
   );
 };
 
 export default RegisterEvent;
+
+

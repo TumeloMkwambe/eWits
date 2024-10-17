@@ -73,11 +73,18 @@ app.post('/api/events/:eventID/register', async (req, res) => {
     const { eventID } = req.params;
     const { fullName, studentNumber, email, phone, creator, userID } = req.body;
 
-    // Check if the user is already registered for the event
-    const existingRegistration = await Registration.findOne({ eventID, userID });
+    console.log('Request Body:', req.body);
 
+    const existingRegistration = await Registration.findOne({ eventID, userID });
     if (existingRegistration) {
       return res.status(400).json({ message: 'You have already registered for this event.' });
+    }
+
+    console.log('Creator Object:', creator);
+
+    // Validate creator object
+    if (!creator || typeof creator !== 'object') {
+      return res.status(400).json({ message: 'Invalid creator data.' });
     }
 
     const registrationData = {
@@ -86,22 +93,34 @@ app.post('/api/events/:eventID/register', async (req, res) => {
       studentNumber,
       email,
       phone,
-      creator,
+      creator: {
+        name: creator.name || 'N/A',
+        surname: creator.surname || 'N/A',
+        email: creator.email || 'N/A',
+        _id: creator._id || userID // Use userID as fallback for _id
+      },
       userID,
     };
 
-    // Create a new registration entry
+    console.log('Registration Data:', registrationData);
+
     const registration = await Registration.create(registrationData);
 
-    // Count the total number of registrations for the event
     const registrationCount = await Registration.countDocuments({ eventID });
-
-    // Update the registration count in the Events model
     await Events.findByIdAndUpdate(eventID, { registrationCount }, { new: true });
 
-    res.status(200).json({ message: 'Registration successful', registration });
+    console.log('Saved Registration:', registration);
+
+    res.status(200).json({
+      message: 'Registration successful',
+      registration: {
+        ...registration.toObject(),
+        creator: registration.creator,
+        userID: registration.userID
+      }
+    });
   } catch (error) {
-    console.error("Error registering for event:", error.message);
+    console.error("Error registering for event:", error);
     res.status(500).json({ error: error.message });
   }
 });

@@ -12,6 +12,7 @@ import GreatHall from '../../images/GreatHall.png';
 import Logo from '../../images/eWits.png';
 import LandingEvents from '../../components/landingEvents';
 
+
 const LandingPage = () => {
   const events = LandingEvents();
 
@@ -97,6 +98,8 @@ const LandingPage = () => {
               ))} 
           </div>
         </section>
+
+        
 
         <section className="tour-section">
           <a href="https://www.wits.ac.za/campus-life/wits-virtual-tour/" target="_blank" rel="noopener noreferrer" className="clickable-image">

@@ -19,9 +19,16 @@ import { Elements } from "@stripe/react-stripe-js";
 import Payment from './components/payments';
 import PurchaseTickets from './components/purchaseTickets';
 import TicketsPage from './components/TicketsPage';
+// import LusionScene from './components/LusionScene'; 
+// import LusionPage from './Pages/LusionScene/LusionPage';
+import Reviews from '../src/Pages/Reviews/Reviews';
 
 
-const stripePromise = loadStripe(process.env.STRIPE_PULIC_KEY);
+const stripeKey = process.env.REACT_APP_STRIPE_PUBLIC_KEY
+console.log(stripeKey, 'KEY')
+console.log(process.env.REACT_APP_USER_URI, 'testing')
+const stripePromise = loadStripe(stripeKey);
+console.log(process.env.REACT_APP_STRIPE_PUBLIC_KEY, 'STRIPE KEY')
 
 
 function App() {
@@ -52,6 +59,8 @@ function App() {
             </Elements>
           } 
         />
+        {/* <Route path="/lusion" element={<LusionPage />} /> */}
+        <Route path="/reviews" element={<Reviews />} />
       </Routes>
     </BrowserRouter>
   );

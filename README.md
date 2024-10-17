@@ -134,6 +134,66 @@ npm test -- --coverage
 
 This will run your tests and produce coverage reports in the specified formats. You can open the generated `index.html` file (usually inside the `coverage/lcov-report` folder) to see detailed coverage in a browser.
 
+## Stripe
+Stripe Payment Gateway Integration
+Overview
+The Stripe Payment Gateway integration allows the application to process payments securely and efficiently. Stripe offers an easy-to-use API that supports credit card payments, refunds, and customer management. This integration is essential for facilitating ticket purchases and ensuring a smooth transaction experience for users.
+
+What Does the Stripe Integration Do?
+Secure Transactions: Handles user payments securely through Stripe's encryption and tokenization features.
+Ticket Purchases: Allows users to buy tickets directly in the app.
+Payment Management: Supports managing transactions, issuing refunds, and sending payment confirmations.
+Scalability: Can handle multiple payment methods and scale as your application grows.
+Requirements
+Before integrating Stripe, you need to meet the following prerequisites:
+
+Stripe Account: You must create an account at stripe.com. Once you’ve signed up, you’ll be able to access your API Keys.
+
+API Keys: Stripe provides two keys:
+
+Publishable Key (for the frontend)
+Secret Key (for the backend)
+These keys will be used to authenticate requests between your application and Stripe.
+
+Installation
+Install Stripe Libraries:
+
+You’ll need to install Stripe libraries for both your backend and frontend environments.
+
+Backend: Install the official Stripe SDK (commonly used with Node.js):
+
+bash
+
+`npm install stripe`
+Frontend: If using React, install the Stripe integration libraries:
+
+bash
+
+`npm install @stripe/react-stripe-js @stripe/stripe-js`
+Configure Environment Variables:
+
+Once installed, set up your API keys as environment variables in your project. This ensures the security of your sensitive information, especially the secret key. For example:
+
+`STRIPE_SECRET_KEY` for your backend
+`STRIPE_PUBLISHABLE_KEY` for your frontend
+You can add these to your .env file or your cloud environment settings.
+
+Backend Setup
+On the backend, you will need to set up endpoints that handle the creation of Payment Intents, which are Stripe’s way of tracking and processing a payment. The backend securely handles payment processing and communicates with the Stripe API to confirm and manage transactions.
+
+Ensure that your backend server can securely handle customer data and interact with the Stripe API using your secret key.
+
+Frontend Setup
+On the frontend, you'll integrate Stripe to display the payment form. Typically, this is done using Stripe Elements, which provides pre-built UI components like card input fields. The frontend will communicate with the backend to confirm the payment and ensure the transaction is successful.
+
+Stripe’s UI components are fully responsive and handle form validation, error messaging, and real-time feedback to users, ensuring a smooth payment experience.
+
+Testing the Integration
+Stripe provides test card numbers to simulate various payment scenarios, including successful transactions, failed transactions, and different card types. Use these test cards during development to ensure your integration works as expected before going live.
+
+For example, use the test card number 4242 4242 4242 4242 for a successful transaction.
+
+
 
 
 ## Links

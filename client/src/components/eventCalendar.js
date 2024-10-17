@@ -69,6 +69,7 @@ const EventCalendar = () => {
   }, []);
 
   return (
+    
         <CalendarContainer>
           <Calendar
             localizer={localizer}

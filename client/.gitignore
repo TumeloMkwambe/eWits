@@ -2,3 +2,5 @@ node_modules/
 .env
 ticketView.js
 purchaseTickets.js
+stripebackup.js
+LusionScene.js

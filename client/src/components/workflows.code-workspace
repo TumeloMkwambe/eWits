@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "workflows",
+			"path": "../../../../EventsManagement/workflows"
+		},
+		{
+			"name": "eWits",
+			"path": "../../.."
+		}
+	],
+	"settings": {}
+}

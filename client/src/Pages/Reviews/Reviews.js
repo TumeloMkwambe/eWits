@@ -1,16 +1,18 @@
 import React from 'react'
-import Sidebar from '../../components/sidebar'
+import '../../globals.css'
 import Review from '../../components/Review'
+import Sidebar from '../../components/sidebar'
 
-function notifications ()  {
+const Reviews = () => {
   return (
     <div className='DashboardContainer'>
         <Sidebar/>
         <div className='ContentArea'>
-            <h3>Notifications</h3>
+            <h2 className='title-home'>Review</h2>
+            <Review/>
         </div>
     </div>
   )
 }
 
-export default notifications
+export default Reviews

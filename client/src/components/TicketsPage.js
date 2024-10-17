@@ -1,16 +1,17 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
 import '../globals.css'
 import Sidebar from './sidebar';
 import { useNavigate } from 'react-router-dom';
-// Styled-components for displaying tickets with improved design
+import LoadingAnimation from './loadingAnimation';
+
 const TicketsContainer = styled.div`
   max-width: 700px;
   margin: 2rem auto;
   padding: 1rem;
-  background-color: #f9f9f9;
+  background-color: transparent;
 `;
 
 const Heading = styled.h2`
@@ -18,6 +19,7 @@ const Heading = styled.h2`
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
   color: #003b5b;
+  background-color: transparent;
 `;
 
 const TicketCard = styled.div`
@@ -90,80 +92,69 @@ const BuyButton = styled.button`
   }
 `;
 
+const MissingEventCard = styled(TicketCard)`
+  background: linear-gradient(45deg, #ff9966, #ff5e62);
+`;
+
+const MissingEventTitle = styled(EventTitle)`
+  color: #fff;
+`;
+
+const MissingEventDetails = styled(EventDetails)`
+  color: #fff;
+`;
+
 const TicketsPage = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const user = JSON.parse(sessionStorage.getItem('user'));
-        if (!user) {
-          throw new Error('User not found in session storage');
+        const user = JSON.parse(sessionStorage.getItem('user'))
+        console.log(user, 'This is the user for the tickets');
+        if (!user || !user._id) {
+          throw new Error('User not found in session storage or missing _id');
         }
 
-        const registrationResponse = await axios.get(`${process.env.REACT_APP_USER_URI}/api/users/${user._id}`, {
-          headers: {
-            'x-api-key': process.env.REACT_APP_API_KEY,
-          },
+        const userResponse = await axios.get(`${process.env.REACT_APP_USER_URI}/api/users/${user._id}`, {
+          headers: { 'x-api-key': process.env.REACT_APP_API_KEY },
         });
 
-        const registrations = registrationResponse.data;
-        const ticketData = [];
-
-        for (const registration of registrations) {
-          const eventResponse = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${registration.eventID}`, {
-            headers: {
-              'x-api-key': process.env.REACT_APP_API_KEY,
-            },
-          });
-          const event = eventResponse.data;
-
-          const hasGeneral = event.ticket.price.general !== undefined;
-          const hasVIP = event.ticket.price.vip !== undefined;
-
-          if (hasGeneral || hasVIP) {
-            if (event.ticket.price.general === 0 && event.ticket.price.vip === 0) {
-              ticketData.push({
-                registration,
-                event,
-                type: null,
-                price: 'Free',
-              });
-            } else {
-              if (event.ticket.price.general !== 0) {
-                ticketData.push({
-                  registration,
-                  event,
-                  type: 'General',
-                  price: event.ticket.price.general,
-                });
-              }
-              if (event.ticket.price.vip !== 0) {
-                ticketData.push({
-                  registration,
-                  event,
-                  type: 'VIP',
-                  price: event.ticket.price.vip,
-                });
-              }
-            }
-          } else {
-            // If no ticket types exist
-            ticketData.push({
-              registration,
-              event,
-              type: null,
-              price: 'Free',
-            });
-          }
+        const userData = userResponse.data;
+        if (!userData.my_events || !Array.isArray(userData.my_events)) {
+          throw new Error('Invalid user data received');
         }
 
+        const ticketDataPromises = userData.my_events.map(async (eventId) => {
+          try {
+            const eventResponse = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventId}`, {
+              headers: { 'x-api-key': process.env.REACT_APP_API_KEY },
+            });
+
+            const event = eventResponse.data;
+            if (!event) throw new Error(`Event not found for ID: ${eventId}`);
+
+            let ticketInfo = { type: null, price: 'Free' };
+            if (event.ticket && event.ticket.price) {
+              const { general, vip } = event.ticket.price;
+              if (general) ticketInfo = { type: 'General', price: general };
+              else if (vip) ticketInfo = { type: 'VIP', price: vip };
+            }
+
+            return { event, ...ticketInfo };
+          } catch {
+            return { isMissing: true, eventId };
+          }
+        });
+
+        const ticketData = await Promise.all(ticketDataPromises);
         setTickets(ticketData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching tickets:', error);
+      } catch (err) {
+        setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
@@ -171,60 +162,73 @@ const TicketsPage = () => {
     fetchTickets();
   }, []);
 
-  const handleBuyTicket = (ticketType, price) => {
-    alert(`Buying a ${ticketType} ticket for ${price}!`);
-    navigate('/payments');
+  const handleBuyTicket = (ticket) => {
+    console.log('Ticket being passed to payment:', ticket);
+    navigate('/payments', { state: { ticket } });
   };
 
   if (loading) {
-    return <p>Loading tickets...</p>;
+    return <LoadingAnimation />;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
   }
 
   return (
     <div className='DashboardContainer'>
-        <Sidebar/>
-        <div className='ContentArea'>
-            <TicketsContainer>
-                <Heading>Tickets for your registered events</Heading>
-                {tickets.length > 0 ? (
-                    tickets.map((ticket, index) => (
-                    <TicketCard key={index}>
-                        <EventInfo>
-                        <EventTitle>{ticket.event.name}</EventTitle>
-                        {ticket.event.poster && (
-                            <PosterImage src={ticket.event.poster} alt={`Poster for ${ticket.event.name}`} />
-                        )}
-                        <EventDetails><strong>Description:</strong> {ticket.event.description}</EventDetails>
-                        <EventDetails><strong>Date:</strong> {new Date(ticket.event.start_date).toLocaleString()} - {new Date(ticket.event.end_date).toLocaleString()}</EventDetails>
-                        <EventDetails><strong>Location:</strong> {ticket.event.location}</EventDetails>
-                        {ticket.type && (
-                            <EventDetails><strong>Ticket Type:</strong> {ticket.type}</EventDetails>
-                        )}
-                        <TicketPrice>{ticket.price === 'Free' ? ticket.price : `R ${ticket.price}`}</TicketPrice>
-                        {ticket.type && ticket.price !== 'Free' && (
-                            <BuyButton onClick={() => handleBuyTicket(ticket.type, `R ${ticket.price}`)}>
-                            Buy {ticket.type} Ticket
-                            </BuyButton>
-                        )}
-                        </EventInfo>
-                        <QRSection>
-                        <QRCodeContainer>
-                            <QRCodeCanvas value={`Ticket for ${ticket.event.name} - ${ticket.price}`} size={100} />
-                        </QRCodeContainer>
-                        </QRSection>
-                    </TicketCard>
-                    ))
-                ) : (
-                    <p>No tickets found for this user.</p>
-                )}
-            </TicketsContainer>
-        </div>
+      <Sidebar />
+      <div className='ContentArea'>
+        <Heading>Your registered events</Heading>
+        <TicketsContainer>
+          {tickets.length > 0 ? (
+            tickets.map((ticket, index) => (
+              ticket.isMissing ? (
+                <MissingEventCard key={index}>
+                  <EventInfo>
+                    <MissingEventTitle>Event Information Unavailable</MissingEventTitle>
+                    <MissingEventDetails>We couldn't retrieve information for this event (ID: {ticket.eventId}).</MissingEventDetails>
+                  </EventInfo>
+                </MissingEventCard>
+              ) : (
+                <TicketCard key={index}>
+                  <EventInfo>
+                    <EventTitle>{ticket.event.name}</EventTitle>
+                    {ticket.event.poster && (
+                      <PosterImage src={ticket.event.poster} alt={`Poster for ${ticket.event.name}`} />
+                    )}
+                    <EventDetails><strong>Description:</strong> {ticket.event.description}</EventDetails>
+                    <EventDetails><strong>Date:</strong> {new Date(ticket.event.start_date).toLocaleString()} - {new Date(ticket.event.end_date).toLocaleString()}</EventDetails>
+                    <EventDetails><strong>Location:</strong> {ticket.event.location}</EventDetails>
+                    {ticket.type && (
+                      <EventDetails><strong>Ticket Type:</strong> {ticket.type}</EventDetails>
+                    )}
+                    <TicketPrice>{ticket.price === 'Free' ? 'Free' : `R${ticket.price}`}</TicketPrice>
+                    {ticket.type && ticket.price !== 'Free' && (
+                      <BuyButton onClick={() => handleBuyTicket(ticket)}>
+                        Buy {ticket.type} Ticket
+                      </BuyButton>
+                    )}
+                  </EventInfo>
+                  <QRSection>
+                    <QRCodeContainer>
+                      <QRCodeCanvas value={`Ticket for ${ticket.event.name} - ${ticket.price}`} size={100} />
+                    </QRCodeContainer>
+                  </QRSection>
+                </TicketCard>
+              )
+            ))
+          ) : (
+            <p>No registered events found for this user.</p>
+          )}
+        </TicketsContainer>
+      </div>
     </div>
-    
   );
 };
 
 export default TicketsPage;
+
 
 
 // import React, { useState, useEffect } from 'react';
