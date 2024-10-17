@@ -11,4 +11,5 @@ const userLikesEvent = async (eventID) => {
     sessionStorage('user', updatedUser);
 }
 
+
 export { userLikesEvent };

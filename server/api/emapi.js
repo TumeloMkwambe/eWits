@@ -5,6 +5,7 @@ app.use(cors()); // enforce cors later
 app.use(express.json());
 
 const Events = require("../models/event.models");
+const Registration = require("../models/registration.models"); // Import Registration model
 const mongoose = require("mongoose");
 const apiKeyAuth = require('../Authorization/auth');
 require('dotenv').config();
@@ -60,6 +61,21 @@ app.post('/api/events/create', async (req, res) => {
   try {
     const event = await Events.create(req.body);
     res.status(200).json(event);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// New registration endpoint
+app.post('/api/events/:eventID/register', async (req, res) => {
+  try {
+    const registrationData = {
+      eventID: req.params.eventID,
+      ...req.body
+    };
+
+    const registration = await Registration.create(registrationData);
+    res.status(200).json(registration);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
