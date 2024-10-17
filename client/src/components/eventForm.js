@@ -275,8 +275,15 @@ const handleChange = (e) => {
           },
         }
       );
+      await axios.post(`${process.env.REACT_APP_USER_URI}/api/users/create`, user, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }).then( response => {
+        sessionStorage.setItem('user', JSON.stringify(response.data));
+      });
       await fetchEvents();
-      window.location.reload();
+      window.history.back();
     } catch (error) {
       console.log(error);
     }

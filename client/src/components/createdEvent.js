@@ -25,9 +25,10 @@ function stringifyDate(date1, date2) {
 const CreatedEvents = () => {
 
     const createdEvents = async () => {
-        const user = JSON.parse(sessionStorage.getItem('user'));
         const Events = [];
         await fetchEvents();
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        console.log("User: ", user);
         const data = JSON.parse(sessionStorage.getItem('events'));
         for (let i = 0; i < Object.keys(data).length; i++) {
             const event = {
@@ -39,11 +40,12 @@ const CreatedEvents = () => {
                 location: data[i].location,
                 likes: data[i].likes
             };
-    
+
             if(user.my_events.includes(event.id)){
                 Events.push(event);
             }
         }
+        console.log("My Events: ", Events);
         return Events;
     };
 
