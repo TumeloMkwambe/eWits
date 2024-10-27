@@ -30,7 +30,7 @@ const Sidebar = () => {
       <FaCalendarAlt />
       <span>Create Event</span>
     </NavLink>
-    <NavLink to="/myevents" className="nav-link">
+    <NavLink to="/createdEvents" className="nav-link">
       <FaCalendarAlt />
       <span>My Events</span>
     </NavLink>

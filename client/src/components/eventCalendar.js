@@ -3,18 +3,19 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styled from 'styled-components';
-
 import axios from 'axios';
 
 const localizer = momentLocalizer(moment);
 
 const CalendarContainer = styled.div`
   padding: 2rem;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.4); /* Make it more transparent */
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   margin: 2rem auto;
   max-width: 1200px;
+  
+  backdrop-filter: blur(5px); /* Optional: Adds a blur effect to the background */
 `;
 
 const eventCalendar = async () => {
@@ -47,7 +48,7 @@ const EventCalendar = () => {
         try {
             const eventsData = await eventCalendar();
             setEvents(eventsData);
-            sessionStorage.setItem('calendar-events', JSON.stringify(eventsData))
+            sessionStorage.setItem('calendar-events', JSON.stringify(eventsData));
         } catch (error) {
             console.error('Error fetching events:', error);
         }

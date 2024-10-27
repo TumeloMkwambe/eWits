@@ -1,13 +1,14 @@
 import React from 'react';
 import Sidebar from '../../components/sidebar';
-import Notifications from '../../components/Notifications';
+import EventForm from '../../components/RegisterEvent';
+import RegisterEvent from '../../components/RegisterEvent';
 
 const CreateEvent = () => {
     return (
     <div className='DashboardContainer'>
         < Sidebar />
         <div className='ContentArea'>
-            <Notifications />
+            <RegisterEvent />
         </div>
     </div>)
 }

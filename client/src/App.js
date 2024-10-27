@@ -4,14 +4,14 @@ import Login from './components/login';
 import Logout from './components/logout';
 import Landing from './Pages/Landing/Landing';
 import CreateEvent from './Pages/CreateEvent/CreateEvent';
-import EventDetails from './components/eventDetails';  // Adjusted import for EventDetails
+import EventDetails from './Pages/EventDetails/EventDetails';  // Adjusted import for EventDetails
 import TicketsPage from './components/TicketsPage';
 import Notifications from './Pages/Nofications/Notifications';
 import MyEvents from './Pages/MyEvents/MyEvents';
 import Calendar from './Pages/Calendar/Calendar';
 import EventDetailsCard from './Pages/EventDetailsCard/EventDetailsCard';
 import Home from './Pages/Home/Home';
-import RegisterEvent from './components/RegisterEvent';  // Import RegisterEvent component
+import RegisterEvent from './Pages/RegisterEvent/RegisterEvent';  // Import RegisterEvent component
 import DetailsCard from './components/detailsCard'; // Adjust the import path as necessary
 import CreatedEvents from './components/createdEvent'; // Import the CreatedEvents component
 
@@ -42,6 +42,7 @@ function App() {
 
         {/* Created Events Page */}
         <Route path="/createdevents" element={<CreatedEvents />} />  {/* The page that lists all created events */}
+        
 
 
         {/* Event Registration and Details */}

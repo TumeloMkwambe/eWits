@@ -1,14 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Sidebar from './sidebar';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
+import backgroundImage from '../images/2.jpg'; // Import your background image
 
-// Styled-components for displaying tickets with improved design
+// Styled-components
+const DashboardContainer = styled.div`
+  display: flex;
+  height: 100vh; /* Full height to enable scrolling */
+  overflow: hidden;
+  background-image: url(${backgroundImage}); /* Set background image */
+  background-size: cover; /* Cover the entire container */
+  background-position: center; /* Center the image */
+`;
+
+const SidebarContainer = styled.div`
+  flex: 0 0 250px; /* Fixed width for sidebar */
+  position: fixed; /* Keep sidebar fixed */
+  height: 100%; /* Full height */
+  overflow-y: auto; /* Enable scrolling for sidebar if needed */
+  background-color: white; /* Set sidebar background color to white */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
+`;
+
 const TicketsContainer = styled.div`
-  max-width: 700px;
-  margin: 2rem auto;
+  margin-left: 250px; /* Space for the fixed sidebar */
   padding: 1rem;
-  background-color: #f9f9f9;
+  overflow-y: auto; /* Allow scrolling in this area */
+  flex: 1; /* Take up the remaining space */
+  background-color: rgba(249, 249, 249, 0.8); /* Light background with transparency */
 `;
 
 const Heading = styled.h2`
@@ -147,7 +168,6 @@ const TicketsPage = () => {
               }
             }
           } else {
-            // If no ticket types exist
             ticketData.push({
               registration,
               event,
@@ -170,48 +190,50 @@ const TicketsPage = () => {
 
   const handleBuyTicket = (ticketType, price) => {
     alert(`Buying a ${ticketType} ticket for ${price}!`);
-    // This function can redirect to a checkout page or handle the purchase flow.
   };
 
-  if (loading) {
-    return <p>Loading tickets...</p>;
-  }
-
   return (
-    <TicketsContainer>
-      <Heading>Tickets for your registered events</Heading>
-      {tickets.length > 0 ? (
-        tickets.map((ticket, index) => (
-          <TicketCard key={index}>
-            <EventInfo>
-              <EventTitle>{ticket.event.name}</EventTitle>
-              {ticket.event.poster && (
-                <PosterImage src={ticket.event.poster} alt={`Poster for ${ticket.event.name}`} />
-              )}
-              <EventDetails><strong>Description:</strong> {ticket.event.description}</EventDetails>
-              <EventDetails><strong>Date:</strong> {new Date(ticket.event.start_date).toLocaleString()} - {new Date(ticket.event.end_date).toLocaleString()}</EventDetails>
-              <EventDetails><strong>Location:</strong> {ticket.event.location}</EventDetails>
-              {ticket.type && (
-                <EventDetails><strong>Ticket Type:</strong> {ticket.type}</EventDetails>
-              )}
-              <TicketPrice>{ticket.price === 'Free' ? ticket.price : `R ${ticket.price}`}</TicketPrice>
-              {ticket.type && ticket.price !== 'Free' && (
-                <BuyButton onClick={() => handleBuyTicket(ticket.type, `R ${ticket.price}`)}>
-                  Buy {ticket.type} Ticket
-                </BuyButton>
-              )}
-            </EventInfo>
-            <QRSection>
-              <QRCodeContainer>
-                <QRCodeCanvas value={`Ticket for ${ticket.event.name} - ${ticket.price}`} size={100} />
-              </QRCodeContainer>
-            </QRSection>
-          </TicketCard>
-        ))
-      ) : (
-        <p>No tickets found for this user.</p>
-      )}
-    </TicketsContainer>
+    <DashboardContainer>
+      <SidebarContainer>
+        <Sidebar />
+      </SidebarContainer>
+      <TicketsContainer>
+        <Heading>Tickets for your registered events</Heading>
+        {loading ? (
+          <p>Loading...</p>
+        ) : tickets.length > 0 ? (
+          tickets.map((ticket, index) => (
+            <TicketCard key={index}>
+              <EventInfo>
+                <EventTitle>{ticket.event.name}</EventTitle>
+                {ticket.event.poster && (
+                  <PosterImage src={ticket.event.poster} alt={`Poster for ${ticket.event.name}`} />
+                )}
+                <EventDetails><strong>Description:</strong> {ticket.event.description}</EventDetails>
+                <EventDetails><strong>Date:</strong> {new Date(ticket.event.start_date).toLocaleString()} - {new Date(ticket.event.end_date).toLocaleString()}</EventDetails>
+                <EventDetails><strong>Location:</strong> {ticket.event.location}</EventDetails>
+                {ticket.type && (
+                  <EventDetails><strong>Ticket Type:</strong> {ticket.type}</EventDetails>
+                )}
+                <TicketPrice>{ticket.price === 'Free' ? ticket.price : `R ${ticket.price}`}</TicketPrice>
+                {ticket.type && ticket.price !== 'Free' && (
+                  <BuyButton onClick={() => handleBuyTicket(ticket.type, `R ${ticket.price}`)}>
+                    Buy {ticket.type} Ticket
+                  </BuyButton>
+                )}
+              </EventInfo>
+              <QRSection>
+                <QRCodeContainer>
+                  <QRCodeCanvas value={`Ticket for ${ticket.event.name} - ${ticket.price}`} size={100} />
+                </QRCodeContainer>
+              </QRSection>
+            </TicketCard>
+          ))
+        ) : (
+          <p>No tickets found for this user.</p>
+        )}
+      </TicketsContainer>
+    </DashboardContainer>
   );
 };
 

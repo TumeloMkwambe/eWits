@@ -3,15 +3,17 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { fetchEvents } from '../Requests/events';
 
+
 // Styled-components
 const FormContainer = styled.div`
   max-width: 600px;
   margin: 3rem auto;
   padding: 2rem;
-  background-color: #f9f9f9;
+  background-color: rgba(249, 249, 249, 0.5); // Increased transparency
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);`
-;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Retaining the shadow for depth
+`;
+
 
 const FormTitle = styled.h2`
   text-align: center;
@@ -193,94 +195,115 @@ const handleChange = (e) => {
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formDataImg = new FormData();
-    formDataImg.append('image', formData.poster);
-    let posterUrl;
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`,
-        formDataImg,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      setImageUrl(response.data.imageUrl);
-      posterUrl = response.data.imageUrl;
-    } catch (error) {
-      console.error('Error uploading image', error);
-    }
-
-    // Prepare event data
-    const { title, description, location, event_type, capacity, firstname, lastname, email, ticketPrices, isPaid } = formData;
-    const startDateArr = formData.start_date.split('-');
-    const startTimeArr = formData.start_time.split(':');
-    const endDateArr = formData.end_date.split('-');
-    const endTimeArr = formData.end_time.split(':');
-
-    const event = {
-      name: title,
-      description,
-      start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
-      end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
-      location,
-      event_type,
-      poster: posterUrl,
-      capacity,
-      likes: 0,
-      creator: {
-        name: firstname,
-        surname: lastname,
-        email,
-      },
-      ticket: {
-        type: isPaid === 'paid' ? 'paid' : 'free',
-        price: {
-          general: ticketPrices.general ? parseFloat(ticketPrices.general) : 0, // Convert to float
-          vip: ticketPrices.vip ? parseFloat(ticketPrices.vip) : 0, // Convert to float
+// Handle form submission
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const formDataImg = new FormData();
+  formDataImg.append('image', formData.poster);
+  let posterUrl;
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`,
+      formDataImg,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
+      }
+    );
+    setImageUrl(response.data.imageUrl);
+    posterUrl = response.data.imageUrl;
+  } catch (error) {
+    console.error('Error uploading image', error);
+  }
+
+  // Prepare event data
+  const { title, description, location, event_type, capacity, firstname, lastname, email, ticketPrices, isPaid } = formData;
+  const startDateArr = formData.start_date.split('-');
+  const startTimeArr = formData.start_time.split(':');
+  const endDateArr = formData.end_date.split('-');
+  const endTimeArr = formData.end_time.split(':');
+
+  const event = {
+    name: title,
+    description,
+    start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
+    end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
+    location,
+    event_type,
+    poster: posterUrl,
+    capacity,
+    likes: 0,
+    creator: {
+      name: firstname,
+      surname: lastname,
+      email,
+    },
+    ticket: {
+      type: isPaid === 'paid' ? 'paid' : 'free',
+      price: {
+        general: ticketPrices.general ? parseFloat(ticketPrices.general) : 0, // Convert to float
+        vip: ticketPrices.vip ? parseFloat(ticketPrices.vip) : 0, // Convert to float
       },
-    };
-    
-
-    // Create the event
-    try {
-      const createdEvent = await axios.post(
-        `${process.env.REACT_APP_API_URI}/api/events/create`,
-        event,
-        {
-          headers: {
-            'x-api-key': process.env.REACT_APP_API_KEY,
-            'Content-Type': 'application/json',
-          },
-        }
-      ).then((response) => {
-        return response.data._id;
-      });
-
-      const myEvent = {
-        entry: createdEvent,
-      };
-      const user = JSON.parse(sessionStorage.getItem('user'));
-
-      await axios.put(
-        `${process.env.REACT_APP_USER_URI}/api/users/event/${user._id}`,
-        myEvent,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      await fetchEvents();
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
+    },
   };
+
+  try {
+    const createdEvent = await axios.post(
+      `${process.env.REACT_APP_API_URI}/api/events/create`,
+      event,
+      {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+          'Content-Type': 'application/json',
+        },
+      }
+    ).then((response) => {
+      return response.data._id;
+    });
+
+    // Add success message
+    const successMessage = `You created an event '${event.name}' successfully on ${new Date().toLocaleDateString()}`;
+    const updateMessage = { 
+      message: successMessage, 
+      eventId: createdEvent, 
+      date: new Date().toISOString() 
+    };
+
+    // Store the success message in the event database
+    await axios.post(
+      `${process.env.REACT_APP_API_URI}/api/events/message`,
+      updateMessage,
+      {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const myEvent = {
+      entry: createdEvent,
+    };
+    const user = JSON.parse(sessionStorage.getItem('user'));
+
+    await axios.put(
+      `${process.env.REACT_APP_USER_URI}/api/users/event/${user._id}`,
+      myEvent,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    await fetchEvents();
+    window.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
   useEffect(() => {
     const fetchVenues = async () => {
