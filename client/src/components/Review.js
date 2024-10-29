@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
@@ -75,6 +75,7 @@ const submitBtnHoverStyle = {
 const Review = () => {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
 
 
   const user = JSON.parse(sessionStorage.getItem('user')) || {};
@@ -128,17 +129,28 @@ const Review = () => {
         }
       );
   
-      alert('Thank you for your feedback!');
+      setShowPopup(true);
       setRating(0);
       setFeedback('');
       
+      
       // Optionally refresh the page or update the reviews list
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error('Error submitting review:', error);
       alert(error.response?.data?.message || 'Failed to submit review. Please try again.');
     }
   };
+
+  useEffect(() => {
+    if (showPopup) {
+      const timer = setTimeout(() => {
+        setShowPopup(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showPopup]);
 
   return (
     <div style={containerStyle}>
@@ -177,6 +189,25 @@ const Review = () => {
           Submit Review
         </button>
       </form>
+
+      {showPopup && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            backgroundColor: '#333',
+            color: 'white',
+            padding: '16px 24px',
+            borderRadius: '8px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            animation: 'popup 1s ease-in-out',
+          }}
+        >
+          Thank you for taking the time to review! You Rock!
+        </div>
+      )}
     </div>
   );
 };
