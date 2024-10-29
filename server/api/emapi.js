@@ -128,7 +128,7 @@ app.post('/api/events/:eventID/register', async (req, res) => {
     // Update the registration count in the Events model
     await Events.findByIdAndUpdate(req.body.eventID, { registrationCount }, { new: true });
 
-    res.status(200).json( req.body );
+    res.status(200).json( {message: "OKAY"} );
   } catch (error) {
     console.error("Error registering for event:", error.message);
     res.status(500).json({ error: error.message });
