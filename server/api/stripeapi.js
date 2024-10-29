@@ -73,7 +73,7 @@ const Payment = require('../models/payment.models'); // Adjust the path as neces
 const Review = require('../models/review.models'); // Adjust the path as necessary
 
 app.use(cors({
-  origin: "http://localhost:3001",
+  origin: ["http://localhost:3001", "https://demo-app-git-finalfinal-events-and-activities.vercel.app"],
   methods: ["GET", "POST"],
   credentials: true,
   headers: ["Content-Type"]
