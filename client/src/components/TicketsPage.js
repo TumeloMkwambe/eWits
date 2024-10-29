@@ -127,6 +127,7 @@ const TicketsPage = () => {
             'x-api-key': process.env.REACT_APP_API_KEY,
           },
         });
+        console.log(registrationResponse)
 
         const registrations = registrationResponse.data;
         const ticketData = [];
@@ -138,6 +139,8 @@ const TicketsPage = () => {
             },
           });
           const event = eventResponse.data;
+
+          console.log(eventResponse)
 
           const hasGeneral = event.ticket.price.general !== undefined;
           const hasVIP = event.ticket.price.vip !== undefined;
