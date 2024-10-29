@@ -69,7 +69,7 @@ const RegisterEvent = () => {
       if (!user) {
         alert('User not found. Please log in again.');
         return;
-      }e
+      }
       try {
         // Make a request to check if the user has already registered for the event
         const response = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/registrations/${user._id}`, {
