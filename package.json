@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.5.0"
+  },
+  "dependencies": {
+    "qrcode.react": "^4.0.1"
+  }
+}

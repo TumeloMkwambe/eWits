@@ -1,9 +1,29 @@
 import React from 'react';
-import Sidebar from '../../components/Sidebar';
-import PastEvents from '../../components/pastEvents';
+import Sidebar from '../../components/sidebar.js';
+import FavouriteEvents from '../../components/favouriteEvents.js';
+import UpcomingEvents from '../../components/upcomingEvents.js';
+import FilteredEvents from '../../components/filteredEvents.js';
+import EventList from '../../components/search.js';
 import '../../globals.css';
 
-function Home() {
+
+const Home = () => {
+
+    const Types = [
+        'Sports',
+        'Religion',
+        'Education',
+        'Music',
+        'Arts and Culture',
+        'Business and Networking',
+        'Food and Drink',
+        'Community and Social',
+        'Health and Wellness',
+        'Charity and Fundraising',
+        'Technology',
+        'Family',
+      ];
+
     return (
         <div className="DashboardContainer">
             <Sidebar/>
@@ -12,17 +32,23 @@ function Home() {
                     <div className="main-content">
                         <div>
                             <h2 className='title-home'>
-                                Events
+                                Favourite Events
                             </h2>
                         </div>
                         <div className="past-events-container">
                             
-                            <PastEvents />
+                            <FavouriteEvents />
                         </div>
-                        <div className="upcoming-events">
-                            <h2>Upcoming Events</h2>
-                            <p>Nothing yet. Here you use the cards above but with your own details. Events go in the past events component.</p>
-                        </div>
+
+                        {Types.map( type => {
+                            return <div>
+                                <h2 className='upcoming-events'>{type}</h2>
+                                <div className="past-events-container">
+                                    < FilteredEvents type={type} />
+                                </div>
+                            </div>
+                        })}
+
                     </div>  
                 </div>
             </div>

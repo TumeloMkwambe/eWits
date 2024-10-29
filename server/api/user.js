@@ -47,6 +47,8 @@ app.get('/api/users/:id', async (req, res) => {
   }
 })
 
+
+
 app.put('/api/users/like/:id', async (req, res) => {
   try {
       const updatedUser = await Users.findByIdAndUpdate(
@@ -65,7 +67,7 @@ app.put('/api/users/event/:id', async (req, res) => {
   try {
       const updatedUser = await Users.findByIdAndUpdate(
           {_id: req.params.id},
-          { $push: { my_events: [req.body.entry] } },
+          { $addToSet: { my_events: [req.body.entry] } },
           { new: true }
       );
 
@@ -83,6 +85,7 @@ app.post('/api/users/create', async (req, res) => {
       res.status(200).json(user);
     }
     else{
+      console.log("KKKKKKKK")
       res.status(200).json(existingUser);
     }
   } catch (error) {

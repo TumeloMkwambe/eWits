@@ -1,4 +1,14 @@
 /* General Body and Font Styles */
+
+:root {
+  --default-color: #000000;
+  --primary-color: #ffffff;
+  --secondary-color: #003b5b;
+  --tertiary-color: #85714e;
+
+  --primary-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -14,10 +24,17 @@ body, html {
 
   .title-home{
     font-weight: bolder;
-    color: #f7f7f7;
-    font-size:2.5rem;
+    color: var(--secondary-color);
+    background-color: transparent;
+    font-size: 2rem;
   }
 
+  .upcoming-events{
+    font-weight: bolder;
+    color: var(--secondary-color);
+    background-color: transparent;
+    font-size: 2rem;
+  }
 
   .h1-login{
     font-weight: bolder;
@@ -155,7 +172,7 @@ body, html {
   /* Sidebar Styles */
   .sidebar {
     width: 250px !important;
-    background-color: rgb(250, 250, 250);
+    background-color: var(--primary-color);
     display: flex;
     flex-direction: column;
     /* justify-content: space-between; */
@@ -204,7 +221,7 @@ body, html {
   }
   
   .logout-button {
-    background-color: #d9534f;
+    background-color: var(--secondary-color);
     color: white;
     border: none;
     padding: 0.75rem;
@@ -215,7 +232,7 @@ body, html {
   }
   
   .logout-button:hover {
-    background-color: #c9302c;
+    background-color: var(--tertiary-color);
   }
   
   /* Responsive Sidebar, lucky wants a phone approach if i heard you guys right */
@@ -242,16 +259,27 @@ body, html {
   
   /* Past Events Container */
   .past-events-container {
-    overflow-x: scroll; 
+    overflow-x: auto; 
     display: flex;
     padding: 20px;
-    width: 100vw;
     gap: 1rem;
-    flex-direction:column;
+    flex-direction:row;
     overflow-y: hidden;
-    scroll-snap-type: x mandatory
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-left: 10px;
+    padding-right: 20px;
+    width: 100%;
+    white-space: nowrap;
   
   }
+
+  .past-events-container > div{
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  
   
   .past-events-container::-webkit-scrollbar {
     height: 8px; 
@@ -269,28 +297,80 @@ body, html {
     display: flex;
     gap: 10px;
     width: auto;
+
+    .like {
+      width: 25%;
+      height: 10%;
+      margin-top: 5px;
+      border-radius: 6px;
+      background-color: var(--primary-color);
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+
+      .likes {
+        display: inline;
+        margin: 15%;
+      }
+
+      .like-icon {
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out, color 0.2s ease-in-out; /* Smooth transition for pop and color change */
+        color: grey;
+      }
+      
+      .like-icon.liked {
+        color: red; /* Changes color when liked */
+        transform: scale(1.3); /* Makes the heart pop */
+      }
+      
+      .like-icon:active {
+        transform: scale(1.1); /* Slightly shrink when clicked */
+      }
+      
+      /* Optional: Return the icon to its original size after the animation */
+      .like-icon.liked {
+        animation: pop 0.2s ease-in-out forwards;
+      }
+      
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.3); /* Pop out */
+        }
+        100% {
+          transform: scale(1); /* Return to normal size */
+        }
+      }
+    }
   }
-  
+
   .event {
     flex: 0 0 250px; 
     height: 300px;
+    width: 250px;
     transition: transform 0.4s ease;
     display: flex;
     flex-direction: column;
-    background-color: rgba(255, 255, 255, 0.1); 
-  
-    border-radius: 1rem;
+    background: linear-gradient(to right, #f7f7f7, #b4b4b4);
+    border-radius: 0.9rem;
     overflow: hidden;
-  
     padding: 10px;
     gap: 1rem;
+    
   }
+
   
   .event img {
     width: 100%;
     height: 150px; 
     object-fit: cover; 
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
+    z-index: 1;
+
   }
   
   
@@ -299,7 +379,8 @@ body, html {
     height: 100px;
     text-align: start;
     font-weight: bolder;
-    color: rgb(237, 236, 236); 
+    color: var(--tertiary-color);
+    font-family: var(--primary-font);
     text-decoration: none; 
   }
 
@@ -309,10 +390,23 @@ body, html {
     justify-content: start;
     margin-bottom: 10px;
     gap: 5px;
-    color: white;
+    font-family: var(--primary-font);
+    font-size: 0.8rem;
+    color: #333;
+
+    .like{
+      .liked{
+        display: inline;
+        width: 10%;
+      }
+      .likes{
+        display: inline;
+        width: 20%;
+        align-items: center;
+      }
+    }
   }
 
- 
   .header-event{
     color: white;
     font: bolder;
@@ -498,7 +592,7 @@ body, html {
   .event-details-card {
     display: flex;
     flex-direction: column;
-    background-color: transparent;
+    background-color: var(--secondary-color);
     border-radius: 16px;
     box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
     width: 60%;
@@ -577,7 +671,7 @@ body, html {
     flex-grow: 1;
     padding: 2rem;
     overflow-y: auto;
-    background: linear-gradient(to right, #266fc2, #5a5a5b);
+    /*background: var(--secondary-color);*/
   }
   
   
@@ -648,13 +742,7 @@ body, html {
   
   /* Create event styles*/
   /* Event Form Styles */
-  .event-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: transparent;
-  }
+ 
   
   .event-form {
     background-color: rgba(255, 255, 255, 0.1);
@@ -906,4 +994,3 @@ body, html {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  
