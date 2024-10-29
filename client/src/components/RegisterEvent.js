@@ -42,7 +42,7 @@ const Button = styled.button`
   width: 100%;
   padding: 1rem;
   background-color: #003b5b;
-  color: #fff;
+  color: #;;
   font-size: 1rem;
   border: none;
   border-radius: 5px;
@@ -69,8 +69,7 @@ const RegisterEvent = () => {
       if (!user) {
         alert('User not found. Please log in again.');
         return;
-      }
-
+      }e
       try {
         // Make a request to check if the user has already registered for the event
         const response = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/registrations/${user._id}`, {
@@ -78,6 +77,7 @@ const RegisterEvent = () => {
             'x-api-key': process.env.REACT_APP_API_KEY,
           }
         });
+        console.log('response: ', response);
 
         if (response.data.isRegistered) {
           setIsRegistered(true);
