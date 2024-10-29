@@ -1,0 +1,444 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
+
+:root {
+  --light-grey: #f6f9fc;
+  --dark-terminal-color: #0a2540;
+  --accent-color: #635bff;
+  --radius: 3px;
+}
+
+.body-stripe {
+  padding: 20px;
+  font-family: "Raleway";
+  display: flex;
+  justify-content: center;
+  font-size: 1.2em;
+  color: var(--dark-terminal-color);
+}
+
+#main-stripe {
+  width: 720px !important;
+}
+
+#main-stripe #h1-stripe{
+  font-weight: bolder;
+  color:#0a2540 !important;
+  font-size: 35px;
+}
+
+
+
+form > * {
+  margin: 10px 0;
+}
+
+button {
+  background-color: var(--accent-color);
+}
+
+button {
+  background: var(--accent-color);
+  border-radius: var(--radius);
+  color: white;
+  border: 0;
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: block;
+}
+button.stripe:hover {
+  filter: contrast(115%);
+}
+button.stripe:active {
+  transform: translateY(0px) scale(0.98);
+  filter: brightness(0.9);
+}
+button.stripe:disabled {
+  opacity: 0.5;
+  cursor: none;
+}
+
+input.stripe,
+select.stripe {
+  display: block;
+  font-size: 1.1em;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+label.stripe {
+  display: block;
+}
+
+a.stripe {
+  color: var(--accent-color);
+  font-weight: 900;
+}
+
+small.stripe {
+  font-size: 0.6em;
+}
+
+fieldset.stripe,
+input.stripe,
+select.stripe {
+  border: 1px solid #efefef;
+}
+
+#payment-form-stripe {
+  justify-content: center;
+  display: block;
+  align-items: center;
+  border: #f6f9fc solid 1px;
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 30px 50px -20px rgb(50 50 93 / 25%),
+    0 30px 60px -30px rgb(0 0 0 / 30%);
+}
+
+#messages.stripe {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New";
+  display: none; /* hide initially, then show once the first message arrives */
+  background-color: #0a253c;
+  color: #00d924;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: var(--radius);
+  font-size: 0.7em;
+}
+.App {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+  }
+  
+  #form-stripe {
+    width: 30vw;
+    min-width: 500px;
+    align-self: center;
+    box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
+      0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+    border-radius: 7px;
+    padding: 40px;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  
+  
+  #payment-message-stripe {
+    color: rgb(243, 13, 13);
+    font-size: 16px;
+    line-height: 20px;
+    padding-top: 12px;
+    text-align: center;
+  }
+  
+  #payment-element-stripe {
+    margin-bottom: 24px;
+  }
+  
+  /* Buttons and links */
+  #button-stripe {
+    background: #0055DE;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    border-radius: 4px;
+    border: 0;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: block;
+    transition: all 0.2s ease;
+    box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+    width: 100%;
+  }
+  
+  #button-stripe:hover {
+    filter: contrast(105%);
+    background:#196aec;
+  }
+  
+  #button-stripe:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  
+  /* spinner/processing state, errors */
+  #spinner-stripe,
+  #spinner-stripe:before,
+  #spinner-stripe:after {
+    border-radius: 50%;
+  }
+  
+  #spinner-stripe {
+    color: #ffffff;
+    font-size: 22px;
+    text-indent: -99999px;
+    margin: 0px auto;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    box-shadow: inset 0 0 0 2px;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  #spinner-stripe:before,
+  #spinner-stripe:after {
+    position: absolute;
+    content: '';
+  }
+  
+  #spinner-stripe:before {
+    width: 10.4px;
+    height: 20.4px;
+    background: #0055DE;
+    border-radius: 20.4px 0 0 20.4px;
+    top: -0.2px;
+    left: -0.2px;
+    -webkit-transform-origin: 10.4px 10.2px;
+    transform-origin: 10.4px 10.2px;
+    -webkit-animation: loading 2s infinite ease 1.5s;
+    animation: loading 2s infinite ease 1.5s;
+  }
+  
+  #spinner-stripe:after {
+    width: 10.4px;
+    height: 10.2px;
+    background: #0055DE;
+    border-radius: 0 10.2px 10.2px 0;
+    top: -0.1px;
+    left: 10.2px;
+    -webkit-transform-origin: 0px 10.2px;
+    transform-origin: 0px 10.2px;
+    -webkit-animation: loading 2s infinite ease;
+    animation: loading 2s infinite ease;
+  }
+  
+  /* dynamic payment methods annotation */
+  #dpm-annotation-stripe {
+    align-self: center;
+    color: hsl(220, 12%, 24%);
+    /* width: 20vw; */
+    min-width: 500px;
+    line-height: 20px;
+    margin-bottom: 20px;
+  }
+  
+  #dpm-integration-checker-stripe {
+    display: inline;
+    color: #533AFD;
+  }
+  
+  /* Payment status page */
+  #payment-status-stripe {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 30px;
+    width: 30vw;
+    min-width: 500px;
+    min-height: 380px;
+    align-self: center;
+    box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
+      0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+    border-radius: 7px;
+    padding: 40px;
+    opacity: 0;
+    animation: fadeInAnimation 1s ease forwards;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+
+  #icon-holder{
+    display: flex;
+    justify-content: center;
+
+  }
+
+  #status-text-stripe{
+    font-size: 30px;
+    font-weight: bolder;
+    background: transparent;
+    color: #533AFD;
+  }
+  
+  #payment-status #status-text-stripe{
+    display: flex;
+    justify-content: center;
+  }
+  
+  #status-icon-stripe {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+  .TableLabel {
+    font-weight: bold;
+    font-size: 14px;
+    color: #4A4A4A;
+    text-align: left;
+    padding: 10px;
+    background-color: #F7F7F7;
+    border-bottom: 1px solid #E0E0E0;
+    width: 150px;
+  }
+  
+  .TableContent {
+    font-weight: normal;
+    font-size: 14px;
+    color: #333333;
+    text-align: left;
+    padding: 10px;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E0E0E0;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  table tbody tr:nth-child(even) {
+    background-color: #F9F9F9;
+  }
+  
+  table tbody tr:hover {
+    background-color: #F1F1F1;
+  }
+  
+  
+  #h2-stripe {
+    margin: 0;
+    color: #30313D;
+    text-align: center;
+  }
+  
+  #a-stripe {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Arial, sans-serif;
+    display: block;
+  }
+  #a-stripe:hover {
+    filter: contrast(120%);
+  }
+  
+  #details-table {
+    margin-top: 18px;
+    overflow-x: auto;
+    width: 100%;
+    border-radius: 12px;
+    border: #f2eded solid 1px;
+    box-shadow: #a0a0a1 0 3px 13px;
+    margin-bottom: 25px;
+  }
+  
+  table.stripe {
+    width: 100%;
+    font-size: 14px;
+    border-collapse: collapse;
+  }
+  table.stripe tbody tr:first-child td {
+    border-top: 1px solid #E6E6E6; /* Top border */
+    padding-top: 10px;
+  }
+  
+  #table-stripe td {
+    padding: 8px 0;
+    border-bottom: 1px solid #E6E6E6; /* Bottom border */
+  }
+  
+  .flex.stripe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .success-stripe {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .error-stripe {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  #loading-screen-stripe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a background overlay */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999; /* Ensure it's above other content */
+  }
+  
+  .spinner {
+    border: 8px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 8px solid #3498db; /* Color of the spinner */
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .ContentArea-stripe {
+    background: radial-gradient(circle at center, rgb(255, 255, 255), rgb(158, 158, 158) 60%);
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    width: 100%;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  
+  #payment-status {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  #icon-holder {
+    margin-bottom: 20px;
+  }

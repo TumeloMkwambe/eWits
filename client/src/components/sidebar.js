@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate, NavLink } from 'react-router-dom';
 import Logo from '../../src/images/logo1.svg'
-import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaImages } from 'react-icons/fa';
+import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaPen, FaImages } from 'react-icons/fa';
 
 const Sidebar = () => {
 
@@ -45,6 +45,10 @@ const Sidebar = () => {
     <NavLink to="/notifications" className="nav-link">
       <FaBell />
       <span>Notifications</span>
+    </NavLink>
+    <NavLink to="/reviews" className="nav-link">
+      <FaPen />
+      <span>Reviews</span>
     </NavLink>
   </nav>
   <button className="logout-button" onClick={handleLogout}>

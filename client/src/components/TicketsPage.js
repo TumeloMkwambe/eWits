@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Sidebar from './sidebar';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import backgroundImage from '../images/2.jpg'; // Import your background image
 
 // Styled-components
@@ -112,6 +113,7 @@ const BuyButton = styled.button`
 const TicketsPage = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -188,8 +190,9 @@ const TicketsPage = () => {
     fetchTickets();
   }, []);
 
-  const handleBuyTicket = (ticketType, price) => {
-    alert(`Buying a ${ticketType} ticket for ${price}!`);
+  const handleBuyTicket = (ticket) => {
+    // Navigate to the payment page and pass ticket data via location.state
+    navigate('/payments', { state: { ticket } });
   };
 
   return (
@@ -217,7 +220,7 @@ const TicketsPage = () => {
                 )}
                 <TicketPrice>{ticket.price === 'Free' ? ticket.price : `R ${ticket.price}`}</TicketPrice>
                 {ticket.type && ticket.price !== 'Free' && (
-                  <BuyButton onClick={() => handleBuyTicket(ticket.type, `R ${ticket.price}`)}>
+                  <BuyButton onClick={() => handleBuyTicket(ticket)}>
                     Buy {ticket.type} Ticket
                   </BuyButton>
                 )}

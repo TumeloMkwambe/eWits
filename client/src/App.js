@@ -14,6 +14,17 @@ import Home from './Pages/Home/Home';
 import RegisterEvent from './Pages/RegisterEvent/RegisterEvent';  // Import RegisterEvent component
 import DetailsCard from './components/detailsCard'; // Adjust the import path as necessary
 import CreatedEvents from './components/createdEvent'; // Import the CreatedEvents component
+import Payment from './components/payments';
+import CompletePage from './components/CompletePage';
+import Reviews from '../src/Pages/Reviews/Reviews';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
+const stripeKey = process.env.REACT_APP_STRIPE_PUBLIC_KEY
+console.log(stripeKey, 'KEY')
+console.log(process.env.REACT_APP_USER_URI, 'testing')
+const stripePromise = loadStripe(stripeKey);
+console.log(process.env.REACT_APP_STRIPE_PUBLIC_KEY, 'STRIPE KEY')
 
 function App() {
   return (
@@ -51,6 +62,18 @@ function App() {
 
         {/* Correcting the missing event details route */}
         <Route path="/eventDetails/:eventID" element={<EventDetails />} /> {/* New route for event details */}
+        <Route path="/payments/*" element={<Payment />} />
+
+        <Route 
+          path="/completion" 
+          element={
+            <Elements stripe={stripePromise}>
+              <CompletePage />
+            </Elements>
+          } 
+        />
+        {/* <Route path="/lusion" element={<LusionPage />} /> */}
+        <Route path="/reviews" element={<Reviews />} />
       </Routes>
     </BrowserRouter>
   );
