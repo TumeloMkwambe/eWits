@@ -64,28 +64,6 @@ const RegisterEvent = () => {
   const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
-    const checkRegistration = async () => {
-      const user = JSON.parse(sessionStorage.getItem('user'));
-      if (!user) {
-        alert('User not found. Please log in again.');
-        return;
-      }
-
-      try {
-        // Make a request to check if the user has already registered for the event
-        const response = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/register/`, {
-          headers: {
-            'x-api-key': process.env.REACT_APP_API_KEY,
-          }
-        });
-
-        if (response.data.isRegistered) {
-          setIsRegistered(true);
-        }
-      } catch (error) {
-        console.error('Error checking registration:', error);
-      }
-    };
 
     checkRegistration();
   }, [eventID]);
@@ -96,11 +74,6 @@ const RegisterEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (isRegistered) {
-      alert('You have already registered for this event.');
-      return;
-    }
 
     try {
       const user = JSON.parse(sessionStorage.getItem('user'));
@@ -122,14 +95,13 @@ const RegisterEvent = () => {
       console.log('Sending registration data:', registrationData);
 
       // Make the API call to register the user
-      await axios.post(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/register`, registrationData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/register`, registrationData, {
         headers: {
           'x-api-key': process.env.REACT_APP_API_KEY,
         },
       });
 
-      alert('Registration successful!');
-      // Redirect to TicketsPage after successful registration
+      console.log("RESPONSE: ", response)
       navigate('/tickets'); // Replace '/tickets' with your actual route for TicketsPage
     } catch (error) {
       console.error(error);

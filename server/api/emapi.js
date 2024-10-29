@@ -116,7 +116,7 @@ app.post('/api/events/:eventID/register', async (req, res) => {
     const existingRegistration = await Registration.findOne({ eventID, userID });
 
     if (existingRegistration) {
-      return res.status(400).json({ message: 'You have already registered for this event.' });
+      return res.status(200).json({ message: 'registered' });
     }
 
     const registrationData = {
