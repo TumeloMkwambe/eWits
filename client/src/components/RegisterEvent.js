@@ -73,7 +73,7 @@ const RegisterEvent = () => {
 
       try {
         // Make a request to check if the user has already registered for the event
-        const response = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/registrations/${user._id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}/register/`, {
           headers: {
             'x-api-key': process.env.REACT_APP_API_KEY,
           }
