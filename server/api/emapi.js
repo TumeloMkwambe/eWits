@@ -113,30 +113,20 @@ app.post('/api/events/:eventID/register', async (req, res) => {
     const { fullName, studentNumber, email, phone, creator, userID } = req.body;
 
     // Check if the user is already registered for the event
-    const existingRegistration = await Registration.findOne({ eventID, userID });
+    const existingRegistration = await Registration.findOne({ req.body.eventID, req.body.userID });
 
     if (existingRegistration) {
       return res.status(200).json({ message: 'registered' });
     }
 
-    const registrationData = {
-      eventID,
-      fullName,
-      studentNumber,
-      email,
-      phone,
-      creator,
-      userID,
-    };
-
     // Create a new registration entry
-    const registration = await Registration.create(registrationData);
+    const registration = await Registration.create(req.body);
 
     // Count the total number of registrations for the event
-    const registrationCount = await Registration.countDocuments({ eventID });
+    const registrationCount = await Registration.countDocuments({ req.body.eventID });
 
     // Update the registration count in the Events model
-    await Events.findByIdAndUpdate(eventID, { registrationCount }, { new: true });
+    await Events.findByIdAndUpdate(req.body.eventID, { registrationCount }, { new: true });
 
     res.status(200).json( req.body );
   } catch (error) {
