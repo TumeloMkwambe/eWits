@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate, NavLink } from 'react-router-dom';
-import Logo from '../../src/images/logo1.svg'
+import Logo from '../images/logo1.svg'
 import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaPen, FaImages } from 'react-icons/fa';
 
 const Sidebar = () => {

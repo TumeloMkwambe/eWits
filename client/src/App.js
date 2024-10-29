@@ -16,7 +16,7 @@ import DetailsCard from './components/detailsCard'; // Adjust the import path as
 import CreatedEvents from './components/createdEvent'; // Import the CreatedEvents component
 import Payment from './components/payments';
 import CompletePage from './components/CompletePage';
-import Reviews from '../src/Pages/Reviews/Reviews';
+import Reviews from './Pages/Reviews/Reviews';
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
