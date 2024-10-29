@@ -105,7 +105,6 @@ app.delete('/api/events/messages/:msgId', async (req, res) => {
   }
 });
 
-
 // New registration endpoint
 app.post('/api/events/:eventID/register', async (req, res) => {
   try {
