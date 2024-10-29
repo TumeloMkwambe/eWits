@@ -568,7 +568,7 @@ body, html {
   
   /* Event Details Page */
   .event-details-page {
-    background: linear-gradient(to right, #266fc2, #fafafa);
+    background: linear-gradient(to right, #011e40, #2261ff);
     color: white;
     padding: 20px;
     height: 100vh;
@@ -987,4 +987,26 @@ body, html {
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 70%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    to {
+      opacity: 0;
+      transform: translate(-50%, 50%);
+    }
   }

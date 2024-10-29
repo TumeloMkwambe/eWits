@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -197,7 +198,7 @@ const Review = () => {
             bottom: '20px',
             left: '50%',
             transform: 'translateX(-50%)',
-            backgroundColor: '#333',
+            background: 'linear-gradient(to right, #011e40, #2261ff)',
             color: 'white',
             padding: '16px 24px',
             borderRadius: '8px',
