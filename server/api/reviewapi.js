@@ -1,5 +1,6 @@
+
 const express = require('express');
-const Review = require('../models/review.models'); // Import the Review model
+const Review = require('../models/review.models'); 
 const app = express();
 const cors = require('cors');
 app.use(cors()); // enforce cors later
@@ -16,7 +17,7 @@ const database = process.env.MONGO_DATABASE_CONNECT;
 
 app.use(apiKeyAuth);
 
-// POST: Submit a new review
+
 app.post('/api/reviews', async (req, res) => {
   try {
     const { rating, feedback, userID } = req.body;
@@ -30,10 +31,10 @@ app.post('/api/reviews', async (req, res) => {
     const newReview = new Review({
       rating,
       feedback,
-      userID
+      userID,
     });
 
-    // Save to the database
+ 
     const savedReview = await newReview.save();
 
     res.status(201).json({
@@ -54,7 +55,6 @@ app.get('/api/reviews', async (req, res) => {
     res.status(500).json({ message: 'Error fetching reviews', error: error.message });
   }
 });
-
 
 mongoose.set("strictQuery", false);
 mongoose

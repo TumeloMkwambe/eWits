@@ -85,6 +85,7 @@ app.post('/api/users/create', async (req, res) => {
       res.status(200).json(user);
     }
     else{
+      console.log("KKKKKKKK")
       res.status(200).json(existingUser);
     }
   } catch (error) {
