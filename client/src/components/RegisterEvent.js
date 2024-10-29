@@ -65,7 +65,6 @@ const RegisterEvent = () => {
 
   useEffect(() => {
 
-    checkRegistration();
   }, [eventID]);
 
   const handleChange = (e) => {
