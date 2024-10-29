@@ -64,13 +64,14 @@ app.post('/api/events/create', async (req, res) => {
 
     // Construct the success message
     const messageContent = `You created an event '${event.name}' successfully on ${new Date().toLocaleDateString()}`;
-
+    console.log("KKK");
     // Add the message to the event's messages array
-    event.messages.push({
-      content: messageContent,
-      date: new Date(),
-    });
+    //event.messages.push({
+      //content: messageContent,
+      //date: new Date(),
+    //});
 
+    console.log("kkk55");
     // Save the updated event with the success message
     await event.save();
 
