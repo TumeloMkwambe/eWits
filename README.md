@@ -138,7 +138,7 @@ This will run your tests and produce coverage reports in the specified formats. 
 
 ## Links
 
-- [Live Site](https://demo-app-two-snowy.vercel.app/)
+- [Live Site](https://ewits.vercel.app/)
 - [Documentation](https://ewits.gitbook.io/ewits-docs)
 - [GitHub Repository](https://github.com/TumeloMkwambe/eWits/)
 
