@@ -230,20 +230,24 @@ const handleChange = (e) => {
       event_type,
       poster: posterUrl,
       capacity,
-      likes: 0,
+      likes: 0, // Default as per schema
       creator: {
         name: firstname,
         surname: lastname,
         email,
       },
+      interested_users: [], // Default as per schema
       ticket: {
         type: isPaid === 'paid' ? 'paid' : 'free',
         price: {
-          general: ticketPrices.general ? parseFloat(ticketPrices.general) : 0, // Convert to float
-          vip: ticketPrices.vip ? parseFloat(ticketPrices.vip) : 0, // Convert to float
+          general: ticketPrices.general ? parseFloat(ticketPrices.general) : 0,
+          vip: ticketPrices.vip ? parseFloat(ticketPrices.vip) : 0,
         },
       },
+      registrationCount: 0, // Default as per schema
+      messages: [], // Initial empty array as per schema
     };
+    
     
 
     // Create the event
@@ -261,6 +265,26 @@ const handleChange = (e) => {
         return response.data._id;
       });
 
+       // Add success message
+       const successMessage = `You created an event '${event.name}' successfully on ${new Date().toLocaleDateString()}`;
+       const updateMessage = { 
+         message: successMessage, 
+         eventId: createdEvent, 
+         date: new Date().toISOString() 
+       };
+   
+       // Store the success message in the event database
+       await axios.post(
+         `${process.env.REACT_APP_API_URI}/api/events/message`,
+         updateMessage,
+         {
+           headers: {
+             'x-api-key': process.env.REACT_APP_API_KEY,
+             'Content-Type': 'application/json',
+           },
+         }
+       );   
+
       const myEvent = {
         entry: createdEvent,
       };
@@ -275,15 +299,8 @@ const handleChange = (e) => {
           },
         }
       );
-      await axios.post(`${process.env.REACT_APP_USER_URI}/api/users/create`, user, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      }).then( response => {
-        sessionStorage.setItem('user', JSON.stringify(response.data));
-      });
       await fetchEvents();
-      window.history.back();
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }

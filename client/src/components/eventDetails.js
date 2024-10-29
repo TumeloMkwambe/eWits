@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { fetchedEvents, fetchEvents } from '../Requests/events';
 
@@ -9,28 +9,29 @@ const FormContainer = styled.div`
   max-width: 600px;
   margin: 3rem auto;
   padding: 2rem;
-  background-color: #f9f9f9;
+  background-color: rgba(249, 249, 249, 0.5); // Increased transparency
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);`
-;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Retaining the shadow for depth
+`;
+
 
 const FormTitle = styled.h2`
   text-align: center;
   margin-bottom: 2rem;
   color: #333;
-  background-color: #f9f9f9;`
-;
+  background-color: #f9f9f9;
+`;
 
 const FormGroup = styled.div`
-  margin-bottom: 1.5rem;`
-;
+  margin-bottom: 1.5rem;
+`;
 
 const Label = styled.label`
   display: block;
   margin-bottom: 0.5rem;
   color: #555;
-  font-weight: bold;`
-;
+  font-weight: bold;
+`;
 
 const Input = styled.input`
   width: 100%;
@@ -41,8 +42,8 @@ const Input = styled.input`
   &:focus {
     outline: none;
     border-color: #007bff;
-  }`
-;
+  }
+`;
 
 const Textarea = styled.textarea`
   width: 100%;
@@ -54,8 +55,8 @@ const Textarea = styled.textarea`
   &:focus {
     outline: none;
     border-color: #007bff;
-  }`
-;
+  }
+`;
 
 const Button = styled.button`
   width: 100%;
@@ -68,15 +69,15 @@ const Button = styled.button`
   cursor: pointer;
   &:hover {
     background-color: #85714e;
-  }`
-;
+  }
+`;
 
 const ImagePreview = styled.img`
   max-width: 100%;
   max-height: 300px;
   margin-top: 1rem;
-  border-radius: 5px;`
-;
+  border-radius: 5px;
+`;
 
 const Select = styled.select`
   width: 100%;
@@ -87,269 +88,260 @@ const Select = styled.select`
   &:focus {
     outline: none;
     border-color: #007bff;
-  }`
-;
-const event = async (eventID) => {
-  const event = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, {
+  }
+`;
+
+const fetchEvent = async (eventID) => {
+  const response = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, {
     headers: {
-      'x-api-key': process.env.REACT_APP_API_KEY
-    }
-  })
-  return event.data;
+      'x-api-key': process.env.REACT_APP_API_KEY,
+    },
+  });
+  return response.data;
 };
 
 const availableVenues = async () => {
-  let venues;
   const value = process.env.REACT_APP_VENUES_API_KEY;
   const url = process.env.REACT_APP_VENUES_API;
-  await fetch(url, {
+  const response = await fetch(url, {
     method: 'GET',
     headers: {
       'x-api-key': value,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => {
-      return response.json();
-    })
-    .then( data => {
-      venues = data;
-    })
-    .catch(error => console.error('Error:', error.message));
-  return venues;
-}
+      'Content-Type': 'application/json',
+    },
+  });
+  return await response.json();
+};
 
 const formatTime = (date) => {
   date = new Date(date);
-  // Get the hours and minutes
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
-
-  // Combine the hours and minutes into a string
-  const time = `${hours}:${minutes}`;
-
-  return time;
-
-}
+  return `${hours}:${minutes}`;
+};
 
 const formatDate = (date) => {
   date = new Date(date);
-  // Ensure the date is valid
-  if (isNaN(date.getTime())) {
-    return ''; // Return an empty string for invalid dates
-  }
-
-  // Get the year, month, and day
+  if (isNaN(date.getTime())) return '';
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
-
-  // Combine the year, month, and day into a string
-  const formattedDate = `${year}-${month}-${day}`;
-
-  return formattedDate;
+  return `${year}-${month}-${day}`;
 };
 
 const EventDetailsForm = () => {
-    const { eventID } = useParams();
-    const [isEditing, setIsEditing] = useState(false); // Control editing state
-    const [imageUrl, setImageUrl] = useState('');
-    const [formData, setFormData] = useState({
-      ticket: { general: '', vip: '' },
-      isPaid: 'free',
-    });
-    const [venues, setVenues] = useState([]);
-    const eventTypes = [
-      'Sports',
-      'Religion',
-      'Education',
-      'Music',
-      'Arts and Culture',
-      'Business and Networking',
-      'Food and Drink',
-      'Community and Social',
-      'Health and Wellness',
-      'Charity and Fundraising',
-      'Technology',
-      'Family',
-    ];
-    useEffect(() => {
-      const fetchEventDetails = async () => {
-        const fetchedEvent = await event(eventID);
-        console.log(fetchedEvent);
-        // Format the date and time
-        const formattedEvent = {
-          ...fetchedEvent,
-          title: fetchedEvent.name,
-          start_time: formatTime(fetchedEvent.start_date),
-          end_time: formatTime(fetchedEvent.end_date),
-          start_date: formatDate(fetchedEvent.start_date),
-          end_date: formatDate(fetchedEvent.end_date),
-          firstname: fetchedEvent.creator.name,
-          lastname: fetchedEvent.creator.surname,
-          email: fetchedEvent.creator.email,
-          isPaid: fetchedEvent.ticket.type,
-          ticket: fetchedEvent.ticket.type === 'paid' ? {
-            general: fetchedEvent.ticket.price.general,
-            vip: fetchedEvent.ticket.price.vip 
-          } : { general: fetchedEvent.ticket.price.general,
-                vip: fetchedEvent.ticket.price.vip }
-        };
-        console.log(formattedEvent);
-  
-        // Set formData to the fetched and formatted event data
-        setFormData(formattedEvent);
-      };
-  
-      const fetchVenues = async () => {
-        const venuesData = await availableVenues();
-        setVenues(venuesData);
-      };
-  
-      fetchEventDetails();
-      fetchVenues();
-    }, [eventID]);
-  
-    const handleChange = (e) => {
-      const { name, value } = e.target;
+  const { eventID } = useParams();
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [formData, setFormData] = useState({
+    ticket: { general: '', vip: '' },
+    isPaid: 'free',
+  });
+  const [venues, setVenues] = useState([]);
 
-      if (name.startsWith('ticket')) {
-        const [_, priceType] = name.split('.'); // Get the price type (general or vip)
-        setFormData({
-          ...formData,
-          ticket: {
-            ...formData.ticket,
-            [priceType]: value,
+  const eventTypes = [
+    'Sports',
+    'Religion',
+    'Education',
+    'Music',
+    'Arts and Culture',
+    'Business and Networking',
+    'Food and Drink',
+    'Community and Social',
+    'Health and Wellness',
+    'Charity and Fundraising',
+    'Technology',
+    'Family',
+  ];
+
+  useEffect(() => {
+    const fetchEventDetails = async () => {
+      const fetchedEvent = await fetchEvent(eventID);
+      const formattedEvent = {
+        ...fetchedEvent,
+        title: fetchedEvent.name,
+        start_time: formatTime(fetchedEvent.start_date),
+        end_time: formatTime(fetchedEvent.end_date),
+        start_date: formatDate(fetchedEvent.start_date),
+        end_date: formatDate(fetchedEvent.end_date),
+        firstname: fetchedEvent.creator.name,
+        lastname: fetchedEvent.creator.surname,
+        email: fetchedEvent.creator.email,
+        isPaid: fetchedEvent.ticket.type,
+        ticket: fetchedEvent.ticket.type === 'paid'
+          ? {
+              general: fetchedEvent.ticket.price.general,
+              vip: fetchedEvent.ticket.price.vip,
+            }
+          : {
+              general: fetchedEvent.ticket.price.general,
+              vip: fetchedEvent.ticket.price.vip,
+            },
+      };
+
+      setFormData(formattedEvent);
+    };
+
+    const fetchVenues = async () => {
+      const venuesData = await availableVenues();
+      setVenues(venuesData);
+    };
+
+    fetchEventDetails();
+    fetchVenues();
+  }, [eventID]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name.startsWith('ticket')) {
+      const [_, priceType] = name.split('.');
+      setFormData((prev) => ({
+        ...prev,
+        ticket: {
+          ...prev.ticket,
+          [priceType]: value,
+        },
+      }));
+    } else if (name === 'location') {
+      const selectedVenue = venues.find((venue) => venue.Name === value);
+      if (selectedVenue) {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: value,
+          capacity: selectedVenue.Capacity,
+        }));
+      }
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFormData((prev) => ({
+      ...prev,
+      poster: file,
+    }));
+  };
+
+  const handleEdit = () => {
+    setIsEditing((prev) => !prev);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let posterUrl = formData.poster;
+
+    if (formData.poster instanceof File) {
+      const formDataImg = new FormData();
+      formDataImg.append('image', formData.poster);
+      try {
+        const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`, formDataImg, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
           },
         });
-      } else if (name === 'location') {
-        const selectedVenue = venues.find(venue => venue.Name === value);
-        if (selectedVenue) {
-          setFormData({
-            ...formData,
-            [name]: value,
-            capacity: selectedVenue.Capacity,
-          });
-        }
-      } else {
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
+        setImageUrl(response.data.imageUrl);
+        posterUrl = response.data.imageUrl;
+      } catch (error) {
+        console.error('Error uploading image', error);
       }
+    }
+
+    const {
+      title,
+      description,
+      event_type,
+      location,
+      capacity,
+      firstname,
+      lastname,
+      email,
+      start_date,
+      end_date,
+      start_time,
+      end_time,
+    } = formData;
+    
+    const startDateArr = start_date.split('-');
+    const startTimeArr = start_time.split(':');
+    const endDateArr = end_date.split('-');
+    const endTimeArr = end_time.split(':');
+
+    const event = {
+      name: formData.title,
+      description,
+      start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
+      end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
+      location,
+      event_type,
+      poster: posterUrl,
+      capacity,
+      likes: 0,
+      creator: {
+        name: firstname,
+        surname: lastname,
+        email,
+      },
+      ticket: {
+        type: formData.isPaid,
+        price: formData.ticket,
+      },
+      messages: [
+        {
+          content: `You edited the event "${formData.title}" on this day ${new Date().toLocaleDateString()}`,
+          date: new Date(),
+        },
+      ],
     };
 
-  
-    const handleFileChange = (e) => {
-      const file = e.target.files[0];
-      setFormData({
-        ...formData,
-        poster: file,
+    try {
+      await axios.put(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, event, {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+        },
       });
-    };
-  
-    const handleEdit = () => {
-      setIsEditing(!isEditing); // Toggle edit mode
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      let posterUrl = formData.poster;
-  
-      // Handle file upload if poster is changed
-      if (formData.poster instanceof File) {
-        const formDataImg = new FormData();
-        formDataImg.append('image', formData.poster);
-        try {
-          const response = await axios.post(`${process.env.REACT_APP_STORAGE_URI}/api/storage/upload`, formDataImg, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-          setImageUrl(response.data.imageUrl);
-          posterUrl = response.data.imageUrl;
-        } catch (error) {
-          console.error('Error uploading image', error);
-        }
-      }
-  
-      // Prepare event data
-      const { title, description, event_type, location, capacity, firstname, lastname, email, start_date, end_date, start_time, end_time } = formData;
-      const startDateArr = start_date.split("-");
-      const startTimeArr = start_time.split(":");
-      const endDateArr = end_date.split("-");
-      const endTimeArr = end_time.split(":");
-  
-      const event = {
-        name: formData.title,
-        description,
-        start_date: new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]),
-        end_date: new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]),
-        location,
-        event_type,
-        poster: posterUrl,
-        capacity,
-        likes: 0,
-        creator: {
-          name: firstname,
-          surname: lastname,
-          email,
-        },
-        ticket: {
-            type: formData.isPaid,
-            price: formData.ticket
-        },
+      console.log('Event updated successfully');
+      fetchEvents(); // Refresh the events list or handle accordingly
+      navigate(`/myevents`); // Redirect after successful submission
+    } catch (error) {
+      console.error('Error updating event', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      const message = {
+        content: `You deleted the event "${formData.title}" on this day ${new Date().toLocaleDateString()}`,
+        date: new Date(),
       };
-  
+
       try {
-        const createdEvent = await axios.put(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, event, {
+        await axios.delete(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, {
           headers: {
             'x-api-key': process.env.REACT_APP_API_KEY,
-            'Content-Type': 'application/json',
           },
-        }).then( response => {
-            return response;
+          data: { messages: [message] }, // Sending message as part of the request
         });
-        
-        // Link event to user
-        const myEvent = { entry: createdEvent.data._id };
-        const userID = JSON.parse(sessionStorage.getItem('user'));
-        await axios.put(`${process.env.REACT_APP_USER_URI}/api/users/event/${userID._id}`, myEvent, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }).then( response => {
-            console.log(response);
-        });
-        await fetchEvents();
-        window.location.reload();
+        console.log('Event deleted successfully');
+        fetchEvents(); // Refresh the events list or handle accordingly
+        navigate('/myevents'); // Redirect after deletion
       } catch (error) {
-        console.error(error);
+        console.error('Error deleting event', error);
       }
-    };
-
-    const handleDelete = async (e) => {
-      e.preventDefault(); // Only needed if part of a form
-  
-      try {
-          const response = await axios.delete(`${process.env.REACT_APP_API_URI}/api/events/${eventID}`, {
-              headers: {
-                  'x-api-key': process.env.REACT_APP_API_KEY,
-                  'Content-Type': 'application/json'
-              }
-          });
-          console.log('Event deleted successfully:', response.data);
-      } catch (error) {
-          console.error('Error deleting the event:', error);
-      }
-      window.history.back();
+    }
   };
-  
 
   return (
     <FormContainer>
-      <FormTitle>Event Details</FormTitle>
+      <FormTitle>{isEditing ? 'Edit Event' : 'Edit Event Details'}</FormTitle>
       <form onSubmit={handleSubmit}>
+        {/* Form fields (same as before) */}
         <FormGroup>
           <Label>Event Title</Label>
           <Input
@@ -357,40 +349,62 @@ const EventDetailsForm = () => {
             name="title"
             value={formData.title}
             onChange={handleChange}
-            disabled={!isEditing}
+            readOnly={isEditing}
             required
           />
         </FormGroup>
-
         <FormGroup>
-          <Label>Description</Label>
+          <Label>Event Description</Label>
           <Textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
-            disabled={!isEditing}
+            readOnly={isEditing}
             required
           />
         </FormGroup>
-
         <FormGroup>
           <Label>Event Type</Label>
           <Select
             name="event_type"
             value={formData.event_type}
             onChange={handleChange}
-            disabled={!isEditing}
+            disabled={isEditing}
             required
           >
-            <option value="">Select Event Type</option>
             {eventTypes.map((type) => (
-              <option value={type}>
+              <option key={type} value={type}>
                 {type}
               </option>
             ))}
           </Select>
         </FormGroup>
-
+        <FormGroup>
+          <Label>Location</Label>
+          <Select
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            disabled={isEditing}
+            required
+          >
+            {venues.map((venue) => (
+              <option key={venue.Name} value={venue.Name}>
+                {venue.Name}
+              </option>
+            ))}
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Label>Capacity</Label>
+          <Input
+            type="number"
+            name="capacity"
+            value={formData.capacity}
+            onChange={handleChange}
+            readOnly
+          />
+        </FormGroup>
         <FormGroup>
           <Label>Start Date</Label>
           <Input
@@ -398,11 +412,10 @@ const EventDetailsForm = () => {
             name="start_date"
             value={formData.start_date}
             onChange={handleChange}
-            disabled={!isEditing}
+            readOnly={isEditing}
             required
           />
         </FormGroup>
-
         <FormGroup>
           <Label>Start Time</Label>
           <Input
@@ -410,11 +423,10 @@ const EventDetailsForm = () => {
             name="start_time"
             value={formData.start_time}
             onChange={handleChange}
-            disabled={!isEditing}
+            readOnly={isEditing}
             required
           />
         </FormGroup>
-
         <FormGroup>
           <Label>End Date</Label>
           <Input
@@ -422,11 +434,10 @@ const EventDetailsForm = () => {
             name="end_date"
             value={formData.end_date}
             onChange={handleChange}
-            disabled={!isEditing}
+            readOnly={isEditing}
             required
           />
         </FormGroup>
-
         <FormGroup>
           <Label>End Time</Label>
           <Input
@@ -434,129 +445,66 @@ const EventDetailsForm = () => {
             name="end_time"
             value={formData.end_time}
             onChange={handleChange}
-            disabled={!isEditing}
+            readOnly={isEditing}
             required
           />
         </FormGroup>
-
-        <FormGroup>
-          <Label>Venue</Label>
-          <Select
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            disabled={!isEditing}
-            required
-          >
-            <option value="">Select a location</option>
-            {venues.map((venue) => (
-              <option key={venue.id} value={venue.Name}>
-                {venue.Name}
-              </option>
-            ))}
-          </Select>
-        </FormGroup>
-
-        <FormGroup>
-          <Label>Capacity</Label>
-          <Input
-            type="number"
-            name="capacity"
-            value={formData.capacity}
-            readOnly
-            required
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label>Firstname</Label>
-          <Input
-            type="text"
-            name="firstname"
-            value={formData.firstname}
-            onChange={handleChange}
-            disabled={!isEditing}
-            required
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label>Lastname</Label>
-          <Input
-            type="text"
-            name="lastname"
-            value={formData.lastname}
-            onChange={handleChange}
-            disabled={!isEditing}
-            required
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label>Email</Label>
-          <Input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            disabled={!isEditing}
-            required
-          />
-        </FormGroup>
-
         <FormGroup>
           <Label>Ticket Type</Label>
-          <Select name="isPaid" value={formData.isPaid} onChange={handleChange}>
+          <Select
+            name="isPaid"
+            value={formData.isPaid}
+            onChange={handleChange}
+            disabled={isEditing}
+          >
             <option value="free">Free</option>
             <option value="paid">Paid</option>
           </Select>
         </FormGroup>
-
         {formData.isPaid === 'paid' && (
-            <div>
-                <FormGroup>
-            <Label>General Ticket Price</Label>
-            <Input
+          <div>
+            <FormGroup>
+              <Label>General Ticket Price</Label>
+              <Input
                 type="number"
-                name="ticket.general" // Correctly map to ticketPrices.general
+                name="ticket.general"
                 value={formData.ticket.general}
                 onChange={handleChange}
-                disabled={!isEditing}
-            />
+                readOnly={isEditing}
+                required
+              />
             </FormGroup>
-
             <FormGroup>
-            <Label>VIP Ticket Price</Label>
-            <Input
+              <Label>VIP Ticket Price</Label>
+              <Input
                 type="number"
-                name="ticket.vip" // Correctly map to ticketPrices.vip
+                name="ticket.vip"
                 value={formData.ticket.vip}
                 onChange={handleChange}
-                disabled={!isEditing}
-            />
+                readOnly={isEditing}
+                required
+              />
             </FormGroup>
-
-            </div>
+          </div>
         )}
-
         <FormGroup>
-          <Label>Poster</Label>
+          <Label>Event Poster</Label>
           <Input
             type="file"
-            name="poster"
+            accept="image/*"
             onChange={handleFileChange}
-            disabled={!isEditing}
+            disabled={isEditing}
           />
+          {imageUrl && <ImagePreview src={imageUrl} alt="Event Poster Preview" />}
         </FormGroup>
-
-        <Button type="button" onClick={handleEdit}>
-          {isEditing ? 'Cancel Edit' : 'Edit Event'}
+        <>
+        <Button type="submit">{isEditing ? 'Save Changes' : 'Edit'}</Button>
+        <Button onClick={handleDelete} style={{ backgroundColor: 'red', marginTop: '1rem' }}>
+          Delete Event
         </Button>
-        {isEditing && <Button type="submit">Save Changes</Button>}
-        {!isEditing ? <Button onClick={handleDelete}>Delete Event</Button> : null}
+        </>
+        
       </form>
-
-      {formData.poster && <ImagePreview src={formData.poster} alt="Event Poster" />}
     </FormContainer>
   );
 };
