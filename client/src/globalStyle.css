@@ -122,6 +122,51 @@ h2{
 
 
 /*Sliding*/
+.hover-info {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 60vw;
+  padding: 15px;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  border-radius: 5px;
+  transition: all 0.6s ease-in-out;
+  transform: scaleY(0);
+  transform-origin: top;
+  overflow: hidden;
+  overflow-y: auto;
+  z-index: 4;
+}
+
+.nav-bar a:hover .hover-info {
+  opacity: 1;
+  visibility: visible;
+  transform: scaleY(1);
+  max-height: none;
+}
+
+.hover-info::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 10px 10px;
+  border-style: solid;
+  border-color: transparent transparent rgba(0, 0, 0, 0.7);
+}
+.nav-bar a:hover .hover-info {
+  opacity: 1;
+  visibility: visible;
+  transform: scaleY(1);
+  max-height: 300px; /* Apply height limit when content overflows */
+}
+
 
 /* Carousel Container */
 
