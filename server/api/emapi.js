@@ -59,27 +59,93 @@ app.get('/api/events/:field/:value', async (req, res) => {
 
 app.post('/api/events/create', async (req, res) => {
   try {
+    // Create the event
     const event = await Events.create(req.body);
+
+    // Construct the success message
+    const messageContent = `You created an event '${event.name}' successfully on ${new Date().toLocaleDateString()}`;
+
+    // Add the message to the event's messages array
+    event.messages.push({
+      content: messageContent,
+      date: new Date(),
+    });
+
+    // Save the updated event with the success message
+    await event.save();
+
     res.status(200).json(event);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// New registration endpoint
-app.post('/api/events/:eventID/register', async (req, res) => {
-  try {
-    const registrationData = {
-      eventID: req.params.eventID,
-      ...req.body
-    };
+// Endpoint to delete a specific message from an event
+app.delete('/api/events/messages/:msgId', async (req, res) => {
+  const msgId = req.params.msgId;
 
-    const registration = await Registration.create(registrationData);
-    res.status(200).json(registration);
+  try {
+    // Find the event containing the message
+    const event = await Events.findOne({ "messages._id": msgId });
+
+    if (!event) {
+      return res.status(404).json({ error: 'Message not found' });
+    }
+
+    // Remove the message from the messages array
+    event.messages = event.messages.filter(message => message._id.toString() !== msgId);
+
+    // Save the updated event
+    await event.save();
+
+    res.status(200).json({ message: 'Notification deleted successfully' });
   } catch (error) {
+    console.error('Error deleting message:', error);
     res.status(500).json({ error: error.message });
   }
 });
+
+
+// New registration endpoint
+app.post('/api/events/:eventID/register', async (req, res) => {
+  try {
+    const { eventID } = req.params;
+    const { fullName, studentNumber, email, phone, creator, userID } = req.body;
+
+    // Check if the user is already registered for the event
+    const existingRegistration = await Registration.findOne({ eventID, userID });
+
+    if (existingRegistration) {
+      return res.status(400).json({ message: 'You have already registered for this event.' });
+    }
+
+    const registrationData = {
+      eventID,
+      fullName,
+      studentNumber,
+      email,
+      phone,
+      creator,
+      userID,
+    };
+
+    // Create a new registration entry
+    const registration = await Registration.create(registrationData);
+
+    // Count the total number of registrations for the event
+    const registrationCount = await Registration.countDocuments({ eventID });
+
+    // Update the registration count in the Events model
+    await Events.findByIdAndUpdate(eventID, { registrationCount }, { new: true });
+
+    res.status(200).json({ message: 'Registration successful', registration });
+  } catch (error) {
+    console.error("Error registering for event:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 
 app.get('/api/events/:id/:field', async (req, res) => {
   try {
@@ -128,6 +194,26 @@ app.delete('/api/events/:id', async (req, res) => {
   }
 });
 
+// New route to fetch registered events for a user
+app.get('/api/user/:userID/tickets', async (req, res) => {
+  try {
+    const userID = req.params.userID;
+    
+    // Fetch all registrations for this user
+    const registrations = await Registration.find({ userID: userID });
+    
+    if (!registrations || registrations.length === 0) {
+      return res.status(404).json({ message: "No tickets found for this user." });
+    }
+
+    res.status(200).json(registrations);
+  } catch (error) {
+    console.error("Error fetching tickets for user:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 mongoose.set("strictQuery", false);
 mongoose
   .connect(database)
@@ -139,4 +225,4 @@ mongoose
   })
   .catch(() => {
     console.log("Connection failed!");
-  });
+  }); 
