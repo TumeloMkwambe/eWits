@@ -38,6 +38,25 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+// New route to fetch registered events for a user
+app.get('/api/users/:userID/tickets', async (req, res) => {
+  try {
+    const userID = req.params.userID;
+    
+    // Fetch all registrations for this user
+    const registrations = await Registration.find({ userID: userID });
+    
+    if (!registrations || registrations.length === 0) {
+      return res.status(404).json({ message: "No tickets found for this user." });
+    }
+
+    res.status(200).json(registrations);
+  } catch (error) {
+    console.error("Error fetching tickets for user:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get('/api/users/:id', async (req, res) => {
   try {
     const user = await Users.findById(req.params.id);
