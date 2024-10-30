@@ -1,6 +1,21 @@
-// models/registration.models.js
 
 const mongoose = require("mongoose");
+
+const creatorSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  surname: {
+    type: String,
+    required: true,
+    default: "N/A"  // Add a default value if the surname is missing
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+});
 
 const registrationSchema = mongoose.Schema(
   {
@@ -24,10 +39,18 @@ const registrationSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    creator: {
+      type: creatorSchema,
+      required: true,
+    },
+    userID: {
+      type: String,
+      required: true,
+    }
   },
   {
     timestamps: true,
-    collection: "register", // Specify the collection name
+    collection: "register",
   }
 );
 
