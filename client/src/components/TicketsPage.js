@@ -121,16 +121,16 @@ const TicketsPage = () => {
         if (!user) {
           throw new Error('User not found in session storage');
         }
-
+  
         const registrationResponse = await axios.get(`${process.env.REACT_APP_API_URI}/api/user/${user._id}/tickets`, {
           headers: {
             'x-api-key': process.env.REACT_APP_API_KEY,
           },
         });
-
+  
         const registrations = registrationResponse.data;
         const ticketData = [];
-
+  
         for (const registration of registrations) {
           const eventResponse = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${registration.eventID}`, {
             headers: {
@@ -138,46 +138,51 @@ const TicketsPage = () => {
             },
           });
           const event = eventResponse.data;
-
-          const hasGeneral = event.ticket.price.general !== undefined;
-          const hasVIP = event.ticket.price.vip !== undefined;
-
-          if (hasGeneral || hasVIP) {
-            if (event.ticket.price.general === 0 && event.ticket.price.vip === 0) {
+  
+          // Check if event.ticket and its nested properties exist
+          const hasGeneral = event.ticket?.price?.general !== undefined;
+          const hasVIP = event.ticket?.price?.vip !== undefined;
+  
+          if (event.ticket?.price) {
+            if (hasGeneral || hasVIP) {
+              if (event.ticket.price.general === 0 && event.ticket.price.vip === 0) {
+                ticketData.push({
+                  registration,
+                  event,
+                  type: null,
+                  price: 'Free',
+                });
+              } else {
+                if (hasGeneral && event.ticket.price.general !== 0) {
+                  ticketData.push({
+                    registration,
+                    event,
+                    type: 'General',
+                    price: event.ticket.price.general,
+                  });
+                }
+                if (hasVIP && event.ticket.price.vip !== 0) {
+                  ticketData.push({
+                    registration,
+                    event,
+                    type: 'VIP',
+                    price: event.ticket.price.vip,
+                  });
+                }
+              }
+            } else {
               ticketData.push({
                 registration,
                 event,
                 type: null,
                 price: 'Free',
               });
-            } else {
-              if (event.ticket.price.general !== 0) {
-                ticketData.push({
-                  registration,
-                  event,
-                  type: 'General',
-                  price: event.ticket.price.general,
-                });
-              }
-              if (event.ticket.price.vip !== 0) {
-                ticketData.push({
-                  registration,
-                  event,
-                  type: 'VIP',
-                  price: event.ticket.price.vip,
-                });
-              }
             }
           } else {
-            ticketData.push({
-              registration,
-              event,
-              type: null,
-              price: 'Free',
-            });
+            console.warn(`No ticket data available for event ${event.name}`);
           }
         }
-
+  
         setTickets(ticketData);
         setLoading(false);
       } catch (error) {
@@ -185,10 +190,10 @@ const TicketsPage = () => {
         setLoading(false);
       }
     };
-
+  
     fetchTickets();
   }, []);
-
+  
   const handleBuyTicket = (ticket) => {
     // Navigate to the payment page and pass ticket data via location.state
     navigate('/payments', { state: { ticket } });

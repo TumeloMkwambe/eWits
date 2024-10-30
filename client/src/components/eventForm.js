@@ -168,13 +168,25 @@ const handleChange = (e) => {
     }
   } else if (name === 'ticketPriceGeneral' || name === 'ticketPriceVIP') {
     const ticketType = name === 'ticketPriceGeneral' ? 'general' : 'vip';
-    setFormData({
-      ...formData,
-      ticketPrices: {
-        ...formData.ticketPrices,
-        [ticketType]: value,
-      },
-    });
+    // Ensure the input is a positive integer
+    if (/^\d+$/.test(value) && parseInt(value, 10) > 0) {
+      setFormData({
+        ...formData,
+        ticketPrices: {
+          ...formData.ticketPrices,
+          [ticketType]: value,
+        },
+      });
+    } else {
+      // If not valid, reset the field or keep it empty
+      setFormData({
+        ...formData,
+        ticketPrices: {
+          ...formData.ticketPrices,
+          [ticketType]: '',
+        },
+      });
+    }
   } else {
     setFormData({
       ...formData,
@@ -183,14 +195,15 @@ const handleChange = (e) => {
   }
 };
 
-  // Handle file selection
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      poster: file,
-    });
-  };
+// Handle file selection
+const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  setFormData({
+    ...formData,
+    poster: file,
+  });
+};
+
 
   // Handle form submission
   const handleSubmit = async (e) => {
