@@ -12,8 +12,7 @@ const postUser = async (name, email) => {
     my_events: [],
   };
 
-  try {
-    await axios
+  const response = await axios
       .post(`${process.env.REACT_APP_USER_URI}/api/users/create`, user, {
         headers: {
           "Content-Type": "application/json",
@@ -21,12 +20,7 @@ const postUser = async (name, email) => {
       })
       .then((response) => {
         sessionStorage.setItem("user", JSON.stringify(response.data));
-        return response;
       });
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
 };
 
 const Login = () => {
