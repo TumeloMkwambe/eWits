@@ -555,7 +555,7 @@ export default function PaymentApp() {
 
     const fetchPaymentIntent = async () => {
       try {
-        const response = await fetch(`http://localhost:5252/create-payment-intent`, {
+        const response = await fetch(`https://e-wits.vercel.app/create-payment-intent`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -599,7 +599,7 @@ export default function PaymentApp() {
       }
   
       // Save payment details to MongoDB
-      const response = await fetch('http://localhost:3007/api/payments', {
+      const response = await fetch('https://e-wits.vercel.app/api/payments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
