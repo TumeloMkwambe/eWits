@@ -1,19 +1,19 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './components/login';
-import Logout from './components/logout';
-import Landing from './Pages/Landing/Landing';
-import CreateEvent from './Pages/CreateEvent/CreateEvent';
-import EventDetails from './Pages/EventDetails/EventDetails';
-import Tickets from './Pages/Tickets/Tickets';
-import Notifications from './Pages/Nofications/Notifications';
-import MyEvents from './Pages/MyEvents/MyEvents';
-import Calendar from './Pages/Calendar/Calendar';
-import EventDetailsCard from './Pages/EventDetailsCard/EventDetailsCard';
-import Home from './Pages/Home/Home';
-import RegisterEvent from './components/RegisterEvent';  // Import RegisterEvent component
-import DetailsCard from './components/detailsCard'; // Adjust the import path as necessary
-
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./components/login";
+import Logout from "./components/logout";
+import Landing from "./Pages/Landing/Landing";
+import CreateEvent from "./Pages/CreateEvent/CreateEvent";
+import EventDetails from "./Pages/EventDetails/EventDetails";
+import Tickets from "./Pages/Tickets/Tickets";
+import Notifications from "./Pages/Nofications/Notifications";
+import MyEvents from "./Pages/MyEvents/MyEvents";
+import Calendar from "./Pages/Calendar/Calendar";
+import EventDetailsCard from "./Pages/EventDetailsCard/EventDetailsCard";
+import Home from "./Pages/Home/Home";
+import RegisterEvent from "./components/RegisterEvent"; // Import RegisterEvent component
+import DetailsCard from "./components/detailsCard"; // Adjust the import path as necessary
+//comment
 
 function App() {
   return (
