@@ -6,7 +6,7 @@ import Landing from './Pages/Landing/Landing';
 import CreateEvent from './Pages/CreateEvent/CreateEvent';
 import EventDetails from './Pages/EventDetails/EventDetails';  // Adjusted import for EventDetails
 import TicketsPage from './components/TicketsPage';
-import Notifications from './Pages/Nofications/Notifications';
+import Notifications from './components/Notifications';
 import MyEvents from './Pages/MyEvents/MyEvents';
 import Calendar from './Pages/Calendar/Calendar';
 import EventDetailsCard from './Pages/EventDetailsCard/EventDetailsCard';

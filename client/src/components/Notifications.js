@@ -1,5 +1,5 @@
 
-import Sidebar from '../../components/sidebar'
+import Sidebar from './sidebar'
 
 import React, { useEffect, useState } from 'react';
 
@@ -52,6 +52,7 @@ function Notifications() {
 
   return (
     <div className="DashboardContainer">
+      <Sidebar/>
       <div className="ContentArea">
         <h2>Your Notifications</h2>
         {notifications.length ? (
@@ -60,9 +61,6 @@ function Notifications() {
               <div key={msg._id} className="notification">
                 <p className="notificationContent">{msg.content}</p>
                 <small className="notificationDate">{new Date(msg.date).toLocaleDateString()}</small>
-                <button className="deleteButton" onClick={() => handleDelete(msg._id)}>
-                  <FaTrash /> {/* Trash icon for delete action */}
-                </button>
               </div>
             ))}
           </div>
