@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+//comment
 const fetchEvents = async () => {
     const events = await axios.get(`${process.env.REACT_APP_API_URI}/api/events`, {
         headers: {
