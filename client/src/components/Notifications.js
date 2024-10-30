@@ -1,7 +1,11 @@
-import Sidebar from '../../components/sidebar';
+
+import Sidebar from '../../components/sidebar'
+
 import React, { useEffect, useState } from 'react';
+
 import axios from 'axios';
-import './Notification.css';
+import { FaTrash } from 'react-icons/fa'; // Importing an icon for the delete button
+import './Notification.css'; // Ensure you import the CSS file
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
@@ -28,6 +32,24 @@ function Notifications() {
     fetchEventMessages();
   }, []);
 
+  const handleDelete = async (msgId) => {
+    try {
+      // Send a DELETE request to remove the message from the database
+      await axios.delete(`${process.env.REACT_APP_API_URI}/api/events/messages/${msgId}`, {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY
+        }
+      });
+
+      // Update the state to remove the deleted message
+      setNotifications((prevNotifications) => 
+        prevNotifications.filter((msg) => msg._id !== msgId)
+      );
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+    }
+  };
+
   return (
     <div className="DashboardContainer">
       <div className="ContentArea">
@@ -38,6 +60,9 @@ function Notifications() {
               <div key={msg._id} className="notification">
                 <p className="notificationContent">{msg.content}</p>
                 <small className="notificationDate">{new Date(msg.date).toLocaleDateString()}</small>
+                <button className="deleteButton" onClick={() => handleDelete(msg._id)}>
+                  <FaTrash /> {/* Trash icon for delete action */}
+                </button>
               </div>
             ))}
           </div>
