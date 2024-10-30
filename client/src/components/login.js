@@ -42,6 +42,8 @@ const Login = () => {
         if (response.status === 200) {
           navigate("/home");
         }
+        else{
+          alert("Network Latency: Try Again!");
       }
     };
     handleLogin();
