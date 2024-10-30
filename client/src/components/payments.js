@@ -604,17 +604,6 @@ export default function PaymentApp() {
         throw new Error("Missing user or ticket information");
       }
 
-      const response = await axios.put(
-        `${process.env.REACT_APP_USER_URI}/api/users/like/${user._id}`,
-        myEvent,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log(response);
-
       setPaymentCompleted(true);
     } catch (error) {
       console.error("Error processing payment:", error);
