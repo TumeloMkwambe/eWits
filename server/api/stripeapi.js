@@ -6,7 +6,7 @@ const app = express();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 app.use(cors({
-  origin: "http://localhost:3001",
+  origin: "https://ewits-events.vercel.app",
   methods: ["GET", "POST"],
   credentials: true,
   headers: ["Content-Type"]
