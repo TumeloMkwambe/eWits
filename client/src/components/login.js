@@ -42,6 +42,7 @@ const Login = () => {
         if (response.status === 200) {
           navigate("/home");
         }
+      }
     };
     handleLogin();
   }, [isAuthenticated, user, navigate]);
