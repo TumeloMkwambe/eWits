@@ -11,7 +11,7 @@ const postUser = async (name, email) => {
     liked_events: [],
     my_events: []
   }
-
+  console.log(user);
   try {
     await axios.post(`${process.env.REACT_APP_USER_URI}/api/users/create`, user, {
       headers: {
