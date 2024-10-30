@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import Sidebar from './sidebar';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigateimport backgroundImage from '../images/2.jpg'; // Import your background image
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
 
 // Styled-components
 const DashboardContainer = styled.div`
   display: flex;
   height: 100vh; /* Full height to enable scrolling */
   overflow: hidden;
- 
   background-size: cover; /* Cover the entire container */
   background-position: center; /* Center the image */
 `;
