@@ -37,6 +37,7 @@ const Login = () => {
       if (isAuthenticated) {
         // Wait for postUser to finish before navigating
         const response = await postUser(user.name, user.email);
+        console.log(response);
         if(response.status == 200){
           navigate("/home");
         }
