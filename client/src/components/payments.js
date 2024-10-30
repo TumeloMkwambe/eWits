@@ -7,6 +7,7 @@
 // import '../loadingContainer.css';
 // import Sidebar from "./sidebar";
 // import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
