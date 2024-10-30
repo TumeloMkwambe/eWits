@@ -12,39 +12,43 @@ const postUser = async (name, email) => {
     my_events: [],
   };
 
-  const response = await axios
-      .post(`${process.env.REACT_APP_USER_URI}/api/users/create`, user, {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_USER_URI}/api/users/create`,
+      user,
+      {
         headers: {
           "Content-Type": "application/json",
         },
-      })
-      .then((response) => {
-        sessionStorage.setItem("user", JSON.stringify(response.data));
-      });
+      }
+    );
+    sessionStorage.setItem("user", JSON.stringify(response.data));
+    return response;
+  } catch (error) {
+    console.error("Failed to post user:", error);
+    return { status: 500 }; // Return a default response if error occurs
+  }
 };
 
 const Login = () => {
   const { user, loginWithRedirect, isAuthenticated } = useAuth0();
   const navigate = useNavigate();
+
   useEffect(() => {
     const handleLogin = async () => {
-      if (isAuthenticated) {
+      if (isAuthenticated && user) {
         // Wait for postUser to finish before navigating
         const response = await postUser(user.name, user.email);
-        console.log(response);
-        if(response.status == 200){
+        if (response.status === 200) {
           navigate("/home");
-        }
-        else{
-          navigate("/");
         }
       }
     };
     handleLogin();
   }, [isAuthenticated, user, navigate]);
+
   return (
     <div>
-      {/* <h2>Welcome! Please log in.</h2> */}
       <button onClick={() => loginWithRedirect()} className="Login">
         Log In
       </button>
