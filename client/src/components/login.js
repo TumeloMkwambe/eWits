@@ -41,6 +41,8 @@ const Login = () => {
         const response = await postUser(user.name, user.email);
         if (response.status === 200) {
           navigate("/home");
+        } else {
+          navigate("/");
         }
       }
     };
