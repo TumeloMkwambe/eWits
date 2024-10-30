@@ -11,7 +11,6 @@ const postUser = async (name, email) => {
     liked_events: [],
     my_events: []
   }
-  console.log(user);
   try {
     await axios.post(`${process.env.REACT_APP_USER_URI}/api/users/create`, user, {
       headers: {
@@ -33,6 +32,7 @@ const Login =  () => {
     const handleLogin = async () => {
       if (isAuthenticated) {
         // Wait for postUser to finish before navigating
+        console.log(user.name);
         await postUser(user.name, user.email);
         navigate('/home');
       }
