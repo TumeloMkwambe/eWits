@@ -21,9 +21,11 @@ const postUser = async (name, email) => {
       })
       .then((response) => {
         sessionStorage.setItem("user", JSON.stringify(response.data));
+        return response;
       });
   } catch (error) {
     console.log(error);
+    return error;
   }
 };
 
@@ -34,8 +36,13 @@ const Login = () => {
     const handleLogin = async () => {
       if (isAuthenticated) {
         // Wait for postUser to finish before navigating
-        await postUser(user.name, user.email);
-        navigate("/home");
+        const response = await postUser(user.name, user.email);
+        if(response.status == 200){
+          navigate("/home");
+        }
+        else{
+          navigate("/");
+        }
       }
     };
     handleLogin();
