@@ -15,7 +15,7 @@ app.use(cors({
 app.use(express.static("public"));
 app.use(express.json());
 
-app.post('/create-payment-intent', async (req, res) => {
+app.post('/api/stripe/create-payment-intent', async (req, res) => {
   try {
     console.log('Received request:', req.body);
 
