@@ -1,4 +1,3 @@
-
 // import React, { useState, useEffect } from "react";
 // import { loadStripe } from "@stripe/stripe-js";
 // import { Elements } from "@stripe/react-stripe-js";
@@ -41,8 +40,8 @@
 //           },
 //           credentials: 'include',
 //           body: JSON.stringify({
-//             items: [{ 
-//               id: ticket.event.name, 
+//             items: [{
+//               id: ticket.event.name,
 //               amount: ticket.price * 100  // Convert to cents here
 //             }]
 //           })
@@ -74,7 +73,7 @@
 //       colorText: '#30313d',
 //     }
 //   };
-  
+
 //   const options = {
 //     clientSecret,
 //     appearance,
@@ -94,29 +93,29 @@
 //               <stop offset="100%" stopColor="hsl(223,90%,55%)" />
 //             </linearGradient>
 //           </defs>
-//           <circle 
-//             className="pl__ring" 
-//             cx="100" 
-//             cy="100" 
-//             r="82" 
-//             fill="none" 
-//             stroke="url(#pl-grad1)" 
-//             strokeWidth="36" 
-//             strokeDasharray="0 257 1 257" 
-//             strokeDashoffset="0.01" 
-//             strokeLinecap="round" 
-//             transform="rotate(-90,100,100)" 
+//           <circle
+//             className="pl__ring"
+//             cx="100"
+//             cy="100"
+//             r="82"
+//             fill="none"
+//             stroke="url(#pl-grad1)"
+//             strokeWidth="36"
+//             strokeDasharray="0 257 1 257"
+//             strokeDashoffset="0.01"
+//             strokeLinecap="round"
+//             transform="rotate(-90,100,100)"
 //           />
-//           <line 
-//             className="pl__ball" 
-//             stroke="url(#pl-grad2)" 
-//             x1="100" 
-//             y1="18" 
-//             x2="100.01" 
-//             y2="182" 
-//             strokeWidth="36" 
-//             strokeDasharray="1 165" 
-//             strokeLinecap="round" 
+//           <line
+//             className="pl__ball"
+//             stroke="url(#pl-grad2)"
+//             x1="100"
+//             y1="18"
+//             x2="100.01"
+//             y2="182"
+//             strokeWidth="36"
+//             strokeDasharray="1 165"
+//             strokeLinecap="round"
 //           />
 //         </svg>
 //       </div>
@@ -181,29 +180,29 @@
 //               <stop offset="100%" stopColor="hsl(223,90%,55%)" />
 //             </linearGradient>
 //           </defs>
-//           <circle 
-//             className="pl__ring" 
-//             cx="100" 
-//             cy="100" 
-//             r="82" 
-//             fill="none" 
-//             stroke="url(#pl-grad1)" 
-//             strokeWidth="36" 
-//             strokeDasharray="0 257 1 257" 
-//             strokeDashoffset="0.01" 
-//             strokeLinecap="round" 
-//             transform="rotate(-90,100,100)" 
+//           <circle
+//             className="pl__ring"
+//             cx="100"
+//             cy="100"
+//             r="82"
+//             fill="none"
+//             stroke="url(#pl-grad1)"
+//             strokeWidth="36"
+//             strokeDasharray="0 257 1 257"
+//             strokeDashoffset="0.01"
+//             strokeLinecap="round"
+//             transform="rotate(-90,100,100)"
 //           />
-//           <line 
-//             className="pl__ball" 
-//             stroke="url(#pl-grad2)" 
-//             x1="100" 
-//             y1="18" 
-//             x2="100.01" 
-//             y2="182" 
-//             strokeWidth="36" 
-//             strokeDasharray="1 165" 
-//             strokeLinecap="round" 
+//           <line
+//             className="pl__ball"
+//             stroke="url(#pl-grad2)"
+//             x1="100"
+//             y1="18"
+//             x2="100.01"
+//             y2="182"
+//             strokeWidth="36"
+//             strokeDasharray="1 165"
+//             strokeLinecap="round"
 //           />
 //         </svg>
 //       </div>
@@ -264,7 +263,7 @@
 //       colorText: '#30313d',
 //     }
 //   };
-  
+
 //   const options = {
 //     clientSecret,
 //     appearance,
@@ -298,10 +297,6 @@
 //   );
 // }
 
-
-
-
-
 // import React, { useState, useEffect } from "react";
 // import { loadStripe } from "@stripe/stripe-js";
 // import { Elements } from "@stripe/react-stripe-js";
@@ -328,29 +323,29 @@
 //             <stop offset="100%" stopColor="hsl(223,90%,55%)" />
 //           </linearGradient>
 //         </defs>
-//         <circle 
-//           className="pl__ring" 
-//           cx="100" 
-//           cy="100" 
-//           r="82" 
-//           fill="none" 
-//           stroke="url(#pl-grad1)" 
-//           strokeWidth="36" 
-//           strokeDasharray="0 257 1 257" 
-//           strokeDashoffset="0.01" 
-//           strokeLinecap="round" 
-//           transform="rotate(-90,100,100)" 
+//         <circle
+//           className="pl__ring"
+//           cx="100"
+//           cy="100"
+//           r="82"
+//           fill="none"
+//           stroke="url(#pl-grad1)"
+//           strokeWidth="36"
+//           strokeDasharray="0 257 1 257"
+//           strokeDashoffset="0.01"
+//           strokeLinecap="round"
+//           transform="rotate(-90,100,100)"
 //         />
-//         <line 
-//           className="pl__ball" 
-//           stroke="url(#pl-grad2)" 
-//           x1="100" 
-//           y1="18" 
-//           x2="100.01" 
-//           y2="182" 
-//           strokeWidth="36" 
-//           strokeDasharray="1 165" 
-//           strokeLinecap="round" 
+//         <line
+//           className="pl__ball"
+//           stroke="url(#pl-grad2)"
+//           x1="100"
+//           y1="18"
+//           x2="100.01"
+//           y2="182"
+//           strokeWidth="36"
+//           strokeDasharray="1 165"
+//           strokeLinecap="round"
 //         />
 //       </svg>
 //     </div>
@@ -411,7 +406,7 @@
 //       colorText: '#30313d',
 //     }
 //   };
-  
+
 //   const options = {
 //     clientSecret,
 //     appearance,
@@ -419,14 +414,14 @@
 
 //   const handlePaymentSuccess = async (paymentIntent) => {
 //     setPaymentCompleted(true);
-    
+
 //     // Retrieve user information from session storage
 //     const user = JSON.parse(sessionStorage.getItem('user'));
 //     if (!user) {
 //       console.error("User not found in session storage.");
 //       return;
 //     }
-    
+
 //     // Send payment details and user information to MongoDB
 //     try {
 //       const response = await fetch('http://localhost:3007/api/payment', {
@@ -443,18 +438,17 @@
 //           paymentId: paymentIntent.id,
 //         }),
 //       });
-  
+
 //       if (!response.ok) {
 //         throw new Error(`Error saving payment: ${response.statusText}`);
 //       }
-  
+
 //       console.log("Payment successfully saved to MongoDB");
 //     } catch (error) {
 //       console.error('Error saving payment:', error);
 //     }
 //   };
-  
-  
+
 //   if (error) {
 //     return <div>Error: {error}</div>;
 //   }
@@ -470,8 +464,8 @@
 //             <CompletePage />
 //           ) : clientSecret && (
 //             <Elements options={options} stripe={stripePromise}>
-//               <CheckoutForm 
-//                 onPaymentSuccess={handlePaymentSuccess} 
+//               <CheckoutForm
+//                 onPaymentSuccess={handlePaymentSuccess}
 //               />
 //             </Elements>
 //           )}
@@ -486,17 +480,23 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import CompletePage from "./CompletePage";
-import '../StripeStyling.css';
-import '../loadingContainer.css';
+import "../StripeStyling.css";
+import "../loadingContainer.css";
 import Sidebar from "./sidebar";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 const LoadingAnimation = () => {
   return (
     <div className="spinner-container">
-      <svg className="pl" viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        className="pl"
+        viewBox="0 0 200 200"
+        width="200"
+        height="200"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <defs>
           <linearGradient id="pl-grad1" x1="1" y1="0.5" x2="0" y2="0.5">
             <stop offset="0%" stopColor="hsl(313,90%,55%)" />
@@ -507,29 +507,29 @@ const LoadingAnimation = () => {
             <stop offset="100%" stopColor="hsl(223,90%,55%)" />
           </linearGradient>
         </defs>
-        <circle 
-          className="pl__ring" 
-          cx="100" 
-          cy="100" 
-          r="82" 
-          fill="none" 
-          stroke="url(#pl-grad1)" 
-          strokeWidth="36" 
-          strokeDasharray="0 257 1 257" 
-          strokeDashoffset="0.01" 
-          strokeLinecap="round" 
-          transform="rotate(-90,100,100)" 
+        <circle
+          className="pl__ring"
+          cx="100"
+          cy="100"
+          r="82"
+          fill="none"
+          stroke="url(#pl-grad1)"
+          strokeWidth="36"
+          strokeDasharray="0 257 1 257"
+          strokeDashoffset="0.01"
+          strokeLinecap="round"
+          transform="rotate(-90,100,100)"
         />
-        <line 
-          className="pl__ball" 
-          stroke="url(#pl-grad2)" 
-          x1="100" 
-          y1="18" 
-          x2="100.01" 
-          y2="182" 
-          strokeWidth="36" 
-          strokeDasharray="1 165" 
-          strokeLinecap="round" 
+        <line
+          className="pl__ball"
+          stroke="url(#pl-grad2)"
+          x1="100"
+          y1="18"
+          x2="100.01"
+          y2="182"
+          strokeWidth="36"
+          strokeDasharray="1 165"
+          strokeLinecap="round"
         />
       </svg>
     </div>
@@ -555,22 +555,27 @@ export default function PaymentApp() {
 
     const fetchPaymentIntent = async () => {
       try {
-        const response = await fetch(`https://e-wits.vercel.app/api/stripe/create-payment-intent`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            items: [{ 
-              id: ticket.event.name, 
-              amount: ticket.price * 100,
-              eventId: ticket.event._id,
-              // Store additional metadata here
-              eventName: ticket.event.name,
-              ticketType: ticket.type,
-            }]
-          })
-        });
+        const response = await fetch(
+          `https://e-wits.vercel.app/api/stripe/create-payment-intent`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              items: [
+                {
+                  id: ticket.event.name,
+                  amount: ticket.price * 100,
+                  eventId: ticket.event._id,
+                  // Store additional metadata here
+                  eventName: ticket.event.name,
+                  ticketType: ticket.type,
+                },
+              ],
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -579,7 +584,7 @@ export default function PaymentApp() {
         const data = await response.json();
         setClientSecret(data.clientSecret);
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -591,28 +596,38 @@ export default function PaymentApp() {
 
   const handlePaymentSuccess = async (paymentIntent) => {
     try {
-      const user = JSON.parse(sessionStorage.getItem('user'));
+      const user = JSON.parse(sessionStorage.getItem("user"));
       const ticket = location.state?.ticket;
-  
+
       if (!user || !ticket) {
         throw new Error("Missing user or ticket information");
       }
-  
+
+      const response = await axios.put(
+        `${process.env.REACT_APP_USER_URI}/api/users/like/${user._id}`,
+        myEvent,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
+
       setPaymentCompleted(true);
     } catch (error) {
-      console.error('Error processing payment:', error);
+      console.error("Error processing payment:", error);
       setError(error.message);
     }
   };
-  
 
   const appearance = {
-    theme: 'stripe',
+    theme: "stripe",
     variables: {
-      colorPrimary: '#0570de',
-      colorBackground: '#ffffff',
-      colorText: '#30313d',
-    }
+      colorPrimary: "#0570de",
+      colorBackground: "#ffffff",
+      colorText: "#30313d",
+    },
   };
 
   const options = {
@@ -627,7 +642,10 @@ export default function PaymentApp() {
         <div className="ContentArea">
           <div className="error-message">
             <p>Error: {error}</p>
-            <button onClick={() => navigate('/tickets')} className="error-button">
+            <button
+              onClick={() => navigate("/tickets")}
+              className="error-button"
+            >
               Return to Tickets
             </button>
           </div>
@@ -645,13 +663,15 @@ export default function PaymentApp() {
             <LoadingAnimation />
           ) : paymentCompleted ? (
             <CompletePage />
-          ) : clientSecret && (
-            <Elements options={options} stripe={stripePromise}>
-              <CheckoutForm 
-                onPaymentSuccess={handlePaymentSuccess}
-                ticketInfo={location.state?.ticket}
-              />
-            </Elements>
+          ) : (
+            clientSecret && (
+              <Elements options={options} stripe={stripePromise}>
+                <CheckoutForm
+                  onPaymentSuccess={handlePaymentSuccess}
+                  ticketInfo={location.state?.ticket}
+                />
+              </Elements>
+            )
           )}
         </div>
       </div>
