@@ -555,7 +555,7 @@ export default function PaymentApp() {
 
     const fetchPaymentIntent = async () => {
       try {
-        const response = await fetch(`https://e-wits.vercel.app/create-payment-intent`, {
+        const response = await fetch(`https://e-wits.vercel.app/api/stripe/create-payment-intent`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -596,29 +596,6 @@ export default function PaymentApp() {
   
       if (!user || !ticket) {
         throw new Error("Missing user or ticket information");
-      }
-  
-      // Save payment details to MongoDB
-      const response = await fetch('https://e-wits.vercel.app/api/payments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.REACT_APP_API_KEY,
-        },
-        body: JSON.stringify({
-          amount: paymentIntent.amount / 100,
-          userID: user._id,
-          eventID: ticket.event._id,
-          email: user.email,
-          eventName: ticket.event.name,
-          ticketType: ticket.type,
-          price: ticket.price, // Include price
-          paymentStatus: paymentIntent.status
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to save payment details');
       }
   
       setPaymentCompleted(true);
