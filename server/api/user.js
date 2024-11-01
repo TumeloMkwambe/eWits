@@ -1,3 +1,4 @@
+
 const express = require("express");
 const app = express();
 const Users = require('../models/user.models');
@@ -46,6 +47,8 @@ app.get('/api/users/:id', async (req, res) => {
     res.status(500).json({error: error.message});
   }
 })
+
+
 
 app.put('/api/users/like/:id', async (req, res) => {
   try {
