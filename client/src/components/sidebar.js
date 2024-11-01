@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate, NavLink } from 'react-router-dom';
 import Logo from '../../src/images/logo1.svg'
-import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaImages } from 'react-icons/fa';
+import { FaHome, FaCalendarAlt, FaTicketAlt, FaBell, FaCalculator } from 'react-icons/fa';
 
 const Sidebar = () => {
 
