@@ -122,7 +122,7 @@ const TicketsPage = () => {
           throw new Error('User not found in session storage');
         }
 
-        const registrationResponse = await axios.get(`${process.env.REACT_APP_API_URI}/api/user/${user._id}/tickets`, {
+        const registrationResponse = await axios.get(`${process.env.REACT_APP_API_URI}/api/register/user/${user._id}/tickets`, {
           headers: {
             'x-api-key': process.env.REACT_APP_API_KEY,
           },
