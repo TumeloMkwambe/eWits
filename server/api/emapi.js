@@ -195,7 +195,7 @@ app.delete('/api/events/:id', async (req, res) => {
 });
 
 // New route to fetch registered events for a user
-app.get('/api/user/:userID/tickets', async (req, res) => {
+app.get('/api/register/user/:userID/tickets', async (req, res) => {
   try {
     const userID = req.params.userID;
     
