@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+// src/components/filteredEvents.js
+import React from 'react';
 import DisplayEvents from "./displayEvents";
 import { fetchEvents } from "../Requests/events";
 
@@ -22,11 +23,12 @@ function stringifyDate(date1, date2) {
     return [time, date];
 }
 
-const FilteredEvents = ({type}) => {
+const FilteredEvents = ({ type, searchQuery }) => {
     const filteredEvents = async () => {
         const Events = [];
         await fetchEvents();
         const data = JSON.parse(sessionStorage.getItem('events'));
+        
         for (let i = 0; i < Object.keys(data).length; i++) {
             const event = {
                 id: data[i]._id,
@@ -38,17 +40,25 @@ const FilteredEvents = ({type}) => {
                 location: data[i].location,
                 likes: data[i].likes
             };
-    
-            if(data[i].event_type == type){
+            
+            if (data[i].event_type === type) {
                 Events.push(event);
             }
         }
+
+        // Filter events further based on searchQuery
+        if (searchQuery) {
+            return Events.filter(event => 
+                event.topic.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+
         return Events;
     };
 
     return (
-        <DisplayEvents filteredEvents={filteredEvents} route={"home"}/>
+        <DisplayEvents filteredEvents={filteredEvents} route={"home"} />
     );
-}
+};
 
 export default FilteredEvents;

@@ -63,7 +63,7 @@ For detailed API documentation, please refer to the [API Documentation](https://
 
 The application is deployed on Vercel. You can access the live site at the following link:
 
-- [Live Site](https://demo-app-two-snowy.vercel.app/) (insert link to deployed site)
+- [Live Site](https://demo-app-git-main-events-and-activities.vercel.app/) (insert link to deployed site)
 
 ## Local Testing
 npm install --save-dev jest
@@ -138,7 +138,7 @@ This will run your tests and produce coverage reports in the specified formats. 
 
 ## Links
 
-- [Live Site](https://demo-app-two-snowy.vercel.app/)
+- [Live Site](https://demo-app-git-main-events-and-activities.vercel.app/)
 - [Documentation](https://ewits.gitbook.io/ewits-docs)
 - [GitHub Repository](https://github.com/TumeloMkwambe/eWits/)
 
