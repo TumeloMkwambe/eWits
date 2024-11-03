@@ -214,9 +214,6 @@ app.get('/api/user/:userID/tickets', async (req, res) => {
 });
 
 
-
-
-
 mongoose.set("strictQuery", false);
 mongoose
   .connect(database)
