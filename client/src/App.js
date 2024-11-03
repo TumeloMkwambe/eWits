@@ -21,10 +21,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
 const stripeKey = process.env.REACT_APP_STRIPE_PUBLIC_KEY
-console.log(stripeKey, 'KEY')
-console.log(process.env.REACT_APP_USER_URI, 'testing')
 const stripePromise = loadStripe(stripeKey);
-console.log(process.env.REACT_APP_STRIPE_PUBLIC_KEY, 'STRIPE KEY')
 
 function App() {
   return (
