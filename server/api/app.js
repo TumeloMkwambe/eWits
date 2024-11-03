@@ -5,7 +5,10 @@ const app = express();
 
 // Configure CORS to allow requests from the frontend
 app.use(cors({
-  origin: "https://ewits.vercel.app", // Replace with your frontend's deployed URL
+  origin: [
+    "https://ewits.vercel.app", // Your frontend
+    "https://ewitsserver.vercel.app" // Your backend
+  ],
   credentials: true, // Allows cookies to be included in requests
 }));
 
