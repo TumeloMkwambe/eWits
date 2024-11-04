@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Sidebar from './sidebar';
@@ -5,12 +6,24 @@ import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
+=======
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import Sidebar from "./sidebar";
+import axios from "axios";
+import { QRCodeCanvas } from "qrcode.react";
+import { useNavigate } from "react-router-dom"; // Import useNavigateimport backgroundImage from '../images/2.jpg'; // Import your background image
+>>>>>>> origin/lg
 
 // Styled-components
 const DashboardContainer = styled.div`
   display: flex;
   height: 100vh; /* Full height to enable scrolling */
   overflow: hidden;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/lg
   background-size: cover; /* Cover the entire container */
   background-position: center; /* Center the image */
 `;
@@ -29,7 +42,12 @@ const TicketsContainer = styled.div`
   padding: 1rem;
   overflow-y: auto; /* Allow scrolling in this area */
   flex: 1; /* Take up the remaining space */
-  background-color: rgba(249, 249, 249, 0.8); /* Light background with transparency */
+  background-color: rgba(
+    249,
+    249,
+    249,
+    0.8
+  ); /* Light background with transparency */
 `;
 
 const Heading = styled.h2`
@@ -103,7 +121,7 @@ const BuyButton = styled.button`
   margin-top: 0.8rem;
   cursor: pointer;
   font-size: 0.9rem;
-  
+
   &:hover {
     background-color: #ff6347;
   }
@@ -117,45 +135,54 @@ const TicketsPage = () => {
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const user = JSON.parse(sessionStorage.getItem('user'));
+        const user = JSON.parse(sessionStorage.getItem("user"));
         if (!user) {
-          throw new Error('User not found in session storage');
+          throw new Error("User not found in session storage");
         }
 
-        const registrationResponse = await axios.get(`${process.env.REACT_APP_API_URI}/api/user/${user._id}/tickets`, {
-          headers: {
-            'x-api-key': process.env.REACT_APP_API_KEY,
-          },
-        });
+        const registrationResponse = await axios.get(
+          `${process.env.REACT_APP_USER_URI}/api/users/${user._id}/tickets`,
+          {
+            headers: {
+              "x-api-key": process.env.REACT_APP_API_KEY,
+            },
+          }
+        );
 
         const registrations = registrationResponse.data;
         const ticketData = [];
 
         for (const registration of registrations) {
-          const eventResponse = await axios.get(`${process.env.REACT_APP_API_URI}/api/events/${registration.eventID}`, {
-            headers: {
-              'x-api-key': process.env.REACT_APP_API_KEY,
-            },
-          });
+          const eventResponse = await axios.get(
+            `${process.env.REACT_APP_API_URI}/api/events/${registration.eventID}`,
+            {
+              headers: {
+                "x-api-key": process.env.REACT_APP_API_KEY,
+              },
+            }
+          );
           const event = eventResponse.data;
 
           const hasGeneral = event.ticket.price.general !== undefined;
           const hasVIP = event.ticket.price.vip !== undefined;
 
           if (hasGeneral || hasVIP) {
-            if (event.ticket.price.general === 0 && event.ticket.price.vip === 0) {
+            if (
+              event.ticket.price.general === 0 &&
+              event.ticket.price.vip === 0
+            ) {
               ticketData.push({
                 registration,
                 event,
                 type: null,
-                price: 'Free',
+                price: "Free",
               });
             } else {
               if (event.ticket.price.general !== 0) {
                 ticketData.push({
                   registration,
                   event,
-                  type: 'General',
+                  type: "General",
                   price: event.ticket.price.general,
                 });
               }
@@ -163,7 +190,7 @@ const TicketsPage = () => {
                 ticketData.push({
                   registration,
                   event,
-                  type: 'VIP',
+                  type: "VIP",
                   price: event.ticket.price.vip,
                 });
               }
@@ -173,7 +200,7 @@ const TicketsPage = () => {
               registration,
               event,
               type: null,
-              price: 'Free',
+              price: "Free",
             });
           }
         }
@@ -181,7 +208,7 @@ const TicketsPage = () => {
         setTickets(ticketData);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching tickets:', error);
+        console.error("Error fetching tickets:", error);
         setLoading(false);
       }
     };
@@ -191,7 +218,7 @@ const TicketsPage = () => {
 
   const handleBuyTicket = (ticket) => {
     // Navigate to the payment page and pass ticket data via location.state
-    navigate('/payments', { state: { ticket } });
+    navigate("/payments", { state: { ticket } });
   };
 
   return (
@@ -209,16 +236,31 @@ const TicketsPage = () => {
               <EventInfo>
                 <EventTitle>{ticket.event.name}</EventTitle>
                 {ticket.event.poster && (
-                  <PosterImage src={ticket.event.poster} alt={`Poster for ${ticket.event.name}`} />
+                  <PosterImage
+                    src={ticket.event.poster}
+                    alt={`Poster for ${ticket.event.name}`}
+                  />
                 )}
-                <EventDetails><strong>Description:</strong> {ticket.event.description}</EventDetails>
-                <EventDetails><strong>Date:</strong> {new Date(ticket.event.start_date).toLocaleString()} - {new Date(ticket.event.end_date).toLocaleString()}</EventDetails>
-                <EventDetails><strong>Location:</strong> {ticket.event.location}</EventDetails>
+                <EventDetails>
+                  <strong>Description:</strong> {ticket.event.description}
+                </EventDetails>
+                <EventDetails>
+                  <strong>Date:</strong>{" "}
+                  {new Date(ticket.event.start_date).toLocaleString()} -{" "}
+                  {new Date(ticket.event.end_date).toLocaleString()}
+                </EventDetails>
+                <EventDetails>
+                  <strong>Location:</strong> {ticket.event.location}
+                </EventDetails>
                 {ticket.type && (
-                  <EventDetails><strong>Ticket Type:</strong> {ticket.type}</EventDetails>
+                  <EventDetails>
+                    <strong>Ticket Type:</strong> {ticket.type}
+                  </EventDetails>
                 )}
-                <TicketPrice>{ticket.price === 'Free' ? ticket.price : `R ${ticket.price}`}</TicketPrice>
-                {ticket.type && ticket.price !== 'Free' && (
+                <TicketPrice>
+                  {ticket.price === "Free" ? ticket.price : `R ${ticket.price}`}
+                </TicketPrice>
+                {ticket.type && ticket.price !== "Free" && (
                   <BuyButton onClick={() => handleBuyTicket(ticket)}>
                     Buy {ticket.type} Ticket
                   </BuyButton>
@@ -226,7 +268,10 @@ const TicketsPage = () => {
               </EventInfo>
               <QRSection>
                 <QRCodeContainer>
-                  <QRCodeCanvas value={`Ticket for ${ticket.event.name} - ${ticket.price}`} size={100} />
+                  <QRCodeCanvas
+                    value={`Ticket for ${ticket.event.name} - ${ticket.price}`}
+                    size={100}
+                  />
                 </QRCodeContainer>
               </QRSection>
             </TicketCard>
@@ -240,11 +285,6 @@ const TicketsPage = () => {
 };
 
 export default TicketsPage;
-
-
-
-
-
 
 // import React from 'react';
 // import styled from 'styled-components';
