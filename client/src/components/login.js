@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from 'react-router-dom';
@@ -12,14 +11,13 @@ const postUser = async (name, email) => {
     liked_events: [],
     my_events: []
   }
-  console.log("User: ", user);
+
   try {
     await axios.post(`${process.env.REACT_APP_USER_URI}/api/users/create`, user, {
       headers: {
         'Content-Type': 'application/json',
       }
     }).then( response => {
-      console.log("Response");
       sessionStorage.setItem('user', JSON.stringify(response.data));
     });
   } catch (error) {
