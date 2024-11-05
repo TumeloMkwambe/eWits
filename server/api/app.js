@@ -1,16 +1,20 @@
 const express = require("express");
-const app = express();
 const cors = require('cors');
-app.use(cors());
+const app = express();
+
+// Configure CORS to allow requests only from the specific frontend URL
+app.use(cors({
+  origin: 'https://demo-app-git-lg-events-and-activities.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 app.use(express.json());
 
-
 app.get("/", (req, res) => res.send("Include API specification for all APIs!"));
-
 app.get("/api", (req, res) => res.send("API Gateway"));
 
-const PORT = 3000 || process.env.PORT;
-
-app.listen(PORT, () => console.log("Server ready on port 3000."));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server ready on port ${PORT}.`));
 
 module.exports = app;
