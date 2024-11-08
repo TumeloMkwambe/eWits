@@ -63,7 +63,7 @@ For detailed API documentation, please refer to the [API Documentation](https://
 
 The application is deployed on Vercel. You can access the live site at the following link:
 
-- [Live Site](https://ewits.vercel.app/) (insert link to deployed site)
+- [Live Site](https://ewits-front.vercel.app/) (insert link to deployed site)
 
 ## Local Testing
 npm install --save-dev jest
